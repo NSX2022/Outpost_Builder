@@ -1,0 +1,25 @@
+Nations Will Rise planning
+
+1. Basic Features (to be added in order)
+    a. Open drawn (Graphics 2D) Menu when player clicks on building
+        -display building name
+        -display which resource it generates & how much
+        -display building health
+        ^Default
+
+        Player only:
+        -display orders
+        -salvage building button
+    b. Save and Load
+        -pray to our lord and saviour RyiSnow
+    c. Options and Config menu
+        -pray to our lord and saviour RyiSnow
+    d. Zoom in and out (use +- keys)
+        -pray to our lord and saviour RyiSnow
+    e. Implement construction menu for making buildings
+        -TODO
+2. AI
+    a. Ensure that Citizen entities cannot walk through walls/solids
+    b. A* algorithm for pathing
+        -pray to our lord and saviour RyiSnow
+    c. Faction AI for spending, expanding, warfare, etc.
