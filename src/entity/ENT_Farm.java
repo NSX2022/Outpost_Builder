@@ -11,6 +11,9 @@ public class ENT_Farm extends Building {
         name = "Farm";
         image = setup("/entity/farm",1);
         health = 20;
+        reIndex = 8;
+        menuType = 1;
+        resourceYield = 2;
     }
 
     public BufferedImage image() {

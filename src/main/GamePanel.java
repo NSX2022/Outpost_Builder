@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,15 +24,15 @@ public class GamePanel extends JPanel implements Runnable {
     public final int tileSize = originalTileSize * scale; // 48*48
     public final int maxScreenCol = 16;
     public final int maxScreenRow = 9;
-    public final int screenWidth = tileSize * maxScreenCol; // 768
-    public final int screenHeight = tileSize * maxScreenRow; // 576
+    public final double screenWidth = tileSize * maxScreenCol; // 768
+    public final double screenHeight = tileSize * maxScreenRow; // 576
     public final int objDisplayLimit = 32;
     public final int entDisplayLimit = 32;
     Font pixelText16b;
 
     //FULLSCREEN
-    public int screenWidth2 = screenWidth;
-    public int screenHeight2 = screenHeight;
+    public double screenWidth2 = screenWidth;
+    public double screenHeight2 = screenHeight;
     BufferedImage tempScreen;
     Graphics2D g2;
 
@@ -53,6 +54,8 @@ public class GamePanel extends JPanel implements Runnable {
     public boolean clickOn = false;
     public Point clickPoint = new Point(0, 0);
     Random rand = new Random();
+    public double screenRatioX;
+    public double screenRatioY;
 
     //entity and obj
     public Camera player = new Camera(this, keyH);
@@ -68,6 +71,8 @@ public class GamePanel extends JPanel implements Runnable {
     //0 = default
     //1 = Normal
     //2 = Sandbox
+    public boolean menuOn = false;
+    int entMenuNum;
 
     //fps
     int FPS = 60; //60
@@ -76,7 +81,7 @@ public class GamePanel extends JPanel implements Runnable {
     public BufferedImage titleLogo;
 
     public GamePanel() {
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        this.setPreferredSize(new Dimension((int)screenWidth, (int)screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
@@ -106,11 +111,12 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() {
 
         aSetter.setObject();
+        //TODO: MUSIC AND SE
         //playMusic(0);
 
         gameState = titleState;
 
-        tempScreen = new BufferedImage(screenWidth2, screenHeight2, BufferedImage.TYPE_INT_ARGB);
+        tempScreen = new BufferedImage((int)screenWidth2, (int)screenHeight2, BufferedImage.TYPE_INT_ARGB);
         g2 = (Graphics2D)tempScreen.getGraphics();
         addMouseListener(new MouseListener() {
             @Override
@@ -141,6 +147,7 @@ public class GamePanel extends JPanel implements Runnable {
         });
 
         setFullScreen();
+        getScreenRatio();
     }
 
     @Override
@@ -172,25 +179,53 @@ public class GamePanel extends JPanel implements Runnable {
                 latestFPS = drawCount;
                 drawCount = 0;
                 timer = 0;
+                getScreenRatio();
             }
 
             for(int i = 0; i < ent.length; i++) {
                 //check to see if the click point touches the draw area of an entity (Building, Citizen)
                 if(ent[i] != null && !Objects.equals(ent[i].name, "camera")) {
                     //TODO: checkInRect, if true open click menu of entity
-                    //TODO: FIX MATH
+
                     int screenX = ent[i].worldX - player.worldX + player.screenX;
                     int screenY = ent[i].worldY - player.worldY + player.screenY;
 
                     ent[i].clickArea.x = screenX;
                     ent[i].clickArea.y = screenY;
 
-                    if(ent[i].clickArea.contains(clickPoint)) {
+                    Rectangle2D scaledClickArea = new Rectangle2D.Double(ent[i].clickArea.x * screenRatioX,
+                            ent[i].clickArea.y * screenRatioY, ent[i].clickArea.width * screenRatioX,
+                            ent[i].clickArea.height * screenRatioY);
+
+                    if(clickPoint != null && scaledClickArea.contains(clickPoint)) {
                         System.out.println(ent[i].name + " was clicked! ");
+                        if(!menuOn) {
+                            ent[i].menuOn = true;
+                        }
+
+                        clickPoint = null;
                     }
+                    if(ent[i].menuOn) {
+                        entMenuNum = i;
+                        menuOn = true;
+                    }
+                    /*
                     if(drawCount == 0 && ent[i].name.equals("Farm") && rand.nextBoolean()){
                         System.out.println(ent[i].name);
-                        System.out.println("clickArea " + screenX + "x:y" + screenY);
+                        System.out.println("clickArea " + ((Rectangle2D.Double) scaledClickArea).x + "x:y" + ((Rectangle2D.Double) scaledClickArea).y);
+                        System.out.println(screenRatioX + " " + screenRatioY);
+                        g2.setColor(Color.white);
+                        g2.fill(scaledClickArea);
+                    }
+                     */
+
+                    if(clickPoint != null && ui.menuRect != null && !ui.menuRect.contains(clickPoint)) {
+                        for(int j = 0; j < ent.length; j++) {
+                            if(ent[i] != null) {
+                                ent[i].menuOn = false;
+                            }
+                        }
+                        menuOn = false;
                     }
                 }
             }
@@ -239,6 +274,9 @@ public class GamePanel extends JPanel implements Runnable {
 
             //UI
             ui.draw(g2);
+            if(menuOn) {
+                ui.drawMenu(ent[entMenuNum]);
+            }
 
             //DEBUG
 
@@ -267,7 +305,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void drawToScreen() {
 
         Graphics g = getGraphics();
-        g.drawImage(tempScreen, 0, 0, screenWidth2, screenHeight2, null);
+        g.drawImage(tempScreen, 0, 0, (int)screenWidth2, (int)screenHeight2, null);
         g.dispose();
     }
 
@@ -279,17 +317,26 @@ public class GamePanel extends JPanel implements Runnable {
     }
     public void stopMusic() {
 
-        se.stop();
+        music.stop();
     }
     public void playSE(int i) {
 
         se.setFile(i);
         se.play();
     }
+    public void stopSE() {
+
+        se.stop();
+    }
 
     public boolean checkInRect(int x1, int y1, int x2, int y2, int x, int y) {
         return x > x1 && x < x2 &&
                 y > y1 && y < y2;
+    }
+
+    public void getScreenRatio() {
+        screenRatioX = screenWidth2 / screenWidth;
+        screenRatioY = screenHeight2 / screenHeight;
     }
 
     @Override

@@ -11,6 +11,8 @@ public class ENT_Fortress extends Building {
         name = "Fortress";
         image = setup("/entity/building_fortress",1);
         health = 150;
+        reIndex = -1;
+        menuType = 1;
     }
 
     public BufferedImage image() {

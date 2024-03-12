@@ -6,6 +6,8 @@ import main.GamePanel;
 public class Citizen extends Entity {
 
     public Faction faction;
+    //default ID for Citizens
+    public int menuType = 999;
 
     public Citizen(GamePanel gp, Faction faction) {
         super(gp);

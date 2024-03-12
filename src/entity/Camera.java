@@ -21,8 +21,8 @@ public class Camera extends Entity {
         this.keyH = keyH;
         name = "camera";
 
-        screenX = gp.screenWidth/2 - (gp.tileSize / 3) + 10;
-        screenY = gp.screenHeight/2 - (gp.tileSize / 3);
+        screenX = (int) (gp.screenWidth/2 - (gp.tileSize / 3) + 10);
+        screenY = (int) (gp.screenHeight/2 - (gp.tileSize / 3));
 
         solidArea = new Rectangle();
         solidArea.x = 6; //20

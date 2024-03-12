@@ -1,6 +1,9 @@
 package main;
 
+import entity.Entity;
+
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
@@ -17,6 +20,7 @@ public class UI {
     public boolean gameFinished = false;
     public int commandNum = 0;
     public int titleScreenState = 0; // 0: title screen 1: mode select 2: story?
+    public Rectangle menuRect;
 
     double playTime = 0;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
@@ -71,7 +75,7 @@ public class UI {
 
         if(titleScreenState == 0) {
             g2.setColor(new Color(70, 120, 80));
-            g2.fillRect(0, 0, gp.screenWidth2, gp.screenHeight2);
+            g2.fillRect(0, 0, (int)gp.screenWidth2, (int)gp.screenHeight2);
 
             //TITLE
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96f));
@@ -87,7 +91,7 @@ public class UI {
             g2.drawString(text, x, y);
 
             //LOGO Image (the castle)
-            x = gp.screenWidth / 2 - gp.tileSize * 3 + 64;
+            x = (int)gp.screenWidth / 2 - (int)gp.tileSize * 3 + 64;
             y += gp.tileSize - 36;
             g2.drawImage(gp.titleLogo, x, y, gp.tileSize * 3, gp.tileSize * 3, null);
 
@@ -119,7 +123,7 @@ public class UI {
             }
         }else if(titleScreenState == 1) {
             g2.setColor(Color.black);
-            g2.fillRect(0, 0, gp.screenWidth2, gp.screenHeight2);
+            g2.fillRect(0, 0, (int)gp.screenWidth2, (int)gp.screenHeight2);
 
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 40f));
             g2.setColor(Color.white);
@@ -181,14 +185,105 @@ public class UI {
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80f));
         String text = "PAUSED";
         int x = getXforCenteredText(text);
-        int y = gp.screenHeight/2;
+        int y = (int)gp.screenHeight/2;
 
         g2.drawString(text, x, y);
     }
 
     public int getXforCenteredText(String text) {
         int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        return gp.screenWidth/2 - length/2;
+        return (int)gp.screenWidth/2 - length/2;
+    }
+
+    public void drawMenu(Entity entity) {
+        if(entity.menuType > 0){
+            //Menu backdrop
+            int x = (int) (gp.screenWidth - gp.tileSize * 4);
+            int y = 0;
+            g2.setColor(Color.black);
+            menuRect = new Rectangle(x, y, (int) (gp.tileSize * 4),(int) gp.screenHeight);
+            g2.fillRect(x,y, (int) (gp.tileSize * 4),(int) gp.screenHeight);
+
+            //Menu text
+            switch (entity.menuType) {
+                case 1:
+                    //Building name
+                    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30f));
+                    g2.setColor(Color.white);
+                    y += gp.tileSize;
+                    x += gp.tileSize / 3;
+                    String text = entity.name;
+                    g2.drawString(text, x, y);
+
+                    //stats
+                    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 22f));
+                    y += gp.tileSize;
+                    x += gp.tileSize/4;
+                    text = "level " + entity.level;
+                    g2.drawString(text, x, y);
+
+                    y += gp.tileSize/2;
+                    text = "yield: ";
+                    g2.drawString(text, x, y);
+
+                    y += gp.tileSize/2;
+                    switch(entity.reIndex) {
+                        case 0:
+                            text = entity.resourceYield + " gold";
+                            break;
+                        case 1:
+                            text = entity.resourceYield + " stone";
+                            break;
+                        case 2:
+                            text = entity.resourceYield + " lumber";
+                            break;
+                        case 3:
+                            text = entity.resourceYield + " currency";
+                            break;
+                        case 4:
+                            text = entity.resourceYield + " smokeleaf";
+                            break;
+                        case 5:
+                            text = entity.resourceYield + " iron";
+                            break;
+                        case 6:
+                            text = entity.resourceYield + " silk";
+                            break;
+                        case 7:
+                            text = entity.resourceYield + " gem";
+                            break;
+                        case 8:
+                            text = entity.resourceYield + " wheat";
+                            break;
+                        case -1:
+                            text = "Nothing";
+                    }
+                    g2.drawString(text, x, y);
+
+                    x -= gp.tileSize/4;
+                    y += gp.tileSize/2;
+                    text = "Total yield: " + entity.resourcesGained;
+                    g2.drawString(text, x, y);
+
+                    y += gp.tileSize;
+                    text = "[Q] to exit";
+                    g2.drawString(text, x, y);
+
+                    break;
+                case 2:
+                    //King's Court
+                    break;
+                case 3:
+                    //King's Court (AI)
+                    break;
+                case 4:
+                    //Entity name
+                    break;
+                case 5:
+                    //Trade Menu
+                    break;
+            }
+        }
     }
 
 }

@@ -11,6 +11,8 @@ public class ENT_KingCourt extends Building {
         name = "King\'s Court";
         image = setup("/entity/king_court",1);
         health = 200;
+        reIndex = -1;
+        menuType = 3;
     }
 
     public BufferedImage image() {

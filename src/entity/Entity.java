@@ -21,6 +21,10 @@ public class Entity {
     public int spriteCounter = 0;
     public int spriteNum = 1;
 
+    //Menu when each building is clicked
+    //0 = empty menu 1 = Stats (npc base), 2 = ui for player king court, 3 = ai king court, 4 = citizen
+    public int menuType = 0;
+
     //default solidArea for all entities
     public Rectangle solidArea = new Rectangle(0,0,48,48);
     public int solidAreaDefaultX, solidAreaDefaultY;
@@ -31,6 +35,12 @@ public class Entity {
     public boolean collisionOn = false;
     public BufferedImage image;
     public String name;
+    public boolean menuOn = false;
+    public int level = 0;
+    public int reIndex;
+    public int resourceYield;
+    public int health;
+    public int resourcesGained = 0;
 
     GamePanel gp;
 
@@ -67,6 +77,10 @@ public class Entity {
 
         if(gp.keyH.checkDrawTime) {
             g2.drawRect(clickArea.x, clickArea.y, clickArea.width, clickArea.height);
+        }
+
+        if(menuOn) {
+            gp.ui.drawMenu(this);
         }
     }
 }

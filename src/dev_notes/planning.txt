@@ -8,8 +8,8 @@ Nations Will Rise planning
         ^Default
 
         Player only:
-        -display orders
-        -salvage building button
+        -display orders(?)
+        -salvage building button(?)
     b. Save and Load
         -pray to our lord and saviour RyiSnow
     c. Options and Config menu

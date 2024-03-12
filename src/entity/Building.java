@@ -15,12 +15,7 @@ import java.io.IOException;
 public class Building extends Entity{
 
     public Faction faction;
-    public int resourceYield;
-    public int health;
-    public int menuType = 0;
 
-    //Menu when each building is clicked
-    //0 = empty menu 1 = Stats (npc base), 2 = ui for player base
 
     enum buildingState {
         NORMAL,
@@ -46,6 +41,10 @@ public class Building extends Entity{
         }
         return image;
     }
-
-
+    public void genResources() {
+        if(reIndex > -1 /*&& reIndex < faction.resources.length*/) {
+            faction.resources[reIndex] += resourceYield;
+            resourcesGained += resourceYield;
+        }
+    }
 }

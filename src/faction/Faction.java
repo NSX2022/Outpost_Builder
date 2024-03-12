@@ -17,8 +17,9 @@ public class Faction {
 
     //Resources
     //IMPORTANT, REMEMBER ORDER
-    //Index 0 = gold, 1 = stone, 2 = lumber, 3 = money, 4 = greenleaf, 5 = iron, 6 = silk, 7 = gem
-    public int[] resources;
+    //order and starting values:
+    //Index 0 = gold0, 1 = stone8, 2 = lumber8, 3 = money0, 4 = smokeleaf0, 5 = iron8, 6 = silk0, 7 = gem0, 8 = wheat10
+    public int[] resources = new int[]{0,8,8,0,0,8,0,0,10};
 
     //TODO: King's Court as the central building, when clicked opens a menu to view whole faction
     public Building[] buildings;

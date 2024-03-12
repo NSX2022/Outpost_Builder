@@ -103,6 +103,17 @@ public class KeyHandler implements KeyListener {
                 gp.gameState = gp.playState;
             }
         }
+        if(code == KeyEvent.VK_Q) {
+            for(int i = 0; i < gp.ent.length; i++) {
+                if(gp.ent[i] != null) {
+                    gp.ent[i].menuOn = false;
+                }
+            }
+            gp.menuOn = false;
+        }
+        if(code == KeyEvent.VK_ESCAPE) {
+            System.exit(0);
+        }
 
         //TODO: Delete later
         if(code == KeyEvent.VK_M) {

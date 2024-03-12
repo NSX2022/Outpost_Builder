@@ -1,0 +1,4 @@
+Resources
+IMPORTANT, REMEMBER ORDER
+order and starting values:
+Index 0 = gold0, 1 = stone8, 2 = lumber8, 3 = money0, 4 = smokeleaf0, 5 = iron8, 6 = silk0, 7 = gem0, 8 = wheat10
