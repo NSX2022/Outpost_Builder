@@ -5,6 +5,8 @@ import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
@@ -18,11 +20,17 @@ public class Entity {
 
     public int spriteCounter = 0;
     public int spriteNum = 1;
+
     //default solidArea for all entities
     public Rectangle solidArea = new Rectangle(0,0,48,48);
     public int solidAreaDefaultX, solidAreaDefaultY;
+    //default clickArea
+    public Rectangle clickArea = new Rectangle(0, 0, 48, 48);
+    public int clickAreaDefaultX, clickAreaDefaultY;
+
     public boolean collisionOn = false;
     public BufferedImage image;
+    public String name;
 
     GamePanel gp;
 
@@ -55,7 +63,10 @@ public class Entity {
                 worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                 worldY  - gp.tileSize < gp.player.worldY + gp.player.screenY) {
             g2.drawImage(image, screenX, screenY, null);
+        }
 
+        if(gp.keyH.checkDrawTime) {
+            g2.drawRect(clickArea.x, clickArea.y, clickArea.width, clickArea.height);
         }
     }
 }

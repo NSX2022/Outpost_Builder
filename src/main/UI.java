@@ -154,9 +154,9 @@ public class UI {
 
     public void drawMessage() {
 
-        int messageX = gp.tileSize;
+        int messageX = gp.tileSize * 2;
         int messageY = gp.tileSize * 4;
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 32f));
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 16f));
 
         for(int i = 0; i < message.size(); i++) {
 
@@ -167,7 +167,7 @@ public class UI {
 
                 int counter = messageCounter.get(i) + 1;
                 messageCounter.set(i, counter);
-                messageY += 45;
+                messageY += 25;
 
                 if(messageCounter.get(i) > 200) {
                     message.remove(i);

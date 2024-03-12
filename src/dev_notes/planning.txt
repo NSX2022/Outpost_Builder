@@ -17,9 +17,11 @@ Nations Will Rise planning
     d. Zoom in and out (use +- keys)
         -pray to our lord and saviour RyiSnow
     e. Implement construction menu for making buildings
-        -TODO
+        -mouse control
 2. AI
-    a. Ensure that Citizen entities cannot walk through walls/solids
+    a. Ensure that Citizen entities cannot walk through walls/solids but Camera CAN
     b. A* algorithm for pathing
         -pray to our lord and saviour RyiSnow
     c. Faction AI for spending, expanding, warfare, etc.
+    d. AI for trading
+        -Also need trade menu

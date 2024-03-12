@@ -11,6 +11,7 @@ public class ENT_WallCross extends Building {
         name = "Wall";
         image = setup("/entity/wall_cross",1);
         health = 225;
+        //Adjust solidArea if Citizen entities can walk through it
     }
 
     public BufferedImage image() {

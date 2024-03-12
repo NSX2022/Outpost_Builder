@@ -16,37 +16,8 @@ public class Building extends Entity{
 
     public Faction faction;
     public int resourceYield;
-    public int worldX, worldY;
-    public String name;
     public int health;
     public int menuType = 0;
-
-    MouseListener mouseListener = new MouseListener() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
-        }
-    };
 
     //Menu when each building is clicked
     //0 = empty menu 1 = Stats (npc base), 2 = ui for player base

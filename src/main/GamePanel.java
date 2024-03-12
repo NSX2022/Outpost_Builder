@@ -8,12 +8,15 @@ import tile.TileManager;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
+import java.util.Random;
 
-public class GamePanel extends JPanel implements Runnable{
+public class GamePanel extends JPanel implements Runnable {
     //Screen Settings
     final int originalTileSize = 16; //16x16 tile
     final int scale = 3;
@@ -38,7 +41,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     //system
     TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler(this);
+    public KeyHandler keyH = new KeyHandler(this);
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public Sound music = new Sound();
@@ -47,6 +50,9 @@ public class GamePanel extends JPanel implements Runnable{
     public UtilityTool uTool = new UtilityTool();
     Thread gameThread;
     public int latestFPS;
+    public boolean clickOn = false;
+    public Point clickPoint = new Point(0, 0);
+    Random rand = new Random();
 
     //entity and obj
     public Camera player = new Camera(this, keyH);
@@ -106,6 +112,33 @@ public class GamePanel extends JPanel implements Runnable{
 
         tempScreen = new BufferedImage(screenWidth2, screenHeight2, BufferedImage.TYPE_INT_ARGB);
         g2 = (Graphics2D)tempScreen.getGraphics();
+        addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                clickPoint = e.getPoint();
+                System.out.println(clickPoint);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
 
         setFullScreen();
     }
@@ -135,10 +168,31 @@ public class GamePanel extends JPanel implements Runnable{
             }
 
             if(timer >= 1000000000) {
-                System.out.println("FPS: " + drawCount);
+                //System.out.println("FPS: " + drawCount);
                 latestFPS = drawCount;
                 drawCount = 0;
                 timer = 0;
+            }
+
+            for(int i = 0; i < ent.length; i++) {
+                //check to see if the click point touches the draw area of an entity (Building, Citizen)
+                if(ent[i] != null && !Objects.equals(ent[i].name, "camera")) {
+                    //TODO: checkInRect, if true open click menu of entity
+                    //TODO: FIX MATH
+                    int screenX = ent[i].worldX - player.worldX + player.screenX;
+                    int screenY = ent[i].worldY - player.worldY + player.screenY;
+
+                    ent[i].clickArea.x = screenX;
+                    ent[i].clickArea.y = screenY;
+
+                    if(ent[i].clickArea.contains(clickPoint)) {
+                        System.out.println(ent[i].name + " was clicked! ");
+                    }
+                    if(drawCount == 0 && ent[i].name.equals("Farm") && rand.nextBoolean()){
+                        System.out.println(ent[i].name);
+                        System.out.println("clickArea " + screenX + "x:y" + screenY);
+                    }
+                }
             }
         }
     }
@@ -194,7 +248,7 @@ public class GamePanel extends JPanel implements Runnable{
                 g2.setColor(Color.white);
                 g2.setFont(new Font("pixelText16b", Font.PLAIN, 30));
                 g2.drawString("Draw Time: " + passed, 10, 400);
-                System.out.println("Draw Time: " + passed);
+                //System.out.println("Draw Time: " + passed);
             }
         }
         //g2.dispose();
@@ -231,5 +285,15 @@ public class GamePanel extends JPanel implements Runnable{
 
         se.setFile(i);
         se.play();
+    }
+
+    public boolean checkInRect(int x1, int y1, int x2, int y2, int x, int y) {
+        return x > x1 && x < x2 &&
+                y > y1 && y < y2;
+    }
+
+    @Override
+    public synchronized void addMouseListener(MouseListener l) {
+        super.addMouseListener(l);
     }
 }

@@ -19,6 +19,7 @@ public class Camera extends Entity {
 
         super(gp);
         this.keyH = keyH;
+        name = "camera";
 
         screenX = gp.screenWidth/2 - (gp.tileSize / 3) + 10;
         screenY = gp.screenHeight/2 - (gp.tileSize / 3);
@@ -69,16 +70,18 @@ public class Camera extends Entity {
                 direction = "right";
             }
 
+            /*
             //check tile collision
             collisionOn = false;
             gp.cChecker.checkTile(this);
+             */
 
             //check obj collision
             int objIndex = gp.cChecker.checkObject(this, true);
             pickUpObject(objIndex);
 
             //if false, player moves
-            if(collisionOn == false) {
+            if(!collisionOn) {
                 switch (direction) {
                     case "up":
                         worldY -= speed;
