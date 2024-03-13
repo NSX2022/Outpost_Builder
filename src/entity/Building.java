@@ -34,7 +34,7 @@ public class Building extends Entity{
         BufferedImage image = null;
 
         try{
-            image = ImageIO.read(getClass().getResourceAsStream("/entity/"+imageName+".png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/entity/tile_entity/"+imageName+".png"));
             image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
         }catch(IOException e){
             e.printStackTrace();

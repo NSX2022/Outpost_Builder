@@ -81,6 +81,7 @@ public class Entity {
 
         if(menuOn) {
             gp.ui.drawMenu(this);
+            g2.drawRect(clickArea.x, clickArea.y, clickArea.width, clickArea.height);
         }
     }
 }

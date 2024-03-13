@@ -2,6 +2,7 @@ package main;
 
 import entity.Camera;
 import entity.Entity;
+import faction.Faction;
 import object.SuperObject;
 import tile.TileManager;
 
@@ -97,7 +98,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         try{
-            titleLogo = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/entity/building_fortress.png")));
+            titleLogo = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/entity/tile_entity/building_fortress.png")));
             titleLogo = uTool.scaleImage(titleLogo, tileSize, tileSize);
         }catch(IOException e){
             e.printStackTrace();
@@ -199,8 +200,15 @@ public class GamePanel extends JPanel implements Runnable {
 
                     if(clickPoint != null && scaledClickArea.contains(clickPoint)) {
                         System.out.println(ent[i].name + " was clicked! ");
+                        for(int k = 0; k < ent.length; k++) {
+                            if(ent[k] != null) {
+                                ent[k].menuOn = false;
+                            }
+                        }
                         if(!menuOn) {
-                            ent[i].menuOn = true;
+                            if(ent[i] != null) {
+                                ent[i].menuOn = true;
+                            }
                         }
 
                         clickPoint = null;
@@ -219,7 +227,7 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                      */
 
-                    if(clickPoint != null && ui.menuRect != null && !ui.menuRect.contains(clickPoint)) {
+                    if(clickPoint != null) {
                         for(int j = 0; j < ent.length; j++) {
                             if(ent[i] != null) {
                                 ent[i].menuOn = false;
@@ -337,6 +345,28 @@ public class GamePanel extends JPanel implements Runnable {
     public void getScreenRatio() {
         screenRatioX = screenWidth2 / screenWidth;
         screenRatioY = screenHeight2 / screenHeight;
+    }
+
+    //World gen
+    //TODO: World gen methods
+    public void genTiles(int x1, int x2, int y1, int y2) {
+
+    }
+
+    public void genFactions(int aiFactionsNum) {
+        player.playerFaction.resources[0] = 0;
+        player.playerFaction.resources[1] = 8;
+        player.playerFaction.resources[2] = 8;
+        player.playerFaction.resources[3] = 0;
+        player.playerFaction.resources[4] = 0;
+        player.playerFaction.resources[5] = 8;
+        player.playerFaction.resources[6] = 0;
+        player.playerFaction.resources[7] = 0;
+        player.playerFaction.resources[8] = 10;
+
+        player.playerFaction.isPlayer = true;
+        player.playerFaction.playerRep = 999;
+        player.playerFaction.relation = Faction.playerRelation.FRIENDLY;
     }
 
     @Override

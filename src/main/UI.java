@@ -2,12 +2,15 @@ package main;
 
 import entity.Entity;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class UI {
 
@@ -21,6 +24,17 @@ public class UI {
     public int commandNum = 0;
     public int titleScreenState = 0; // 0: title screen 1: mode select 2: story?
     public Rectangle menuRect;
+
+    //Icon images, in order
+    public BufferedImage money_icon;
+    public BufferedImage wheat_icon;
+    public BufferedImage lumber_icon;
+    public BufferedImage iron_icon;
+    public BufferedImage stone_icon;
+    public BufferedImage gold_icon;
+    public BufferedImage smokeleaf_icon;
+    public BufferedImage silk_icon;
+    public BufferedImage gem_icon;
 
     double playTime = 0;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
@@ -36,12 +50,25 @@ public class UI {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        loadIcons();
     }
 
     public void addMessage(String text) {
 
         message.add(text);
         messageCounter.add(0);
+    }
+
+    public void loadIcons() {
+        money_icon = setup("/ui/icons/money_icon",2);
+        wheat_icon = setup("/ui/icons/wheat_icon",2);
+        lumber_icon = setup("/ui/icons/lumber_icon",2);
+        iron_icon = setup("/ui/icons/iron_icon",2);
+        stone_icon = setup("/ui/icons/stone_icon",2);
+        gold_icon = setup("/ui/icons/gold_icon",2);
+        smokeleaf_icon = setup("/ui/icons/smokeleaf_icon",2);
+        silk_icon = setup("/ui/icons/silk_icon",2);
+        gem_icon = setup("/ui/icons/gem_icon",2);
     }
 
     public void draw(Graphics2D g2) {
@@ -51,6 +78,7 @@ public class UI {
         g2.setColor(Color.white);
 
         if(gp.gameState == gp.playState) {
+            drawResourceIcons();
             drawMessage();
         }
         if(gp.gameState == gp.pauseState){
@@ -145,10 +173,20 @@ public class UI {
             }
 
             text = "Sandbox";
+            //9999999 of each resource for player
             x = getXforCenteredText(text);
             y += gp.tileSize;
             g2.drawString(text, x, y);
             if(commandNum == 2) {
+                g2.drawString(">", x - gp.tileSize ,y);
+            }
+
+            text = "Simulation (TODO)";
+            //player is only an observer
+            x = getXforCenteredText(text);
+            y += gp.tileSize;
+            g2.drawString(text, x, y);
+            if(commandNum == 3) {
                 g2.drawString(">", x - gp.tileSize ,y);
             }
         }
@@ -160,7 +198,7 @@ public class UI {
 
         int messageX = gp.tileSize * 2;
         int messageY = gp.tileSize * 4;
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 16f));
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 16f));
 
         for(int i = 0; i < message.size(); i++) {
 
@@ -203,12 +241,13 @@ public class UI {
             g2.setColor(Color.black);
             menuRect = new Rectangle(x, y, (int) (gp.tileSize * 4),(int) gp.screenHeight);
             g2.fillRect(x,y, (int) (gp.tileSize * 4),(int) gp.screenHeight);
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30f));
 
             //Menu text
             switch (entity.menuType) {
                 case 1:
                     //Building name
-                    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 30f));
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30f));
                     g2.setColor(Color.white);
                     y += gp.tileSize;
                     x += gp.tileSize / 3;
@@ -216,7 +255,7 @@ public class UI {
                     g2.drawString(text, x, y);
 
                     //stats
-                    g2.setFont(g2.getFont().deriveFont(Font.BOLD, 22f));
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 22f));
                     y += gp.tileSize;
                     x += gp.tileSize/4;
                     text = "level " + entity.level;
@@ -266,24 +305,133 @@ public class UI {
                     g2.drawString(text, x, y);
 
                     y += gp.tileSize;
-                    text = "[Q] to exit";
+                    text = "[click] to exit";
                     g2.drawString(text, x, y);
 
                     break;
                 case 2:
                     //King's Court
+                    g2.setColor(Color.white);
+                    y += gp.tileSize;
+                    text = "[click] to exit";
+                    g2.drawString(text, x, y);
                     break;
                 case 3:
                     //King's Court (AI)
+                    g2.setColor(Color.white);
+                    y += gp.tileSize;
+                    text = "[click] to exit";
+                    g2.drawString(text, x, y);
                     break;
                 case 4:
                     //Entity name
+                    g2.setColor(Color.white);
+                    y += gp.tileSize;
+                    text = "[click] to exit";
+                    g2.drawString(text, x, y);
                     break;
                 case 5:
                     //Trade Menu
+                    y += gp.tileSize;
+                    text = "[click] to exit";
+                    g2.drawString(text, x, y);
                     break;
             }
         }
     }
+    public void drawResourceIcons() {
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 28f));
+        //left edge of the screen: draw icons and a number of how many
+        int x = 0;
+        int y = 0;
+        String text = "";
+        g2.setColor(Color.white);
 
+        g2.drawImage(money_icon, x, y, null);
+
+        y += gp.tileSize / 3 + gp.tileSize / 8;
+        x += gp.tileSize / 3 + gp.tileSize / 5;
+        text = String.valueOf(gp.player.playerFaction.resources[3]);
+        g2.drawString(text, x, y);
+
+        y += gp.tileSize / 12;
+        x = 0;
+        g2.drawImage(wheat_icon, x, y, null);
+        y += gp.tileSize / 3 + gp.tileSize / 8;
+        x += gp.tileSize / 3 + gp.tileSize / 5;
+        text = String.valueOf(gp.player.playerFaction.resources[8]);
+        g2.drawString(text, x, y);
+
+        y += gp.tileSize / 12;
+        x = 0;
+        g2.drawImage(lumber_icon, x, y, null);
+        y += gp.tileSize / 3 + gp.tileSize / 8;
+        x += gp.tileSize / 3 + gp.tileSize / 5;
+        text = String.valueOf(gp.player.playerFaction.resources[2]);
+        g2.drawString(text, x, y);
+
+        y += gp.tileSize / 12;
+        x = 0;
+        g2.drawImage(iron_icon, x, y, null);
+        y += gp.tileSize / 3 + gp.tileSize / 8;
+        x += gp.tileSize / 3 + gp.tileSize / 5;
+        text = String.valueOf(gp.player.playerFaction.resources[5]);
+        g2.drawString(text, x, y);
+
+        y += gp.tileSize / 12;
+        x = 0;
+        g2.drawImage(stone_icon, x, y, null);
+        y += gp.tileSize / 3 + gp.tileSize / 8;
+        x += gp.tileSize / 3 + gp.tileSize / 5;
+        text = String.valueOf(gp.player.playerFaction.resources[1]);
+        g2.drawString(text, x, y);
+
+        y += gp.tileSize / 12;
+        x = 0;
+        g2.drawImage(gold_icon, x, y, null);
+        y += gp.tileSize / 3 + gp.tileSize / 8;
+        x += gp.tileSize / 3 + gp.tileSize / 5;
+        text = String.valueOf(gp.player.playerFaction.resources[0]);
+        g2.drawString(text, x, y);
+
+        y += gp.tileSize / 12;
+        x = 0;
+        g2.drawImage(smokeleaf_icon, x, y, null);
+        y += gp.tileSize / 3 + gp.tileSize / 8;
+        x += gp.tileSize / 3 + gp.tileSize / 5;
+        text = String.valueOf(gp.player.playerFaction.resources[4]);
+        g2.drawString(text, x, y);
+
+        y += gp.tileSize / 12;
+        x = 0;
+        g2.drawImage(silk_icon, x, y, null);
+        y += gp.tileSize / 3 + gp.tileSize / 8;
+        x += gp.tileSize / 3 + gp.tileSize / 5;
+        text = String.valueOf(gp.player.playerFaction.resources[6]);
+        g2.drawString(text, x, y);
+
+        y += gp.tileSize / 12;
+        x = 0;
+        g2.drawImage(gem_icon, x, y, null);
+        y += gp.tileSize / 3 + gp.tileSize / 8;
+        x += gp.tileSize / 3 + gp.tileSize / 5;
+        text = String.valueOf(gp.player.playerFaction.resources[7]);
+        g2.drawString(text, x, y);
+    }
+
+    public BufferedImage setup(String imagePath, int divider) {
+
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
+
+        try{
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imagePath + ".png")));
+            image = uTool.scaleImage(image, gp.tileSize / divider, gp.tileSize / divider);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        return image;
+    }
+
+    //TODO: Particle System (RyiSnow)
 }

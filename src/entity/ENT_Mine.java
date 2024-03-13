@@ -9,7 +9,7 @@ public class ENT_Mine extends Building {
     public ENT_Mine(GamePanel gp, Faction faction) {
         super(gp, faction);
         name = "Mine";
-        image = setup("/entity/mine",1);
+        image = setup("/entity/tile_entity/mine",1);
         health = 50;
         reIndex = 5;
         menuType = 1;

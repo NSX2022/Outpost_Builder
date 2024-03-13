@@ -9,7 +9,7 @@ public class ENT_Hut extends Building {
     public ENT_Hut(GamePanel gp, Faction faction) {
         super(gp, faction);
         name = "Hut";
-        image = setup("/entity/hut_building",1);
+        image = setup("/entity/tile_entity/hut_building",1);
         health = 20;
         reIndex = -1;
         menuType = 1;

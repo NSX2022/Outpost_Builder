@@ -1,5 +1,6 @@
 package entity;
 
+import faction.Faction;
 import main.GamePanel;
 import main.KeyHandler;
 import main.UtilityTool;
@@ -14,6 +15,10 @@ public class Camera extends Entity {
 
     public final int screenX;
     public final int screenY;
+
+    public Faction playerFaction;
+
+    //TODO: Move to a game generation method in GamePanel
 
     public Camera (GamePanel gp, KeyHandler keyH) {
 
@@ -52,6 +57,7 @@ public class Camera extends Entity {
         worldY = gp.tileSize * gp.maxWorldCol / 2;
         speed = 6;
         direction = "down";
+        playerFaction = new Faction(gp);
     }
 
     public void update() {

@@ -9,7 +9,7 @@ public class ENT_WallCross extends Building {
     public ENT_WallCross(GamePanel gp, Faction faction) {
         super(gp, faction);
         name = "Wall";
-        image = setup("/entity/wall_cross",1);
+        image = setup("/entity/tile_entity/wall_cross",1);
         health = 225;
         reIndex = -1;
         menuType = 0;
