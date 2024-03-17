@@ -8,6 +8,10 @@ public class KeyHandler implements KeyListener {
     //DEBUG
     public boolean checkDrawTime = false;
     GamePanel gp;
+    public int gameTypeHolder;
+
+    //In-game view
+    public boolean drawFactionFlags = true;
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
@@ -34,6 +38,10 @@ public class KeyHandler implements KeyListener {
                             //TODO: Load last game from .dat file
                             break;
                         case 2:
+                            //TODO: Controls/help screen
+                            gp.ui.titleScreenState = 2;
+                            break;
+                        case 3:
                             System.exit(0);
                             break;
                     }
@@ -44,7 +52,7 @@ public class KeyHandler implements KeyListener {
                     }
                 }
                 if(code == KeyEvent.VK_S) {
-                    if(gp.ui.commandNum < 2) {
+                    if(gp.ui.commandNum < 3) {
                         gp.ui.commandNum++;
                     }
                 }
@@ -55,18 +63,36 @@ public class KeyHandler implements KeyListener {
                             gp.ui.titleScreenState = 0;
                             break;
                         case 1:
-                            gp.gameType = 1;
+                            gameTypeHolder = 1;
+                            gp.gameStart = true;
+                            //TODO: Proper setup
+                            gp.gameType = gp.keyH.gameTypeHolder;
+                            gp.genFactions(4);
                             gp.gameState = gp.playState;
-                            //TODO: get main theme
-                            //gp.playMusic(0)
+                            gp.stopMusic();
+                            gp.playMusic(1);
                             break;
                         case 2:
                             //Sandbox
-                            gp.gameType = 2;
+                            gameTypeHolder = 2;
+                            System.out.println(gp.gameType);
+                            gp.gameStart = true;
+                            //TODO: Proper setup
+                            gp.gameType = gp.keyH.gameTypeHolder;
+                            gp.genFactions(4);
                             gp.gameState = gp.playState;
-                            //TODO: get main theme
-                            //gp.playMusic(0)
+                            gp.stopMusic();
+                            gp.playMusic(1);
                             break;
+                        case 3:
+                            gameTypeHolder = 3;
+                            gp.gameStart = true;
+                            //TODO: Proper setup
+                            gp.gameType = gp.keyH.gameTypeHolder;
+                            gp.genFactions(4);
+                            gp.gameState = gp.playState;
+                            gp.stopMusic();
+                            gp.playMusic(1);
                     }
                 }
                 if(code == KeyEvent.VK_W) {
@@ -75,9 +101,14 @@ public class KeyHandler implements KeyListener {
                     }
                 }
                 if(code == KeyEvent.VK_S) {
-                    if(gp.ui.commandNum < 2) {
+                    if(gp.ui.commandNum < 3) {
                         gp.ui.commandNum++;
                     }
+                }
+            } else if(gp.ui.titleScreenState == 2) {
+
+                if(code == KeyEvent.VK_SPACE) {
+                    gp.ui.titleScreenState = 0;
                 }
             }
 
@@ -133,6 +164,12 @@ public class KeyHandler implements KeyListener {
         //DEBUG
         if(code == KeyEvent.VK_T) {
             checkDrawTime = !checkDrawTime;
+        }
+        if(code == KeyEvent.VK_F) {
+            drawFactionFlags = !drawFactionFlags;
+        }
+        if(code == KeyEvent.VK_G) {
+            gp.ui.showIcons = !gp.ui.showIcons;
         }
     }
 }

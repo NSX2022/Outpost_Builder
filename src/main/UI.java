@@ -36,8 +36,10 @@ public class UI {
     public BufferedImage silk_icon;
     public BufferedImage gem_icon;
 
-    double playTime = 0;
+    public double playTime = 0;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
+
+    public Boolean showIcons = true;
 
     public UI(GamePanel gp) {
         this.gp = gp;
@@ -78,7 +80,9 @@ public class UI {
         g2.setColor(Color.white);
 
         if(gp.gameState == gp.playState) {
-            drawResourceIcons();
+            if(showIcons) {
+                drawResourceIcons();
+            }
             drawMessage();
         }
         if(gp.gameState == gp.pauseState){
@@ -128,7 +132,7 @@ public class UI {
 
             text = "NEW GAME";
             x = getXforCenteredText(text);
-            y += gp.tileSize * 4;
+            y += gp.tileSize * 3.5;
             g2.drawString(text, x ,y);
             if(commandNum == 0) {
                 g2.drawString(">", x - gp.tileSize ,y);
@@ -142,11 +146,19 @@ public class UI {
                 g2.drawString(">", x - gp.tileSize ,y);
             }
 
+            text = "CONTROLS";
+            x = getXforCenteredText(text);
+            y += gp.tileSize;
+            g2.drawString(text, x, y);
+            if(commandNum == 2) {
+                g2.drawString(">", x - gp.tileSize ,y);
+            }
+
             text = "QUIT";
             x = getXforCenteredText(text);
             y += gp.tileSize;
             g2.drawString(text, x ,y);
-            if(commandNum == 2) {
+            if(commandNum == 3) {
                 g2.drawString(">", x - gp.tileSize ,y);
             }
         }else if(titleScreenState == 1) {
@@ -189,9 +201,35 @@ public class UI {
             if(commandNum == 3) {
                 g2.drawString(">", x - gp.tileSize ,y);
             }
+        } else if(titleScreenState == 2) {
+            g2.setColor(Color.black);
+            g2.fillRect(0, 0, (int)gp.screenWidth2, (int)gp.screenHeight2);
+
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 40f));
+            g2.setColor(Color.white);
+
+            String text = "> Back";
+            int x = getXforCenteredText(text);
+            int y = gp.tileSize;
+            g2.drawString(text, x ,y);
+
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20f));
+            text = "F to toggle flags, G to toggle resource icons";
+            x = getXforCenteredText(text);
+            y += gp.tileSize * 2;
+            g2.drawString(text, x, y);
+
+            text = "WASD to move camera";
+            x = getXforCenteredText(text);
+            y += gp.tileSize;
+            g2.drawString(text, x, y);
+
+            text = "-/+ to zoom (TODO)";
+            x = getXforCenteredText(text);
+            y += gp.tileSize;
+            g2.drawString(text, x, y);
+
         }
-
-
     }
 
     public void drawMessage() {
@@ -231,6 +269,7 @@ public class UI {
     public int getXforCenteredText(String text) {
         int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         return (int)gp.screenWidth/2 - length/2;
+
     }
 
     public void drawMenu(Entity entity) {
@@ -315,6 +354,8 @@ public class UI {
                     y += gp.tileSize;
                     text = "[click] to exit";
                     g2.drawString(text, x, y);
+
+                    //TODO: Player faction info + faction management
                     break;
                 case 3:
                     //King's Court (AI)
@@ -347,76 +388,78 @@ public class UI {
         String text = "";
         g2.setColor(Color.white);
 
-        g2.drawImage(money_icon, x, y, null);
+        if(showIcons) {
+            g2.drawImage(money_icon, x, y, null);
 
-        y += gp.tileSize / 3 + gp.tileSize / 8;
-        x += gp.tileSize / 3 + gp.tileSize / 5;
-        text = String.valueOf(gp.player.playerFaction.resources[3]);
-        g2.drawString(text, x, y);
+            y += gp.tileSize / 3 + gp.tileSize / 8;
+            x += gp.tileSize / 3 + gp.tileSize / 5;
+            text = String.valueOf(gp.player.playerFaction.resources[3]);
+            g2.drawString(text, x, y);
 
-        y += gp.tileSize / 12;
-        x = 0;
-        g2.drawImage(wheat_icon, x, y, null);
-        y += gp.tileSize / 3 + gp.tileSize / 8;
-        x += gp.tileSize / 3 + gp.tileSize / 5;
-        text = String.valueOf(gp.player.playerFaction.resources[8]);
-        g2.drawString(text, x, y);
+            y += gp.tileSize / 12;
+            x = 0;
+            g2.drawImage(wheat_icon, x, y, null);
+            y += gp.tileSize / 3 + gp.tileSize / 8;
+            x += gp.tileSize / 3 + gp.tileSize / 5;
+            text = String.valueOf(gp.player.playerFaction.resources[8]);
+            g2.drawString(text, x, y);
 
-        y += gp.tileSize / 12;
-        x = 0;
-        g2.drawImage(lumber_icon, x, y, null);
-        y += gp.tileSize / 3 + gp.tileSize / 8;
-        x += gp.tileSize / 3 + gp.tileSize / 5;
-        text = String.valueOf(gp.player.playerFaction.resources[2]);
-        g2.drawString(text, x, y);
+            y += gp.tileSize / 12;
+            x = 0;
+            g2.drawImage(lumber_icon, x, y, null);
+            y += gp.tileSize / 3 + gp.tileSize / 8;
+            x += gp.tileSize / 3 + gp.tileSize / 5;
+            text = String.valueOf(gp.player.playerFaction.resources[2]);
+            g2.drawString(text, x, y);
 
-        y += gp.tileSize / 12;
-        x = 0;
-        g2.drawImage(iron_icon, x, y, null);
-        y += gp.tileSize / 3 + gp.tileSize / 8;
-        x += gp.tileSize / 3 + gp.tileSize / 5;
-        text = String.valueOf(gp.player.playerFaction.resources[5]);
-        g2.drawString(text, x, y);
+            y += gp.tileSize / 12;
+            x = 0;
+            g2.drawImage(iron_icon, x, y, null);
+            y += gp.tileSize / 3 + gp.tileSize / 8;
+            x += gp.tileSize / 3 + gp.tileSize / 5;
+            text = String.valueOf(gp.player.playerFaction.resources[5]);
+            g2.drawString(text, x, y);
 
-        y += gp.tileSize / 12;
-        x = 0;
-        g2.drawImage(stone_icon, x, y, null);
-        y += gp.tileSize / 3 + gp.tileSize / 8;
-        x += gp.tileSize / 3 + gp.tileSize / 5;
-        text = String.valueOf(gp.player.playerFaction.resources[1]);
-        g2.drawString(text, x, y);
+            y += gp.tileSize / 12;
+            x = 0;
+            g2.drawImage(stone_icon, x, y, null);
+            y += gp.tileSize / 3 + gp.tileSize / 8;
+            x += gp.tileSize / 3 + gp.tileSize / 5;
+            text = String.valueOf(gp.player.playerFaction.resources[1]);
+            g2.drawString(text, x, y);
 
-        y += gp.tileSize / 12;
-        x = 0;
-        g2.drawImage(gold_icon, x, y, null);
-        y += gp.tileSize / 3 + gp.tileSize / 8;
-        x += gp.tileSize / 3 + gp.tileSize / 5;
-        text = String.valueOf(gp.player.playerFaction.resources[0]);
-        g2.drawString(text, x, y);
+            y += gp.tileSize / 12;
+            x = 0;
+            g2.drawImage(gold_icon, x, y, null);
+            y += gp.tileSize / 3 + gp.tileSize / 8;
+            x += gp.tileSize / 3 + gp.tileSize / 5;
+            text = String.valueOf(gp.player.playerFaction.resources[0]);
+            g2.drawString(text, x, y);
 
-        y += gp.tileSize / 12;
-        x = 0;
-        g2.drawImage(smokeleaf_icon, x, y, null);
-        y += gp.tileSize / 3 + gp.tileSize / 8;
-        x += gp.tileSize / 3 + gp.tileSize / 5;
-        text = String.valueOf(gp.player.playerFaction.resources[4]);
-        g2.drawString(text, x, y);
+            y += gp.tileSize / 12;
+            x = 0;
+            g2.drawImage(smokeleaf_icon, x, y, null);
+            y += gp.tileSize / 3 + gp.tileSize / 8;
+            x += gp.tileSize / 3 + gp.tileSize / 5;
+            text = String.valueOf(gp.player.playerFaction.resources[4]);
+            g2.drawString(text, x, y);
 
-        y += gp.tileSize / 12;
-        x = 0;
-        g2.drawImage(silk_icon, x, y, null);
-        y += gp.tileSize / 3 + gp.tileSize / 8;
-        x += gp.tileSize / 3 + gp.tileSize / 5;
-        text = String.valueOf(gp.player.playerFaction.resources[6]);
-        g2.drawString(text, x, y);
+            y += gp.tileSize / 12;
+            x = 0;
+            g2.drawImage(silk_icon, x, y, null);
+            y += gp.tileSize / 3 + gp.tileSize / 8;
+            x += gp.tileSize / 3 + gp.tileSize / 5;
+            text = String.valueOf(gp.player.playerFaction.resources[6]);
+            g2.drawString(text, x, y);
 
-        y += gp.tileSize / 12;
-        x = 0;
-        g2.drawImage(gem_icon, x, y, null);
-        y += gp.tileSize / 3 + gp.tileSize / 8;
-        x += gp.tileSize / 3 + gp.tileSize / 5;
-        text = String.valueOf(gp.player.playerFaction.resources[7]);
-        g2.drawString(text, x, y);
+            y += gp.tileSize / 12;
+            x = 0;
+            g2.drawImage(gem_icon, x, y, null);
+            y += gp.tileSize / 3 + gp.tileSize / 8;
+            x += gp.tileSize / 3 + gp.tileSize / 5;
+            text = String.valueOf(gp.player.playerFaction.resources[7]);
+            g2.drawString(text, x, y);
+        }
     }
 
     public BufferedImage setup(String imagePath, int divider) {

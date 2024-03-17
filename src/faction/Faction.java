@@ -3,12 +3,14 @@ package faction;
 import entity.Building;
 import entity.Entity;
 import main.GamePanel;
+import object.*;
+
+import java.util.Arrays;
 
 public class Faction {
 
     GamePanel gp;
 
-    public Entity[] factionBuildings;
     public int playerRep;
     public String name;
     public Boolean isDefeated = false;
@@ -20,11 +22,14 @@ public class Faction {
     //order and starting values:
     //Index 0 = gold0, 1 = stone8, 2 = lumber8, 3 = money0, 4 = smokeleaf0, 5 = iron8, 6 = silk0, 7 = gem0, 8 = wheat10
     public int[] resources = new int[]{0,8,8,0,0,8,0,0,10};
+    public int gpPos;
 
     //TODO: King's Court as the central building, when clicked opens a menu to view whole faction
-    public Building[] buildings;
+    public Entity[] factionBuildings = new Entity[99];
+    public SuperObject[] flags = new SuperObject[99];
 
     public int population;
+
     public enum playerRelation {
         FRIENDLY,
         HOSTILE,
@@ -32,21 +37,72 @@ public class Faction {
         ALLIED,
         DEFEATED
 
-    };
+    }
+
     //Default, change later
     public playerRelation relation = playerRelation.DEFEATED;
 
     public Faction(GamePanel gp) {
         this.gp = gp;
+        //System.out.println((factionBuildings).length);
     }
 
-    public void genFaction() {
-
-    }
 
     public void update() {
         if(!isPlayer && !isDefeated) {
             //TODO: build up a nation and all of that stuff
+            //TODO: Create StateMachine and actionLock timer
+            //actionLock: pray to our lord and saviour RyiSnow
         }
+    }
+
+    public void updateBuildings() {
+        int flagX;
+        int flagY;
+        //TODO: Update the flag colors for buildings of this faction
+        for(int i = 0; i < flags.length; i++) {
+            if(flags[i] != null) {
+                switch(relation) {
+                    case DEFEATED:
+                        //TODO: set X and Y for flags based off of the previous flag
+                        flagX = flags[i].worldX;
+                        flagY = flags[i].worldY;
+                        flags[i] = new OBJ_WhiteFlag(gp);
+                        flags[i].worldX = flagX;
+                        flags[i].worldY = flagY;
+                        break;
+                    case ALLIED:
+                        flagX = flags[i].worldX;
+                        flagY = flags[i].worldY;
+                        flags[i] = new OBJ_BlueFlag(gp);
+                        flags[i].worldX = flagX;
+                        flags[i].worldY = flagY;
+                        break;
+                    case FRIENDLY:
+                        flagX = flags[i].worldX;
+                        flagY = flags[i].worldY;
+                        flags[i] = new OBJ_GreenFlag(gp);
+                        flags[i].worldX = flagX;
+                        flags[i].worldY = flagY;
+                        break;
+                    case HOSTILE:
+                        flagX = flags[i].worldX;
+                        flagY = flags[i].worldY;
+                        flags[i] = new OBJ_RedFlag(gp);
+                        flags[i].worldX = flagX;
+                        flags[i].worldY = flagY;
+                        break;
+                    case NEUTRAL:
+                        flagX = flags[i].worldX;
+                        flagY = flags[i].worldY;
+                        flags[i] = new OBJ_YellowFlag(gp);
+                        flags[i].worldX = flagX;
+                        flags[i].worldY = flagY;
+                        break;
+                }
+            }
+
+        }
+        gp.factionFlags[gpPos] = flags;
     }
 }

@@ -14,9 +14,9 @@ public class AssetSetter {
     }
 
     public void setObject() {
-        addObject(51, 40, "red_flag");
+        //addObject(51, 40, "red_flag");
 
-        addObject(52, 40, "green_flag");
+        /*addObject(52, 40, "green_flag");
 
         addObject(53, 40, "blue_flag");
 
@@ -44,6 +44,7 @@ public class AssetSetter {
         addEntity(54, 43, "wall_cross", null);
         addEntity(54, 42, "wall_cross", null);
         addEntity(54, 41, "wall_cross", null);
+         */
     }
 
     public void setEntity() {
@@ -169,6 +170,16 @@ public class AssetSetter {
             }
         }else{ //Factionless Entity
 
+        }
+    }
+    public void addPremadeEntity(int x, int y, Entity entity) {
+        for(int i = 0; i < gp.ent.length; i++)  {
+            if(gp.ent[i] == null) {
+                gp.ent[i] = entity;
+                gp.ent[i].worldX = x * gp.tileSize;
+                gp.ent[i].worldY = y * gp.tileSize;
+                break;
+            }
         }
     }
 }

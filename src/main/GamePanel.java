@@ -1,8 +1,12 @@
 package main;
 
+import entity.Building;
 import entity.Camera;
+import entity.ENT_KingCourt;
 import entity.Entity;
 import faction.Faction;
+import object.OBJ_RedFlag;
+import object.OBJ_YellowFlag;
 import object.SuperObject;
 import tile.TileManager;
 
@@ -57,6 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
     Random rand = new Random();
     public double screenRatioX;
     public double screenRatioY;
+    public NameGenerator nameGen = new NameGenerator();
 
     //entity and obj
     public Camera player = new Camera(this, keyH);
@@ -68,18 +73,25 @@ public class GamePanel extends JPanel implements Runnable {
     public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
-    public int gameType = 0;
+    public int gameType = -1;
     //0 = default
     //1 = Normal
     //2 = Sandbox
+    //3 = Simulation
     public boolean menuOn = false;
-    int entMenuNum;
+    public int entMenuNum;
+    public Boolean gameStart = false;
 
     //fps
     int FPS = 60; //60
 
     //title logo
     public BufferedImage titleLogo;
+
+    //Factions
+    public int maxFactions = 10;
+    public Faction[] factions = new Faction[maxFactions];
+    public SuperObject[][] factionFlags = new SuperObject[objDisplayLimit][50];
 
     public GamePanel() {
         this.setPreferredSize(new Dimension((int)screenWidth, (int)screenHeight));
@@ -112,8 +124,8 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() {
 
         aSetter.setObject();
-        //TODO: MUSIC AND SE
-        //playMusic(0);
+
+        playMusic(0);
 
         gameState = titleState;
 
@@ -133,7 +145,7 @@ public class GamePanel extends JPanel implements Runnable {
             @Override
             public void mouseReleased(MouseEvent e) {
                 clickPoint = e.getPoint();
-                System.out.println(clickPoint);
+                //System.out.println(clickPoint);
             }
 
             @Override
@@ -160,6 +172,8 @@ public class GamePanel extends JPanel implements Runnable {
         long currentTime;
         long timer = 0;
         int drawCount = 0;
+        int seconds = 0;
+        int totalSeconds = 0;
 
         while(gameThread != null) {
 
@@ -181,13 +195,27 @@ public class GamePanel extends JPanel implements Runnable {
                 drawCount = 0;
                 timer = 0;
                 getScreenRatio();
+                if(FPS >= 60) {
+                    seconds++;
+                    totalSeconds++;
+                }
+                if(seconds >= 30) {
+                    for(int i = 0; i < factions.length; i++) {
+                        if(factions[i] != null) {
+                            factions[i].updateBuildings();
+                        }
+                    }
+                    System.out.println("Faction flags updated");
+                    if(keyH.checkDrawTime) {
+                        ui.addMessage("Faction Flags Updated (Debug)");
+                    }
+                    seconds = 0;
+                }
             }
 
             for(int i = 0; i < ent.length; i++) {
                 //check to see if the click point touches the draw area of an entity (Building, Citizen)
-                if(ent[i] != null && !Objects.equals(ent[i].name, "camera")) {
-                    //TODO: checkInRect, if true open click menu of entity
-
+                if(ent[i] != null && !Objects.equals(ent[i].name, "camera") && gameState == playState) {
                     int screenX = ent[i].worldX - player.worldX + player.screenX;
                     int screenY = ent[i].worldY - player.worldY + player.screenY;
 
@@ -199,7 +227,7 @@ public class GamePanel extends JPanel implements Runnable {
                             ent[i].clickArea.height * screenRatioY);
 
                     if(clickPoint != null && scaledClickArea.contains(clickPoint)) {
-                        System.out.println(ent[i].name + " was clicked! ");
+                        //System.out.println(ent[i].name + " was clicked! ");
                         for(int k = 0; k < ent.length; k++) {
                             if(ent[k] != null) {
                                 ent[k].menuOn = false;
@@ -275,6 +303,19 @@ public class GamePanel extends JPanel implements Runnable {
             for(int i = 0; i < obj.length; i++) {
                 if(obj[i] != null) {
                     obj[i].draw(g2, this);
+                }
+            }
+
+            //faction flags
+            if(keyH.drawFactionFlags) {
+                for(int i = 0; i < factionFlags.length; i++) {
+                    for(int j = 0; j < factionFlags.length; j++){
+                        if(factionFlags[i][j] != null) {
+                            //System.out.println(factionFlags[i][j].worldX + " " + factionFlags[i][j].worldY);
+                            factionFlags[i][j].draw(g2, this);
+                            //System.out.println("Flag drawn");
+                        }
+                    }
                 }
             }
 
@@ -354,19 +395,119 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void genFactions(int aiFactionsNum) {
-        player.playerFaction.resources[0] = 0;
-        player.playerFaction.resources[1] = 8;
-        player.playerFaction.resources[2] = 8;
-        player.playerFaction.resources[3] = 0;
-        player.playerFaction.resources[4] = 0;
-        player.playerFaction.resources[5] = 8;
-        player.playerFaction.resources[6] = 0;
-        player.playerFaction.resources[7] = 0;
-        player.playerFaction.resources[8] = 10;
+        int xOffset = 0;
+        int yOffset = 0;
 
-        player.playerFaction.isPlayer = true;
-        player.playerFaction.playerRep = 999;
-        player.playerFaction.relation = Faction.playerRelation.FRIENDLY;
+        //Player
+        switch (gameType) {
+            case 0:
+                System.out.println("Gametype 0 Error");
+                System.exit(1);
+                break;
+            case 1:
+                player.playerFaction.resources[0] = 0;
+                player.playerFaction.resources[1] = 8;
+                player.playerFaction.resources[2] = 8;
+                player.playerFaction.resources[3] = 0;
+                player.playerFaction.resources[4] = 0;
+                player.playerFaction.resources[5] = 8;
+                player.playerFaction.resources[6] = 0;
+                player.playerFaction.resources[7] = 0;
+                player.playerFaction.resources[8] = 10;
+
+                player.playerFaction.isPlayer = true;
+                player.playerFaction.playerRep = 999;
+                player.playerFaction.relation = Faction.playerRelation.FRIENDLY;
+                break;
+            case 2:
+                player.playerFaction.resources[0] = 9999;
+                player.playerFaction.resources[1] = 9999;
+                player.playerFaction.resources[2] = 9999;
+                player.playerFaction.resources[3] = 9999;
+                player.playerFaction.resources[4] = 9999;
+                player.playerFaction.resources[5] = 9999;
+                player.playerFaction.resources[6] = 9999;
+                player.playerFaction.resources[7] = 9999;
+                player.playerFaction.resources[8] = 9999;
+
+                player.playerFaction.isPlayer = true;
+                player.playerFaction.playerRep = 999;
+                player.playerFaction.relation = Faction.playerRelation.FRIENDLY;
+                break;
+            case 3:
+                //TODO: Simulation mode
+                break;
+        }
+        System.out.println(gameType);
+        factions[0] = player.playerFaction;
+        if(gameType < 3){
+            factions[0].factionBuildings[0] = new ENT_KingCourt(this, factions[0]);
+            factions[0].flags[0] = new OBJ_RedFlag(this);
+            factions[0].flags[0].worldX = 30 * tileSize;
+            factions[0].flags[0].worldY = 30 * tileSize;
+            aSetter.addPremadeEntity(30, 30, factions[0].factionBuildings[0]);
+            player.worldY = factions[0].factionBuildings[0].worldY;
+            player.worldX = factions[0].factionBuildings[0].worldX;
+            factions[0].factionBuildings[0].menuType = 2;
+        }
+        player.playerFaction.name = "Player";
+        player.playerFaction.gpPos = 0;
+
+        //AI Factions
+        for(int i = 1; i < aiFactionsNum + 1; i++) {
+            factions[i] = new Faction(this);
+            factions[i].playerRep = 0;
+            factions[i].isPlayer = false;
+            factions[i].isDefeated = false;
+            factions[i].gpPos = i;
+            //TODO: Generate all buildings
+            factions[i].factionBuildings[0] = new ENT_KingCourt(this, factions[i]);
+            factions[i].flags[0] = new OBJ_YellowFlag(this);
+            factions[i].flags[0].worldX = (30 * i + xOffset) * tileSize;
+            factions[i].flags[0].worldY = (29 + yOffset) * tileSize;
+            //TODO: Select a rectangle on the map for AI faction starting territory and place generated buildings
+            aSetter.addPremadeEntity(30 * i + xOffset, 29 + yOffset, factions[i].factionBuildings[0]);
+            factions[i].relation = Faction.playerRelation.NEUTRAL;
+            factions[i].name = nameGen.newName();
+
+            xOffset += 5;
+            yOffset +=1;
+        }
+
+        for(int i = 0; i < factions.length; i++) {
+            if(factions[i] != null) {
+                factions[i].updateBuildings();
+            }
+        }
+
+        //place AI factions in corners
+        if(aiFactionsNum >= 4) {
+        //47 Y
+            factions[1].factionBuildings[0].worldX = 9 * tileSize;
+            factions[1].factionBuildings[0].worldY = 10 * tileSize;
+            factions[1].flags[0].worldX = factions[1].factionBuildings[0].worldX;
+            factions[1].flags[0].worldY = factions[1].factionBuildings[0].worldY;
+
+            factions[2].factionBuildings[0].worldX = 9 * tileSize;
+            factions[2].factionBuildings[0].worldY = 57 * tileSize;
+            factions[2].flags[0].worldX = factions[2].factionBuildings[0].worldX;
+            factions[2].flags[0].worldY = factions[2].factionBuildings[0].worldY;
+
+            factions[3].factionBuildings[0].worldX = 61 * tileSize;
+            factions[3].factionBuildings[0].worldY = 10 * tileSize;
+            factions[3].flags[0].worldX = factions[3].factionBuildings[0].worldX;
+            factions[3].flags[0].worldY = factions[3].factionBuildings[0].worldY;
+
+            factions[4].factionBuildings[0].worldX = 61 * tileSize;
+            factions[4].factionBuildings[0].worldY = 57 * tileSize;
+            factions[4].flags[0].worldX = factions[4].factionBuildings[0].worldX;
+            factions[4].flags[0].worldY = factions[4].factionBuildings[0].worldY;
+        }
+
+
+        System.out.println("Faction flags updated");
+        //ui.addMessage("Faction Flags Updated (Debug)");
+
     }
 
     @Override

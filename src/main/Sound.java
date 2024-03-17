@@ -12,13 +12,10 @@ public class Sound {
 
     public Sound() {
 
-        /*  soundURL[0] = getClass().getResource("/sound/lord_OF_THE_LAND.wav");
-        soundURL[1] = getClass().getResource("/sound/coin.wav");
-        soundURL[2] = getClass().getResource("/sound/powerup.wav");
-        soundURL[3] = getClass().getResource("/sound/unlock.wav");
-        soundURL[4] = getClass().getResource("/sound/fanfare.wav");
+        soundURL[0] = getClass().getResource("/sound/music/hundred_year_war_orchestra_wav.wav");
+        soundURL[1] = getClass().getResource("/sound/music/main_ambience_wav.wav");
+        soundURL[2] = getClass().getResource("/sound/se/war_cry_wav.wav");
 
-         */
     }
 
     public void setFile(int i) {
