@@ -208,11 +208,11 @@ public class GamePanel extends JPanel implements Runnable {
                 if(seconds >= 60) {
                     for(int i = 0; i < factions.length; i++) {
                         if(factions[i] != null) {
-                            for(int k = 0; k < factions[i].factionBuildings.length; k++)
-                                if(factions[i].factionBuildings[k] instanceof Building && factions[i].factionBuildings[k].reIndex > -1) {
+                            for(int k = 0; k < factions[i].factionBuildings.length; k++) {
+                                if (factions[i].factionBuildings[k] instanceof Building && factions[i].factionBuildings[k].reIndex > -1) {
                                     ((Building) factions[i].factionBuildings[k]).genResources();
-                                    //System.out.println("Harvested: " + factions[i].factionBuildings[k].name);
                                 }
+                            }
                         }
                     }
                     seconds = 0;
@@ -231,8 +231,8 @@ public class GamePanel extends JPanel implements Runnable {
                     if(ent[i] instanceof ENT_Tree) {
                         ((ENT_Tree) ent[i]).detectionArea.x = screenX - ((ENT_Tree) ent[i]).detectionArea.width / 4;
                         ((ENT_Tree) ent[i]).detectionArea.y = screenY - ((ENT_Tree) ent[i]).detectionArea.height / 4;
-                        //System.out.println("Tree detected");
                     }
+                    //Also add for other detection areas
 
                     Rectangle2D scaledClickArea = new Rectangle2D.Double(ent[i].clickArea.x * screenRatioX,
                             ent[i].clickArea.y * screenRatioY, ent[i].clickArea.width * screenRatioX,
@@ -478,6 +478,7 @@ public class GamePanel extends JPanel implements Runnable {
             factions[i].flags[0].worldX = (30 * i + xOffset) * tileSize;
             factions[i].flags[0].worldY = (29 + yOffset) * tileSize;
             //TODO: Select a rectangle on the map for AI faction starting territory and place generated buildings
+            //TODO: Rectangle for territory is centered on King's Court and can expand
             aSetter.addPremadeEntity(30 * i + xOffset, 29 + yOffset, factions[i].factionBuildings[0]);
             factions[i].relation = Faction.playerRelation.NEUTRAL;
             factions[i].name = nameGen.newName();

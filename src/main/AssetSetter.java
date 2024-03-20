@@ -22,22 +22,17 @@ public class AssetSetter {
         addEntity(51, 35, "farm", gp.player.playerFaction);
 
 
-        //addObject(51, 40, "red_flag");
-
-        /*addObject(52, 40, "green_flag");
-
+        //old Demo
+        /*addObject(51, 40, "red_flag");
+        addObject(52, 40, "green_flag");
         addObject(53, 40, "blue_flag");
-
         addObject(54, 40, "white_flag");
-
         addObject(55, 40, "yellow_flag");
-
         addEntity(51, 40, "farm", null);
         addEntity(52, 40, "mine", null);
         addEntity(53, 40, "king_court", null);
         addEntity(54, 40, "hut_building", null);
         addEntity(55, 40, "building_fortress", null);
-
         //Rectangle of walls
         addEntity(51, 41, "wall_cross", null);
         addEntity(52, 41, "wall_cross", null);
@@ -60,6 +55,7 @@ public class AssetSetter {
     }
 
     public void addObject(int x, int y, String objName){
+        //TODO: Redo for Building-Flag system
         switch(objName) {
             case "white_flag":
                 for(int i = 0; i < gp.obj.length; i++)  {
@@ -114,87 +110,128 @@ public class AssetSetter {
         }
     }
     public void addEntity(int x, int y, String entName, Faction faction){
-        if(/*faction != null*/true) { //Place a Building
-            switch(entName) {
-                case "farm":
-                    for(int i = 0; i < gp.ent.length; i++)  {
-                        if(gp.ent[i] == null) {
-                            ent = new ENT_Farm(gp, faction);
-                            ent.worldX = x * gp.tileSize;
-                            ent.worldY = y * gp.tileSize;
-                            gp.ent[i] = ent;
-                            i = gp.ent.length;
-                        }
+        //Place a Building
+        switch(entName) {
+            case "farm":
+                for(int i = 0; i < gp.ent.length; i++)  {
+                    if(gp.ent[i] == null) {
+                        ent = new ENT_Farm(gp, faction);
+                        ent.worldX = x * gp.tileSize;
+                        ent.worldY = y * gp.tileSize;
+                        gp.ent[i] = ent;
+                        i = gp.ent.length;
                     }
-                    for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
-                        if(gp.factions[faction.gpPos].factionBuildings[i] != null) {
-                            gp.factions[faction.gpPos].factionBuildings[i] = ent;
+                }
+                for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
+                    if(gp.factions[faction.gpPos].factionBuildings[i] != null) {
+                        gp.factions[faction.gpPos].factionBuildings[i] = ent;
 
-                            i = gp.factions[faction.gpPos].factionBuildings.length;
-                        }
+                        i = gp.factions[faction.gpPos].factionBuildings.length;
                     }
-                    break;
-                case "mine":
-                    for(int i = 0; i < gp.obj.length; i++)  {
-                        if(gp.ent[i] == null) {
-                            gp.ent[i] = new ENT_Mine(gp, faction);
-                            gp.ent[i].worldX = x * gp.tileSize;
-                            gp.ent[i].worldY = y * gp.tileSize;
-                            break;
-                        }
+                }
+                break;
+            case "mine":
+                for(int i = 0; i < gp.obj.length; i++)  {
+                    if(gp.ent[i] == null) {
+                        ent = new ENT_Mine(gp, faction);
+                        ent.worldX = x * gp.tileSize;
+                        ent.worldY = y * gp.tileSize;
+                        gp.ent[i] = ent;
+                        i = gp.obj.length;
                     }
-                    break;
-                case "king_court":
-                    for(int i = 0; i < gp.obj.length; i++)  {
-                        if(gp.ent[i] == null) {
-                            gp.ent[i] = new ENT_KingCourt(gp, faction);
-                            gp.ent[i].worldX = x * gp.tileSize;
-                            gp.ent[i].worldY = y * gp.tileSize;
-                            break;
-                        }
-                    }
-                    break;
-                case "hut_building":
-                    for(int i = 0; i < gp.obj.length; i++)  {
-                        if(gp.ent[i] == null) {
-                            gp.ent[i] = new ENT_Hut(gp, faction);
-                            gp.ent[i].worldX = x * gp.tileSize;
-                            gp.ent[i].worldY = y * gp.tileSize;
-                            break;
-                        }
-                    }
-                    break;
-                case "building_fortress":
-                    for(int i = 0; i < gp.obj.length; i++)  {
-                        if(gp.ent[i] == null) {
-                            gp.ent[i] = new ENT_Fortress(gp, faction);
-                            gp.ent[i].worldX = x * gp.tileSize;
-                            gp.ent[i].worldY = y * gp.tileSize;
-                            break;
-                        }
-                    }
-                    break;
-                case "wall_cross":
-                    for(int i = 0; i < gp.obj.length; i++)  {
-                        if(gp.ent[i] == null) {
-                            gp.ent[i] = new ENT_WallCross(gp, faction);
-                            gp.ent[i].worldX = x * gp.tileSize;
-                            gp.ent[i].worldY = y * gp.tileSize;
-                            break;
-                        }
-                    }
-                case "tree":
-                    for(int i = 0; i < gp.obj.length; i++)  {
-                        if(gp.ent[i] == null) {
-                            gp.ent[i] = new ENT_Tree(gp);
-                            gp.ent[i].worldX = x * gp.tileSize;
-                            gp.ent[i].worldY = y * gp.tileSize;
-                            break;
-                        }
-                    }
-            }
-        }else{ //Factionless Entity
+                }
+                for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
+                    if(gp.factions[faction.gpPos].factionBuildings[i] != null) {
+                        gp.factions[faction.gpPos].factionBuildings[i] = ent;
 
+                        i = gp.factions[faction.gpPos].factionBuildings.length;
+                    }
+                }
+                break;
+            case "king_court":
+                for(int i = 0; i < gp.obj.length; i++)  {
+                    if(gp.ent[i] == null) {
+                        ent = new ENT_KingCourt(gp, faction);
+                        ent.worldX = x * gp.tileSize;
+                        ent.worldY = y * gp.tileSize;
+                        gp.ent[i] = ent;
+                        i = gp.obj.length;
+                    }
+                }
+                for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
+                    if(gp.factions[faction.gpPos].factionBuildings[i] != null) {
+                        gp.factions[faction.gpPos].factionBuildings[i] = ent;
+
+                        i = gp.factions[faction.gpPos].factionBuildings.length;
+                    }
+                }
+                break;
+            case "hut_building":
+                for(int i = 0; i < gp.obj.length; i++)  {
+                    if(gp.ent[i] == null) {
+                        ent = new ENT_Hut(gp, faction);
+                        ent.worldX = x * gp.tileSize;
+                        ent.worldY = y * gp.tileSize;
+
+                        gp.ent[i] = ent;
+                        i = gp.obj.length;
+                    }
+                }
+                for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
+                    if(gp.factions[faction.gpPos].factionBuildings[i] != null) {
+                        gp.factions[faction.gpPos].factionBuildings[i] = ent;
+
+                        i = gp.factions[faction.gpPos].factionBuildings.length;
+                    }
+                }
+                break;
+            case "building_fortress":
+                for(int i = 0; i < gp.obj.length; i++)  {
+                    if(gp.ent[i] == null) {
+                        ent = new ENT_Fortress(gp, faction);
+                        ent.worldX = x * gp.tileSize;
+                        ent.worldY = y * gp.tileSize;
+
+                        gp.ent[i] = ent;
+                        i = gp.obj.length;
+                    }
+                }
+                for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
+                    if(gp.factions[faction.gpPos].factionBuildings[i] != null) {
+                        gp.factions[faction.gpPos].factionBuildings[i] = ent;
+
+                        i = gp.factions[faction.gpPos].factionBuildings.length;
+                    }
+                }
+                break;
+            case "wall_cross":
+                for(int i = 0; i < gp.obj.length; i++)  {
+                    if(gp.ent[i] == null) {
+                        ent = new ENT_WallCross(gp, faction);
+                        ent.worldX = x * gp.tileSize;
+                        ent.worldY = y * gp.tileSize;
+
+                        gp.ent[i] = ent;
+                        i = gp.obj.length;
+                    }
+                }
+                for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
+                    if(gp.factions[faction.gpPos].factionBuildings[i] != null) {
+                        gp.factions[faction.gpPos].factionBuildings[i] = ent;
+
+                        i = gp.factions[faction.gpPos].factionBuildings.length;
+                    }
+                }
+                break;
+            case "tree":
+                for(int i = 0; i < gp.obj.length; i++)  {
+                    if(gp.ent[i] == null) {
+                        gp.ent[i] = new ENT_Tree(gp);
+                        gp.ent[i].worldX = x * gp.tileSize;
+                        gp.ent[i].worldY = y * gp.tileSize;
+                        break;
+                    }
+                }
         }
     }
     public void addPremadeEntity(int x, int y, Entity entity) {

@@ -101,6 +101,7 @@ public class Entity {
                 g2.setColor(Color.pink);
                 g2.drawRect(((ENT_Tree) this).detectionArea.x, ((ENT_Tree) this).detectionArea.y, ((ENT_Tree)this).detectionArea.width, ((ENT_Tree)this).detectionArea.height);
             }
+            //Also add for other detection areas
         }
     }
 }

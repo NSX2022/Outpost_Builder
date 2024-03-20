@@ -44,10 +44,11 @@ public class Building extends Entity{
         if(reIndex > -1) {
             faction.resources[reIndex] += resourceYield;
             resourcesGained += resourceYield;
-            System.out.println(name + " generated " + resourceYield);
-            if(gp.keyH.checkDrawTime) {
+            //System.out.println(name + " generated " + resourceYield);
+            /*if(gp.keyH.checkDrawTime) {
                 gp.ui.addMessage(name + " generated " + resourceYield);
             }
+             */
         }
     }
 }
