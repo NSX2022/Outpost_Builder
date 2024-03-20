@@ -11,6 +11,7 @@ public class ENT_Mine extends Building {
         name = "Mine";
         image = setup("/entity/tile_entity/mine",1);
         health = 50;
+        maxHealth = health;
         reIndex = 5;
         menuType = 1;
         resourceYield = 1;

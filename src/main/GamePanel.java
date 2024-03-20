@@ -1,9 +1,6 @@
 package main;
 
-import entity.Building;
-import entity.Camera;
-import entity.ENT_KingCourt;
-import entity.Entity;
+import entity.*;
 import faction.Faction;
 import object.OBJ_RedFlag;
 import object.OBJ_YellowFlag;
@@ -123,8 +120,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setupGame() {
 
-        aSetter.setObject();
-
         playMusic(0);
 
         gameState = titleState;
@@ -199,7 +194,7 @@ public class GamePanel extends JPanel implements Runnable {
                     seconds++;
                     totalSeconds++;
                 }
-                if(seconds >= 30) {
+                if(seconds == 30) {
                     for(int i = 0; i < factions.length; i++) {
                         if(factions[i] != null) {
                             factions[i].updateBuildings();
@@ -208,6 +203,17 @@ public class GamePanel extends JPanel implements Runnable {
                     System.out.println("Faction flags updated");
                     if(keyH.checkDrawTime) {
                         ui.addMessage("Faction Flags Updated (Debug)");
+                    }
+                }
+                if(seconds >= 60) {
+                    for(int i = 0; i < factions.length; i++) {
+                        if(factions[i] != null) {
+                            for(int k = 0; k < factions[i].factionBuildings.length; k++)
+                                if(factions[i].factionBuildings[k] instanceof Building && factions[i].factionBuildings[k].reIndex > -1) {
+                                    ((Building) factions[i].factionBuildings[k]).genResources();
+                                    //System.out.println("Harvested: " + factions[i].factionBuildings[k].name);
+                                }
+                        }
                     }
                     seconds = 0;
                 }
@@ -221,6 +227,12 @@ public class GamePanel extends JPanel implements Runnable {
 
                     ent[i].clickArea.x = screenX;
                     ent[i].clickArea.y = screenY;
+
+                    if(ent[i] instanceof ENT_Tree) {
+                        ((ENT_Tree) ent[i]).detectionArea.x = screenX - ((ENT_Tree) ent[i]).detectionArea.width / 4;
+                        ((ENT_Tree) ent[i]).detectionArea.y = screenY - ((ENT_Tree) ent[i]).detectionArea.height / 4;
+                        //System.out.println("Tree detected");
+                    }
 
                     Rectangle2D scaledClickArea = new Rectangle2D.Double(ent[i].clickArea.x * screenRatioX,
                             ent[i].clickArea.y * screenRatioY, ent[i].clickArea.width * screenRatioX,
@@ -507,6 +519,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         System.out.println("Faction flags updated");
         //ui.addMessage("Faction Flags Updated (Debug)");
+        aSetter.setObject();
 
     }
 

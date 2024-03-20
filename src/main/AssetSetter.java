@@ -9,11 +9,19 @@ public class AssetSetter {
 
     GamePanel gp;
 
+    Entity ent;
+
     public AssetSetter(GamePanel gp) {
         this.gp = gp;
     }
 
     public void setObject() {
+
+        addEntity(51, 41, "tree", null);
+
+        addEntity(51, 35, "farm", gp.player.playerFaction);
+
+
         //addObject(51, 40, "red_flag");
 
         /*addObject(52, 40, "green_flag");
@@ -111,10 +119,18 @@ public class AssetSetter {
                 case "farm":
                     for(int i = 0; i < gp.ent.length; i++)  {
                         if(gp.ent[i] == null) {
-                            gp.ent[i] = new ENT_Farm(gp, faction);
-                            gp.ent[i].worldX = x * gp.tileSize;
-                            gp.ent[i].worldY = y * gp.tileSize;
-                            break;
+                            ent = new ENT_Farm(gp, faction);
+                            ent.worldX = x * gp.tileSize;
+                            ent.worldY = y * gp.tileSize;
+                            gp.ent[i] = ent;
+                            i = gp.ent.length;
+                        }
+                    }
+                    for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
+                        if(gp.factions[faction.gpPos].factionBuildings[i] != null) {
+                            gp.factions[faction.gpPos].factionBuildings[i] = ent;
+
+                            i = gp.factions[faction.gpPos].factionBuildings.length;
                         }
                     }
                     break;
@@ -162,6 +178,15 @@ public class AssetSetter {
                     for(int i = 0; i < gp.obj.length; i++)  {
                         if(gp.ent[i] == null) {
                             gp.ent[i] = new ENT_WallCross(gp, faction);
+                            gp.ent[i].worldX = x * gp.tileSize;
+                            gp.ent[i].worldY = y * gp.tileSize;
+                            break;
+                        }
+                    }
+                case "tree":
+                    for(int i = 0; i < gp.obj.length; i++)  {
+                        if(gp.ent[i] == null) {
+                            gp.ent[i] = new ENT_Tree(gp);
                             gp.ent[i].worldX = x * gp.tileSize;
                             gp.ent[i].worldY = y * gp.tileSize;
                             break;

@@ -11,6 +11,7 @@ public class ENT_Fortress extends Building {
         name = "Fortress";
         image = setup("/entity/tile_entity/building_fortress",1);
         health = 150;
+        maxHealth = health;
         reIndex = -1;
         menuType = 1;
     }

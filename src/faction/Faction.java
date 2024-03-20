@@ -22,7 +22,7 @@ public class Faction {
     //order and starting values:
     //Index 0 = gold0, 1 = stone8, 2 = lumber8, 3 = money0, 4 = smokeleaf0, 5 = iron8, 6 = silk0, 7 = gem0, 8 = wheat10
     public int[] resources = new int[]{0,8,8,0,0,8,0,0,10};
-    public int gpPos;
+    public int gpPos = -1;
 
     //TODO: King's Court as the central building, when clicked opens a menu to view whole faction
     public Entity[] factionBuildings = new Entity[99];
@@ -38,6 +38,9 @@ public class Faction {
         DEFEATED
 
     }
+
+    //Power based off of number of buildings, military, and resources
+    public int power;
 
     //Default, change later
     public playerRelation relation = playerRelation.DEFEATED;
@@ -59,12 +62,12 @@ public class Faction {
     public void updateBuildings() {
         int flagX;
         int flagY;
-        //TODO: Update the flag colors for buildings of this faction
+
         for(int i = 0; i < flags.length; i++) {
             if(flags[i] != null) {
                 switch(relation) {
                     case DEFEATED:
-                        //TODO: set X and Y for flags based off of the previous flag
+
                         flagX = flags[i].worldX;
                         flagY = flags[i].worldY;
                         flags[i] = new OBJ_WhiteFlag(gp);
@@ -104,5 +107,10 @@ public class Faction {
 
         }
         gp.factionFlags[gpPos] = flags;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

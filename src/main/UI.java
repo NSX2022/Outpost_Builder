@@ -343,7 +343,11 @@ public class UI {
                     text = "Total yield: " + entity.resourcesGained;
                     g2.drawString(text, x, y);
 
-                    y += gp.tileSize;
+                    y += gp.tileSize/2;
+                    text = "Faction: " + entity.faction;
+                    g2.drawString(text, x, y);
+
+                    y += gp.tileSize * 2;
                     text = "[click] to exit";
                     g2.drawString(text, x, y);
 
@@ -351,6 +355,12 @@ public class UI {
                 case 2:
                     //King's Court
                     g2.setColor(Color.white);
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 14f));
+
+                    y += gp.tileSize/2;
+                    text = "Faction: Player";
+                    g2.drawString(text, x, y);
+
                     y += gp.tileSize;
                     text = "[click] to exit";
                     g2.drawString(text, x, y);
@@ -359,7 +369,12 @@ public class UI {
                     break;
                 case 3:
                     //King's Court (AI)
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 14f));
                     g2.setColor(Color.white);
+                    y += gp.tileSize/2;
+                    text = "Faction: " + entity.faction.toString();
+                    g2.drawString(text, x, y);
+
                     y += gp.tileSize;
                     text = "[click] to exit";
                     g2.drawString(text, x, y);
@@ -372,7 +387,8 @@ public class UI {
                     g2.drawString(text, x, y);
                     break;
                 case 5:
-                    //Trade Menu
+                    //Trade
+                    //Move later if necessary?
                     y += gp.tileSize;
                     text = "[click] to exit";
                     g2.drawString(text, x, y);

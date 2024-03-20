@@ -11,6 +11,7 @@ public class ENT_Farm extends Building {
         name = "Farm";
         image = setup("/entity/tile_entity/farm",1);
         health = 20;
+        maxHealth = health;
         reIndex = 8;
         menuType = 1;
         resourceYield = 2;

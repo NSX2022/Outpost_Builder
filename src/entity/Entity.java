@@ -1,5 +1,6 @@
 package entity;
 
+import faction.Faction;
 import main.GamePanel;
 import main.UtilityTool;
 
@@ -37,10 +38,13 @@ public class Entity {
     public String name;
     public boolean menuOn = false;
     public int level = 0;
-    public int reIndex;
-    public int resourceYield;
-    public int health;
+    public int reIndex = -1;
+    public int resourceYield = 0;
+    public int maxHealth;
+    public int health = 99999999;
     public int resourcesGained = 0;
+
+    public Faction faction;
 
     GamePanel gp;
 
@@ -81,7 +85,22 @@ public class Entity {
 
         if(menuOn) {
             gp.ui.drawMenu(this);
+            g2.setColor(Color.white);
             g2.drawRect(clickArea.x, clickArea.y, clickArea.width, clickArea.height);
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20f));
+
+            if(health >= maxHealth/1.2) {
+                g2.setColor(Color.green);
+            }else if(health >= 2) {
+                g2.setColor(Color.yellow);
+            }else{
+                g2.setColor(Color.red);
+            }
+            g2.drawString(String.valueOf(health), clickArea.x, clickArea.y);
+            if(this instanceof ENT_Tree) {
+                g2.setColor(Color.pink);
+                g2.drawRect(((ENT_Tree) this).detectionArea.x, ((ENT_Tree) this).detectionArea.y, ((ENT_Tree)this).detectionArea.width, ((ENT_Tree)this).detectionArea.height);
+            }
         }
     }
 }

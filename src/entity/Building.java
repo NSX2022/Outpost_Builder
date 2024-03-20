@@ -14,8 +14,7 @@ import java.io.IOException;
 
 public class Building extends Entity{
 
-    public Faction faction;
-
+    //TODO: Bind faction flags to each building
 
     enum buildingState {
         NORMAL,
@@ -42,9 +41,13 @@ public class Building extends Entity{
         return image;
     }
     public void genResources() {
-        if(reIndex > -1 /*&& reIndex < faction.resources.length*/) {
+        if(reIndex > -1) {
             faction.resources[reIndex] += resourceYield;
             resourcesGained += resourceYield;
+            System.out.println(name + " generated " + resourceYield);
+            if(gp.keyH.checkDrawTime) {
+                gp.ui.addMessage(name + " generated " + resourceYield);
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ public class NameGenerator {
             "Exiles", "Outcasts", "Founders", "Good", "Ideals", "Empire", "Imperial", "Travellers", "Huntsmen",
             "Guardians", "Wall", "Force", "Students", "Devotees", "Firepower", "Escalation", "Elite", "Kingdom",
             "Fiefdom", "Dukes", "Lords", "Age", "Papacy", "Temple", "Church", "Order", "Cabal", "Cult", "Lore",
-            "Legend", "Myth", "Crusade", "Crusaders", "Tower", "Fortress"
+            "Legend", "Myth", "Crusade", "Crusaders", "Tower", "Fortress", "Progenitor"
     };
 
     protected static String[] adjectives = {
@@ -42,7 +42,7 @@ public class NameGenerator {
             "Repulsive", "Stolen", "Waiting", "Cowering", "Charging", "Collapsing", "Evil", "Hardened", "Rabid", "Double", "Long", "Berserk",
             "Barren", "Brazen", "Hated", "Hollow", "Branded", "Whole", "Holy", "Unholy", "Bought", "Sold", "Captured", "Deep", "Sleeping",
             "Shallow", "Honest", "Young", "Drowning", "Bizarre", "Heroic", "Forced", "Voluntary", "Violent", "Peaceful", "Weeping",
-            "Sons of the", "The Greater", "The Lesser"
+            "Sons of the", "The Greater", "The Lesser", "Legion of"
     };
 
     private boolean positionIsOdd(int i) {
@@ -79,7 +79,7 @@ public class NameGenerator {
         String word1 = "null";
         String word2 = "null";
 
-        if(rand.nextBoolean())
+        if(rand.nextInt(100) >= 70)
         {
             while(Objects.equals(word1, word2))
             {
@@ -156,7 +156,7 @@ public class NameGenerator {
         NameGenerator testGen = new NameGenerator();
         while(true){
             System.out.println(testGen.newName());
-            wait(850);
+            //wait(950);
         }
     }
 

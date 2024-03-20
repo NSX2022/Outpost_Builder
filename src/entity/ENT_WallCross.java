@@ -11,6 +11,7 @@ public class ENT_WallCross extends Building {
         name = "Wall";
         image = setup("/entity/tile_entity/wall_cross",1);
         health = 225;
+        maxHealth = health;
         reIndex = -1;
         menuType = 0;
         //Adjust solidArea if Citizen entities can walk through it
