@@ -24,8 +24,8 @@ public class AssetSetter {
     public void setEntity() {
         addEntity(51, 41, "tree", null);
 
-        addEntity(51, 35, "farm", gp.player.playerFaction);
-        addEntity(51, 34, "mine", gp.player.playerFaction);
+        addEntity(30, 34, "farm", gp.player.playerFaction);
+        addEntity(31, 33, "mine", gp.player.playerFaction);
     }
 
     public void addEntity(int x, int y, String entName, Faction faction){

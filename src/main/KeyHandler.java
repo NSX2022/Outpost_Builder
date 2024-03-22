@@ -176,5 +176,8 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_G) {
             gp.ui.showIcons = !gp.ui.showIcons;
         }
+        if(code == KeyEvent.VK_C) {
+            gp.showTerritory = !gp.showTerritory;
+        }
     }
 }

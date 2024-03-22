@@ -183,7 +183,7 @@ public class GamePanel extends JPanel implements Runnable {
                 update();
                 drawToTempScreen();
                 drawToScreen();
-                delta--;
+                delta = 0;
                 drawCount++;
             }
 
@@ -194,32 +194,36 @@ public class GamePanel extends JPanel implements Runnable {
                 timer = 0;
                 getScreenRatio();
                 if(FPS >= 60) {
-                    seconds++;
+                    if(gameState == playState){
+                        seconds++;
+                    }
                     totalSeconds++;
                 }
-                if(seconds == 30) {
-                    for(int i = 0; i < factions.length; i++) {
-                        if(factions[i] != null) {
-                            factions[i].updateBuildings();
+                if(gameState == playState){
+                    if(seconds == 30) {
+                        for(int i = 0; i < factions.length; i++) {
+                            if(factions[i] != null) {
+                                factions[i].updateBuildings();
+                            }
                         }
+                        System.out.println("Faction flags updated");
+                        if(keyH.checkDrawTime) {
+                            ui.addMessage("Faction Flags Updated (Debug)");
+                        }
+                        //TODO: Update territory
                     }
-                    System.out.println("Faction flags updated");
-                    if(keyH.checkDrawTime) {
-                        ui.addMessage("Faction Flags Updated (Debug)");
-                    }
-                    //TODO: Update territory
-                }
-                if(seconds >= 60) {
-                    for(int i = 0; i < factions.length; i++) {
-                        if(factions[i] != null) {
-                            for(int k = 0; k < factions[i].factionBuildings.length; k++) {
-                                if (factions[i].factionBuildings[k] instanceof Building && factions[i].factionBuildings[k].reIndex > -1) {
-                                    ((Building) factions[i].factionBuildings[k]).genResources();
+                    if(seconds >= 60) {
+                        for(int i = 0; i < factions.length; i++) {
+                            if(factions[i] != null) {
+                                for(int k = 0; k < factions[i].factionBuildings.length; k++) {
+                                    if (factions[i].factionBuildings[k] instanceof Building && factions[i].factionBuildings[k].reIndex > -1) {
+                                        ((Building) factions[i].factionBuildings[k]).genResources();
+                                    }
                                 }
                             }
                         }
+                        seconds = 0;
                     }
-                    seconds = 0;
                 }
             }
 
@@ -232,11 +236,14 @@ public class GamePanel extends JPanel implements Runnable {
                     ent[i].clickArea.x = screenX;
                     ent[i].clickArea.y = screenY;
 
+                    ent[i].landClaim.x = screenX;
+                    ent[i].landClaim.y = screenY;
+
                     if(ent[i] instanceof ENT_Tree) {
                         ((ENT_Tree) ent[i]).detectionArea.x = screenX - ((ENT_Tree) ent[i]).detectionArea.width / 4;
                         ((ENT_Tree) ent[i]).detectionArea.y = screenY - ((ENT_Tree) ent[i]).detectionArea.height / 4;
                     }
-                    //Also add for other detection areas
+                    //Also add for other detection areas^
 
                     Rectangle2D scaledClickArea = new Rectangle2D.Double(ent[i].clickArea.x * screenRatioX,
                             ent[i].clickArea.y * screenRatioY, ent[i].clickArea.width * screenRatioX,
@@ -311,7 +318,8 @@ public class GamePanel extends JPanel implements Runnable {
             //faction territories
             if(showTerritory) {
                 for(int i = 0; i < factions.length; i++){
-                    if(factions[i].territory != null){
+                    if(factions[i] != null && factions[i].territory != null){
+                        factions[i].updateTerritory();
                         g2.setColor(factions[i].factionColor);
                         g2.draw(factions[i].territory);
                     }
@@ -364,7 +372,6 @@ public class GamePanel extends JPanel implements Runnable {
                 //System.out.println("Draw Time: " + passed);
             }
         }
-        //g2.dispose();
     }
 
     public void setFullScreen() {
@@ -529,6 +536,7 @@ public class GamePanel extends JPanel implements Runnable {
         for(int i = 0; i < factions.length; i++) {
             if(factions[i] != null) {
                 factions[i].updateBuildings();
+                factions[i].updateTerritory();
             }
         }
 

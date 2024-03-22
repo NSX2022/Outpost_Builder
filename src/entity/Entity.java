@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Entity {
-    public int worldX, worldY;
+    public volatile int worldX, worldY;
     public int speed;
 
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
@@ -30,6 +30,8 @@ public class Entity {
     //default clickArea
     public Rectangle clickArea = new Rectangle(0, 0, 48, 48);
     public int clickAreaDefaultX, clickAreaDefaultY;
+    //default landClaim (territory, hut, fortress have larger)
+    public Rectangle landClaim = new Rectangle(-192, -192, 192, 192);
 
     public boolean collisionOn = false;
     public BufferedImage image;
@@ -99,7 +101,8 @@ public class Entity {
                 g2.setColor(Color.pink);
                 g2.drawRect(((ENT_Tree) this).detectionArea.x, ((ENT_Tree) this).detectionArea.y, ((ENT_Tree)this).detectionArea.width, ((ENT_Tree)this).detectionArea.height);
             }
-            //Also add for other detection areas
+            g2.setColor(Color.white);
+            //Also add for other entities with detection areas
         }
         if(faction != null) {
             //Draw first letter of faction name in Faction Color

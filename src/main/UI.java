@@ -218,6 +218,11 @@ public class UI {
             y += gp.tileSize * 2;
             g2.drawString(text, x, y);
 
+            text = "C to toggle territory";
+            x = getXforCenteredText(text);
+            y += gp.tileSize;
+            g2.drawString(text, x, y);
+
             text = "WASD to move camera";
             x = getXforCenteredText(text);
             y += gp.tileSize;
