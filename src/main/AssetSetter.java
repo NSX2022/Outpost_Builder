@@ -16,11 +16,8 @@ public class AssetSetter {
     }
 
     public void setObject() {
-
-        addEntity(51, 41, "tree", null);
-
-        addEntity(51, 35, "farm", gp.player.playerFaction);
-
+        //mainly a test function
+        //all objects in beta ver will generate randomly
 
         //old Demo
         /*addObject(51, 40, "red_flag");
@@ -51,11 +48,14 @@ public class AssetSetter {
     }
 
     public void setEntity() {
+        addEntity(51, 41, "tree", null);
 
+        addEntity(51, 35, "farm", gp.player.playerFaction);
+        addEntity(51, 34, "mine", gp.player.playerFaction);
     }
 
     public void addObject(int x, int y, String objName){
-        //TODO: Redo for Building-Flag system
+        //TODO: Redo for Building-Flag system?
         switch(objName) {
             case "white_flag":
                 for(int i = 0; i < gp.obj.length; i++)  {
@@ -123,7 +123,7 @@ public class AssetSetter {
                     }
                 }
                 for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
-                    if(gp.factions[faction.gpPos].factionBuildings[i] != null) {
+                    if(gp.factions[faction.gpPos].factionBuildings[i] == null) {
                         gp.factions[faction.gpPos].factionBuildings[i] = ent;
 
                         i = gp.factions[faction.gpPos].factionBuildings.length;
@@ -131,7 +131,7 @@ public class AssetSetter {
                 }
                 break;
             case "mine":
-                for(int i = 0; i < gp.obj.length; i++)  {
+                for(int i = 0; i < gp.ent.length; i++)  {
                     if(gp.ent[i] == null) {
                         ent = new ENT_Mine(gp, faction);
                         ent.worldX = x * gp.tileSize;
@@ -141,7 +141,7 @@ public class AssetSetter {
                     }
                 }
                 for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
-                    if(gp.factions[faction.gpPos].factionBuildings[i] != null) {
+                    if(gp.factions[faction.gpPos].factionBuildings[i] == null) {
                         gp.factions[faction.gpPos].factionBuildings[i] = ent;
 
                         i = gp.factions[faction.gpPos].factionBuildings.length;
@@ -149,7 +149,7 @@ public class AssetSetter {
                 }
                 break;
             case "king_court":
-                for(int i = 0; i < gp.obj.length; i++)  {
+                for(int i = 0; i < gp.ent.length; i++)  {
                     if(gp.ent[i] == null) {
                         ent = new ENT_KingCourt(gp, faction);
                         ent.worldX = x * gp.tileSize;
@@ -159,7 +159,7 @@ public class AssetSetter {
                     }
                 }
                 for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
-                    if(gp.factions[faction.gpPos].factionBuildings[i] != null) {
+                    if(gp.factions[faction.gpPos].factionBuildings[i] == null) {
                         gp.factions[faction.gpPos].factionBuildings[i] = ent;
 
                         i = gp.factions[faction.gpPos].factionBuildings.length;
@@ -167,7 +167,7 @@ public class AssetSetter {
                 }
                 break;
             case "hut_building":
-                for(int i = 0; i < gp.obj.length; i++)  {
+                for(int i = 0; i < gp.ent.length; i++)  {
                     if(gp.ent[i] == null) {
                         ent = new ENT_Hut(gp, faction);
                         ent.worldX = x * gp.tileSize;
@@ -178,7 +178,7 @@ public class AssetSetter {
                     }
                 }
                 for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
-                    if(gp.factions[faction.gpPos].factionBuildings[i] != null) {
+                    if(gp.factions[faction.gpPos].factionBuildings[i] == null) {
                         gp.factions[faction.gpPos].factionBuildings[i] = ent;
 
                         i = gp.factions[faction.gpPos].factionBuildings.length;
@@ -186,7 +186,7 @@ public class AssetSetter {
                 }
                 break;
             case "building_fortress":
-                for(int i = 0; i < gp.obj.length; i++)  {
+                for(int i = 0; i < gp.ent.length; i++)  {
                     if(gp.ent[i] == null) {
                         ent = new ENT_Fortress(gp, faction);
                         ent.worldX = x * gp.tileSize;
@@ -197,7 +197,7 @@ public class AssetSetter {
                     }
                 }
                 for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
-                    if(gp.factions[faction.gpPos].factionBuildings[i] != null) {
+                    if(gp.factions[faction.gpPos].factionBuildings[i] == null) {
                         gp.factions[faction.gpPos].factionBuildings[i] = ent;
 
                         i = gp.factions[faction.gpPos].factionBuildings.length;
@@ -205,7 +205,7 @@ public class AssetSetter {
                 }
                 break;
             case "wall_cross":
-                for(int i = 0; i < gp.obj.length; i++)  {
+                for(int i = 0; i < gp.ent.length; i++)  {
                     if(gp.ent[i] == null) {
                         ent = new ENT_WallCross(gp, faction);
                         ent.worldX = x * gp.tileSize;
@@ -216,7 +216,7 @@ public class AssetSetter {
                     }
                 }
                 for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
-                    if(gp.factions[faction.gpPos].factionBuildings[i] != null) {
+                    if(gp.factions[faction.gpPos].factionBuildings[i] == null) {
                         gp.factions[faction.gpPos].factionBuildings[i] = ent;
 
                         i = gp.factions[faction.gpPos].factionBuildings.length;
@@ -224,7 +224,7 @@ public class AssetSetter {
                 }
                 break;
             case "tree":
-                for(int i = 0; i < gp.obj.length; i++)  {
+                for(int i = 0; i < gp.ent.length; i++)  {
                     if(gp.ent[i] == null) {
                         gp.ent[i] = new ENT_Tree(gp);
                         gp.ent[i].worldX = x * gp.tileSize;
@@ -243,5 +243,130 @@ public class AssetSetter {
                 break;
             }
         }
+    }
+    public Entity newEntity(String entName, Faction faction, int x, int y) {
+        switch(entName) {
+            case "farm":
+                for(int i = 0; i < gp.ent.length; i++)  {
+                    if(gp.ent[i] == null) {
+                        ent = new ENT_Farm(gp, faction);
+                        ent.worldX = x * gp.tileSize;
+                        ent.worldY = y * gp.tileSize;
+                        gp.ent[i] = ent;
+                        i = gp.ent.length;
+                    }
+                }
+                for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
+                    if(gp.factions[faction.gpPos].factionBuildings[i] == null) {
+                        gp.factions[faction.gpPos].factionBuildings[i] = ent;
+
+                        i = gp.factions[faction.gpPos].factionBuildings.length;
+                    }
+                }
+                break;
+            case "mine":
+                for(int i = 0; i < gp.ent.length; i++)  {
+                    if(gp.ent[i] == null) {
+                        ent = new ENT_Mine(gp, faction);
+                        ent.worldX = x * gp.tileSize;
+                        ent.worldY = y * gp.tileSize;
+                        gp.ent[i] = ent;
+                        i = gp.obj.length;
+                    }
+                }
+                for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
+                    if(gp.factions[faction.gpPos].factionBuildings[i] == null) {
+                        gp.factions[faction.gpPos].factionBuildings[i] = ent;
+
+                        i = gp.factions[faction.gpPos].factionBuildings.length;
+                    }
+                }
+                break;
+            case "king_court":
+                for(int i = 0; i < gp.ent.length; i++)  {
+                    if(gp.ent[i] == null) {
+                        ent = new ENT_KingCourt(gp, faction);
+                        ent.worldX = x * gp.tileSize;
+                        ent.worldY = y * gp.tileSize;
+                        gp.ent[i] = ent;
+                        i = gp.obj.length;
+                    }
+                }
+                for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
+                    if(gp.factions[faction.gpPos].factionBuildings[i] == null) {
+                        gp.factions[faction.gpPos].factionBuildings[i] = ent;
+
+                        i = gp.factions[faction.gpPos].factionBuildings.length;
+                    }
+                }
+                break;
+            case "hut_building":
+                for(int i = 0; i < gp.ent.length; i++)  {
+                    if(gp.ent[i] == null) {
+                        ent = new ENT_Hut(gp, faction);
+                        ent.worldX = x * gp.tileSize;
+                        ent.worldY = y * gp.tileSize;
+
+                        gp.ent[i] = ent;
+                        i = gp.obj.length;
+                    }
+                }
+                for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
+                    if(gp.factions[faction.gpPos].factionBuildings[i] == null) {
+                        gp.factions[faction.gpPos].factionBuildings[i] = ent;
+
+                        i = gp.factions[faction.gpPos].factionBuildings.length;
+                    }
+                }
+                break;
+            case "building_fortress":
+                for(int i = 0; i < gp.ent.length; i++)  {
+                    if(gp.ent[i] == null) {
+                        ent = new ENT_Fortress(gp, faction);
+                        ent.worldX = x * gp.tileSize;
+                        ent.worldY = y * gp.tileSize;
+
+                        gp.ent[i] = ent;
+                        i = gp.obj.length;
+                    }
+                }
+                for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
+                    if(gp.factions[faction.gpPos].factionBuildings[i] == null) {
+                        gp.factions[faction.gpPos].factionBuildings[i] = ent;
+
+                        i = gp.factions[faction.gpPos].factionBuildings.length;
+                    }
+                }
+                break;
+            case "wall_cross":
+                for(int i = 0; i < gp.ent.length; i++)  {
+                    if(gp.ent[i] == null) {
+                        ent = new ENT_WallCross(gp, faction);
+                        ent.worldX = x * gp.tileSize;
+                        ent.worldY = y * gp.tileSize;
+
+                        gp.ent[i] = ent;
+                        i = gp.obj.length;
+                    }
+                }
+                for(int i = 0; i < gp.factions[faction.gpPos].factionBuildings.length; i++) {
+                    if(gp.factions[faction.gpPos].factionBuildings[i] == null) {
+                        gp.factions[faction.gpPos].factionBuildings[i] = ent;
+
+                        i = gp.factions[faction.gpPos].factionBuildings.length;
+                    }
+                }
+                break;
+            case "tree":
+                for(int i = 0; i < gp.ent.length; i++)  {
+                    if(gp.ent[i] == null) {
+                        ent = new ENT_Tree(gp);
+                        ent.worldX = x * gp.tileSize;
+                        ent.worldY = y * gp.tileSize;
+                        break;
+                    }
+                }
+        }
+        return ent;
     }
 }

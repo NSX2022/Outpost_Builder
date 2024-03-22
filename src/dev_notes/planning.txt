@@ -4,7 +4,8 @@ Nations Will Rise planning
     a. Open drawn (Graphics 2D) Menu when player clicks on building
         -display building name ✓
         -display which resource it generates & how much ✓
-        -display building health
+        -display building health ✓
+            -make hp display better
         ^Default
 
         Player only:
@@ -31,3 +32,21 @@ Nations Will Rise planning
         -level 0-2 Farm makes Wheat, level 3 makes Wheat AND Smokeleaf (or only smokeleaf)
         -level 3 Mine has a chance to generate Gems
         -level 3 Logging Camp has a chance to generate Silk
+
+Miscellaneous:
+
+    Add Temple and Market buildings
+        -If a score system is implemented, temple costs a lot but adds a score mult/bonus
+        -Market generates money (slowly and/or not much), gens 1 random resource each harvest (?)
+
+Game Structure/Map:
+    -Factions spawn in map corners ✓
+        -TODO: add scaling map functionality
+    -Player spawns in map center ✓
+    -Ports spawn in center of map sides
+
+    -Building Menu opened with L-SHIFT
+        -select building with numbers keys (ONLY WHILE MENU IS OPEN)
+        -building placeholder is spawned at the player
+            -move the placeholder with arrow keys
+                -ENTER to place

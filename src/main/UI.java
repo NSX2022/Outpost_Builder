@@ -344,8 +344,16 @@ public class UI {
                     g2.drawString(text, x, y);
 
                     y += gp.tileSize/2;
-                    text = "Faction: " + entity.faction;
+                    text = "Faction: ";
                     g2.drawString(text, x, y);
+
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 14f));
+
+                    y += gp.tileSize/2;
+                    text = String.valueOf(entity.faction);
+                    g2.drawString(text, x, y);
+
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 22f));
 
                     y += gp.tileSize * 2;
                     text = "[click] to exit";

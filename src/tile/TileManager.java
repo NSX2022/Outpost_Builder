@@ -33,6 +33,7 @@ public class TileManager {
         setup(1, "mountain00", true);
         setup(2, "water00", true); //waters 00 and 01 are the impassable border tiles
         setup(3, "water01", true);
+        setup(4, "port00", true); //for trading
     }
 
 

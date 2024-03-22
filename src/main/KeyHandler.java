@@ -142,6 +142,8 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_M) {
             gp.ui.addMessage("Debug Message :)");
         }
+
+        //TODO: Arrow keys to move where a building should be placed after selecting it
     }
 
     @Override

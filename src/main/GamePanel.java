@@ -2,10 +2,8 @@ package main;
 
 import entity.*;
 import faction.Faction;
-import object.OBJ_RedFlag;
-import object.OBJ_YellowFlag;
-import object.SuperObject;
-import tile.TileManager;
+import object.*;
+import tile.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,6 +14,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
@@ -53,9 +52,10 @@ public class GamePanel extends JPanel implements Runnable {
     public UtilityTool uTool = new UtilityTool();
     Thread gameThread;
     public int latestFPS;
-    public boolean clickOn = false;
-    public Point clickPoint = new Point(0, 0);
+    public Point clickPoint = new Point();
     Random rand = new Random();
+    Long seed = rand.nextLong(100000000, 999999999);
+
     public double screenRatioX;
     public double screenRatioY;
     public NameGenerator nameGen = new NameGenerator();
@@ -156,6 +156,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         setFullScreen();
         getScreenRatio();
+        rand.setSeed(seed);
+        System.out.println("Seed: " + seed);
     }
 
     @Override
@@ -211,10 +213,13 @@ public class GamePanel extends JPanel implements Runnable {
                             for(int k = 0; k < factions[i].factionBuildings.length; k++) {
                                 if (factions[i].factionBuildings[k] instanceof Building && factions[i].factionBuildings[k].reIndex > -1) {
                                     ((Building) factions[i].factionBuildings[k]).genResources();
+                                    System.out.println(factions[i].name + Arrays.toString(factions[i].factionBuildings));
                                 }
                             }
                         }
                     }
+                    //System.out.println(seconds);
+                    //Seconds system works :)
                     seconds = 0;
                 }
             }
@@ -487,6 +492,9 @@ public class GamePanel extends JPanel implements Runnable {
             yOffset +=1;
         }
 
+        //For testing
+        factions[1].factionBuildings[1] = aSetter.newEntity("farm", factions[1], 10, 11);
+
         for(int i = 0; i < factions.length; i++) {
             if(factions[i] != null) {
                 factions[i].updateBuildings();
@@ -521,7 +529,7 @@ public class GamePanel extends JPanel implements Runnable {
         System.out.println("Faction flags updated");
         //ui.addMessage("Faction Flags Updated (Debug)");
         aSetter.setObject();
-
+        aSetter.setEntity();
     }
 
     @Override
