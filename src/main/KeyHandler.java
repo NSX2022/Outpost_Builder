@@ -35,7 +35,7 @@ public class KeyHandler implements KeyListener {
                             gp.ui.titleScreenState = 1;
                             break;
                         case 1:
-                            //TODO: Load last game from .dat file
+                            //TODO: Load and enter last game from .dat file
                             break;
                         case 2:
                             //TODO: Controls/help screen
@@ -135,6 +135,7 @@ public class KeyHandler implements KeyListener {
             }
         }
         if(code == KeyEvent.VK_ESCAPE) {
+            //TODO save before exiting
             System.exit(0);
         }
 
@@ -167,6 +168,8 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_T) {
             checkDrawTime = !checkDrawTime;
         }
+
+        //ui and player settings
         if(code == KeyEvent.VK_F) {
             drawFactionFlags = !drawFactionFlags;
         }

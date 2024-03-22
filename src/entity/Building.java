@@ -3,6 +3,7 @@ package entity;
 import faction.Faction;
 import main.GamePanel;
 import main.UtilityTool;
+import object.OBJ_Flag;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -21,6 +22,8 @@ public class Building extends Entity{
         DAMAGED,
         DEFEATED
     }
+
+    public OBJ_Flag flag = new OBJ_Flag(gp);
 
     public Building(GamePanel gp, Faction faction) {
         super(gp);
@@ -44,11 +47,6 @@ public class Building extends Entity{
         if(reIndex > -1) {
             faction.resources[reIndex] += resourceYield;
             resourcesGained += resourceYield;
-            //System.out.println(name + " generated " + resourceYield);
-            /*if(gp.keyH.checkDrawTime) {
-                gp.ui.addMessage(name + " generated " + resourceYield);
-            }
-             */
         }
     }
     @Override

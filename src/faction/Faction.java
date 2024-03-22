@@ -5,6 +5,8 @@ import entity.Entity;
 import main.GamePanel;
 import object.*;
 
+import java.awt.*;
+import java.awt.geom.Area;
 import java.util.Arrays;
 
 public class Faction {
@@ -15,6 +17,7 @@ public class Faction {
     public String name;
     public Boolean isDefeated = false;
     public Boolean isPlayer = false;
+    public Area territory;
 
 
     //Resources
@@ -24,11 +27,11 @@ public class Faction {
     public int[] resources = new int[]{0,8,8,0,0,8,0,0,10};
     public int gpPos = -1;
 
-    //TODO: King's Court as the central building, when clicked opens a menu to view whole faction
+    //King's Court as the central building, when clicked opens a menu to view whole faction
     public Entity[] factionBuildings = new Entity[99];
-    public SuperObject[] flags = new SuperObject[99];
 
     public int population;
+    public Color factionColor;
 
     public enum playerRelation {
         FRIENDLY,
@@ -42,7 +45,7 @@ public class Faction {
     //Power based off of number of buildings, military, and resources
     public int power;
 
-    //Default, change later
+    //Default
     public playerRelation relation = playerRelation.DEFEATED;
 
     public Faction(GamePanel gp) {
@@ -60,53 +63,31 @@ public class Faction {
     }
 
     public void updateBuildings() {
-        int flagX;
-        int flagY;
+        //Updated for new flag system
 
-        for(int i = 0; i < flags.length; i++) {
-            if(flags[i] != null) {
+        for(int i = 0; i < factionBuildings.length; i++) {
+            if(factionBuildings[i] != null && factionBuildings[i] instanceof Building) {
                 switch(relation) {
                     case DEFEATED:
-
-                        flagX = flags[i].worldX;
-                        flagY = flags[i].worldY;
-                        flags[i] = new OBJ_WhiteFlag(gp);
-                        flags[i].worldX = flagX;
-                        flags[i].worldY = flagY;
+                        ((Building) factionBuildings[i]).flag.image = ((Building) factionBuildings[i]).flag.images[0];
                         break;
                     case ALLIED:
-                        flagX = flags[i].worldX;
-                        flagY = flags[i].worldY;
-                        flags[i] = new OBJ_BlueFlag(gp);
-                        flags[i].worldX = flagX;
-                        flags[i].worldY = flagY;
+                        ((Building) factionBuildings[i]).flag.image = ((Building) factionBuildings[i]).flag.images[3];
                         break;
                     case FRIENDLY:
-                        flagX = flags[i].worldX;
-                        flagY = flags[i].worldY;
-                        flags[i] = new OBJ_GreenFlag(gp);
-                        flags[i].worldX = flagX;
-                        flags[i].worldY = flagY;
+                        ((Building) factionBuildings[i]).flag.image = ((Building) factionBuildings[i]).flag.images[4];
                         break;
                     case HOSTILE:
-                        flagX = flags[i].worldX;
-                        flagY = flags[i].worldY;
-                        flags[i] = new OBJ_RedFlag(gp);
-                        flags[i].worldX = flagX;
-                        flags[i].worldY = flagY;
+                        ((Building) factionBuildings[i]).flag.image = ((Building) factionBuildings[i]).flag.images[2];
                         break;
                     case NEUTRAL:
-                        flagX = flags[i].worldX;
-                        flagY = flags[i].worldY;
-                        flags[i] = new OBJ_YellowFlag(gp);
-                        flags[i].worldX = flagX;
-                        flags[i].worldY = flagY;
+                        ((Building) factionBuildings[i]).flag.image = ((Building) factionBuildings[i]).flag.images[1];
                         break;
                 }
+                ((Building) factionBuildings[i]).flag.worldX = factionBuildings[i].worldX;
+                ((Building) factionBuildings[i]).flag.worldY = factionBuildings[i].worldY;
             }
-
         }
-        gp.factionFlags[gpPos] = flags;
     }
 
     @Override

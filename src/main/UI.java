@@ -4,7 +4,6 @@ import entity.Entity;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +15,7 @@ public class UI {
 
     GamePanel gp;
     Graphics2D g2;
-    Font pixelText16b;
+    public Font pixelText16b;
     public boolean messageOn = false;
     ArrayList<String> message = new ArrayList<>();
     ArrayList<Integer> messageCounter = new ArrayList<>();
@@ -347,7 +346,7 @@ public class UI {
                     text = "Faction: ";
                     g2.drawString(text, x, y);
 
-                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 14f));
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 18f));
 
                     y += gp.tileSize/2;
                     text = String.valueOf(entity.faction);
@@ -377,12 +376,18 @@ public class UI {
                     break;
                 case 3:
                     //King's Court (AI)
-                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 14f));
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 22f));
                     g2.setColor(Color.white);
                     y += gp.tileSize/2;
-                    text = "Faction: " + entity.faction.toString();
+                    text = "Faction: ";
                     g2.drawString(text, x, y);
 
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 18f));
+                    y += gp.tileSize/2;
+                    text = entity.faction.toString();
+                    g2.drawString(text, x, y);
+
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 22f));
                     y += gp.tileSize;
                     text = "[click] to exit";
                     g2.drawString(text, x, y);
@@ -412,7 +417,7 @@ public class UI {
         String text = "";
         g2.setColor(Color.white);
 
-        if(showIcons) {
+        if(showIcons && gp.gameType != 3) {
             g2.drawImage(money_icon, x, y, null);
 
             y += gp.tileSize / 3 + gp.tileSize / 8;

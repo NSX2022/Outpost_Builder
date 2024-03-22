@@ -6,8 +6,6 @@ import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
@@ -96,12 +94,20 @@ public class Entity {
             }else{
                 g2.setColor(Color.red);
             }
-            g2.drawString(String.valueOf(health), clickArea.x, clickArea.y);
+            g2.drawString(String.valueOf(health), clickArea.x + gp.tileSize/2, clickArea.y + gp.tileSize);
             if(this instanceof ENT_Tree) {
                 g2.setColor(Color.pink);
                 g2.drawRect(((ENT_Tree) this).detectionArea.x, ((ENT_Tree) this).detectionArea.y, ((ENT_Tree)this).detectionArea.width, ((ENT_Tree)this).detectionArea.height);
             }
             //Also add for other detection areas
+        }
+        if(faction != null) {
+            //Draw first letter of faction name in Faction Color
+            char toDraw = faction.name.charAt(0);
+            g2.setColor(faction.factionColor);
+            g2.setFont(gp.ui.pixelText16b);
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 22f));
+            g2.drawString(String.valueOf(toDraw), screenX + gp.tileSize/2, screenY + gp.tileSize/2);
         }
     }
 }

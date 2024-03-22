@@ -15,4 +15,5 @@ public class Citizen extends Entity {
     }
 
     //Can be a soldier, spy, merchant, etc. that goes around the map doing stuff
+    //TODO: Everything
 }
