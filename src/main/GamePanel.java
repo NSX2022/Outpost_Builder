@@ -200,7 +200,19 @@ public class GamePanel extends JPanel implements Runnable {
                     totalSeconds++;
                 }
                 if(gameState == playState){
-                    if(seconds == 30) {
+                    if(seconds % 2 == 0){
+                        for(int i = 0; i < tileM.tile.length; i++){
+                            if(tileM.tile[i] != null /*&& tileM.tile[i].animated*/){
+                                tileM.tile[i].nextFrame();
+                            }
+                        }
+                        for(int i = 0; i < ent.length; i++){
+                            if(ent[i] != null){
+                                ent[i].nextFrame();
+                            }
+                        }
+                    }
+                    if(seconds % 30 == 0) {
                         for(int i = 0; i < factions.length; i++) {
                             if(factions[i] != null) {
                                 factions[i].updateBuildings();
@@ -492,7 +504,6 @@ public class GamePanel extends JPanel implements Runnable {
             factions[i].isDefeated = false;
             factions[i].gpPos = i;
             //Faction Color
-            //nice bright colors
             float r = (float) (rand.nextFloat() / 2f + 0.1);
             float g = (float) (rand.nextFloat() / 2f + 0.1);
             float b = (float) (rand.nextFloat() / 2f + 0.1);
@@ -515,6 +526,7 @@ public class GamePanel extends JPanel implements Runnable {
         //place AI factions in corners
         if(aiFactionsNum >= 4) {
         //corner coords
+            //TODO: make compatible with random sized maps
             factions[1].factionBuildings[0].worldX = 9 * tileSize;
             factions[1].factionBuildings[0].worldY = 10 * tileSize;
 

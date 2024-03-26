@@ -15,13 +15,13 @@ public class ENT_Tree extends Entity{
         super(gp);
         name = "Tree";
         health = 100;
-        image = setup("/entity/tile_entity/tree_entity",1);
+        images[0] = setup("/entity/tile_entity/tree_entity",1);
         maxHealth = health;
         reIndex = -1;
         menuType = -1;
     }
 
     public BufferedImage image() {
-        return image;
+        return images[0];
     }
 }

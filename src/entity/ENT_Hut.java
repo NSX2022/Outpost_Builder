@@ -9,7 +9,7 @@ public class ENT_Hut extends Building {
     public ENT_Hut(GamePanel gp, Faction faction) {
         super(gp, faction);
         name = "Hut";
-        image = setup("/entity/tile_entity/hut_building",1);
+        images[0] = setup("/entity/tile_entity/hut_building",1);
         health = 20;
         maxHealth = health;
         reIndex = -1;
@@ -17,6 +17,6 @@ public class ENT_Hut extends Building {
     }
 
     public BufferedImage image() {
-        return image;
+        return images[frame];
     }
 }

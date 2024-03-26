@@ -87,7 +87,14 @@ public class NameGenerator {
                 word2 = getNoun();
             }
 
-            message = word1 + "'s " + word2;
+            if(word1.charAt(word1.length() - 1) == 's'){
+                word1 = word1.substring(0, word1.length() - 1);
+                word1 += "'s";
+                message = word1 + " " + word2;
+            }else{
+                message = word1 + "'s " + word2;
+            }
+
 
             return message;
         }else{
@@ -97,7 +104,6 @@ public class NameGenerator {
                 word1 = getAdj();
                 word2 = getNoun();
             }
-
 
             message = word1 + " " + word2;
 

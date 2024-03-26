@@ -5,8 +5,10 @@ import java.util.Arrays;
 
 public class Tile {
 
-    public BufferedImage image;
+    public BufferedImage[] images = new BufferedImage[99];
+
     public boolean collision = false;
+    public int frame = 0;
 
     public final String[] tagsLib = {
             "Fertile", "Flammable", "Mineable", "Lumber", "Destroyed"
@@ -28,6 +30,27 @@ public class Tile {
                 tags[i] = tag;
                 return;
             }
+        }
+    }
+
+    public int largest()
+    {
+        int max = 0;
+
+        for (int i = 0; i < images.length; i++){
+            if (images[i] != null) {
+                max = i;
+            }
+        }
+
+        return max;
+    }
+
+    public void nextFrame() {
+        if(frame < largest()) {
+            frame++;
+        }else{
+            frame = 0;
         }
     }
 

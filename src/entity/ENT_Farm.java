@@ -9,7 +9,7 @@ public class ENT_Farm extends Building {
     public ENT_Farm(GamePanel gp, Faction faction) {
         super(gp, faction);
         name = "Farm";
-        image = setup("/entity/tile_entity/farm",1);
+        images[0] = setup("/entity/tile_entity/farm",1);
         health = 20;
         maxHealth = health;
         reIndex = 8;
@@ -18,6 +18,6 @@ public class ENT_Farm extends Building {
     }
 
     public BufferedImage image() {
-        return image;
+        return images[frame];
     }
 }

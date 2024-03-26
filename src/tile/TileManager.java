@@ -7,9 +7,10 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class TileManager {
 
@@ -21,14 +22,23 @@ public class TileManager {
 
         this.gp = gp;
 
-        tile = new Tile[1000];
+        tile = new Tile[10000];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
         loadMap("/maps/templateMap.txt", 0);
     }
 
     public void getTileImage() {
-        //Set tiles here
+        BufferedImage[] frameSet = new BufferedImage[99];
+        //Set tiles here, use frameSet for animated
+        /* Example for animated grass
+        frameSet[0] = newSetup("grass00");
+        frameSet[1] = newSetup("grass00A");
+        tile[0] = new Tile();
+        tile[0].images = frameSet;
+        frameSet = new BufferedImage[99];
+         */
+
         setup(0, "grass00", false);
         setup(1, "mountain00", true);
         setup(2, "water00", true); //waters 00 and 01 are the impassable border tiles
@@ -43,12 +53,25 @@ public class TileManager {
 
         try{
             tile[index] = new Tile();
-            tile[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/"+ imageName +".png"));
-            tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
             tile[index].collision = collision;
+            tile[index].images[0] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/" + imageName + ".png")));
+            tile[index].images[0] = uTool.scaleImage(tile[index].images[0], gp.tileSize, gp.tileSize);
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public BufferedImage newSetup(String imageName) {
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage toRet = new BufferedImage(48, 48, 2);
+
+        try{
+            toRet = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/" + imageName + ".png")));
+            toRet = uTool.scaleImage(toRet, gp.tileSize, gp.tileSize);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return toRet;
     }
 
     public void loadMap(String map, int indexMargin) {
@@ -103,7 +126,7 @@ public class TileManager {
                     worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
                     worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                     worldY  - gp.tileSize < gp.player.worldY + gp.player.screenY) {
-                g2.drawImage(tile[tileNum].image, screenX, screenY, null);
+                g2.drawImage(tile[tileNum].images[tile[tileNum].frame], screenX, screenY, null);
             }
 
             worldCol++;

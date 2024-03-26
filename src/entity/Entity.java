@@ -34,7 +34,7 @@ public class Entity {
     public Rectangle landClaim = new Rectangle(-192, -192, 192, 192);
 
     public boolean collisionOn = false;
-    public BufferedImage image;
+    public BufferedImage[] images = new BufferedImage[99];
     public String name;
     public boolean menuOn = false;
     public int level = 0;
@@ -43,6 +43,7 @@ public class Entity {
     public int maxHealth;
     public int health = 99999999;
     public int resourcesGained = 0;
+    public int frame = 0;
 
     public Faction faction;
 
@@ -76,7 +77,7 @@ public class Entity {
                 worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
                 worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                 worldY  - gp.tileSize < gp.player.worldY + gp.player.screenY) {
-            g2.drawImage(image, screenX, screenY, null);
+            g2.drawImage(images[frame], screenX, screenY, null);
         }
 
         if(gp.keyH.checkDrawTime) {
@@ -111,6 +112,27 @@ public class Entity {
             g2.setFont(gp.ui.pixelText16b);
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 22f));
             g2.drawString(String.valueOf(toDraw), screenX + gp.tileSize/2, screenY + gp.tileSize/2);
+        }
+    }
+
+    public int largest()
+    {
+        int max = 0;
+
+        for (int i = 0; i < images.length; i++){
+            if (images[i] != null) {
+                max = i;
+            }
+        }
+
+        return max;
+    }
+
+    public void nextFrame() {
+        if(frame < largest()) {
+            frame++;
+        }else{
+            frame = 0;
         }
     }
 }
