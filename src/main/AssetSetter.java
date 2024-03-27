@@ -22,10 +22,17 @@ public class AssetSetter {
     }
 
     public void setEntity() {
+        //TODO: Randomly generate trees and other resources with detectAreas
         addEntity(51, 41, "tree", null);
 
-        addEntity(30, 34, "farm", gp.player.playerFaction);
+
+        /*test player buildings
+        addEntity(29, 34, "farm", gp.player.playerFaction);
+        addEntity(30, 35, "farm", gp.player.playerFaction);
+        addEntity(31, 34, "farm", gp.player.playerFaction);
         addEntity(31, 33, "mine", gp.player.playerFaction);
+        addEntity(31, 32, "mine", gp.player.playerFaction);
+        */
     }
 
     public void addEntity(int x, int y, String entName, Faction faction){

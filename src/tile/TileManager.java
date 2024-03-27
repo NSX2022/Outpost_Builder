@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Random;
 
 public class TileManager {
 
@@ -25,7 +26,8 @@ public class TileManager {
         tile = new Tile[10000];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
-        loadMap("/maps/templateMap.txt", 0);
+        //loadMap("/maps/templateMap.txt", 0);
+        genMap();
     }
 
     public void getTileImage() {
@@ -107,6 +109,47 @@ public class TileManager {
         }
     }
 
+    public void genMap() {
+
+        Random rand = gp.rand;
+
+        gp.maxWorldCol = rand.nextInt(49, 80);
+        gp.maxWorldRow = rand.nextInt(49, 80);
+
+        gp.maxWorldCol = 100;
+        gp.maxWorldRow = 100;
+        gp.waterBuffer = 35;
+
+        generateLandMap();
+        addWaterMargin();
+    }
+    private void addWaterMargin() {
+        Random rand = gp.rand;
+        int waterMargin = gp.waterBuffer;
+
+
+        for (int row = 0; row < gp.maxWorldRow; row++) {
+            for (int col = 0; col < gp.maxWorldCol; col++) {
+                if (row < waterMargin || row >= gp.maxWorldRow - waterMargin ||
+                        col < waterMargin || col >= gp.maxWorldCol - waterMargin) {
+                    if(rand.nextInt(0, 100) > 92 ){
+                        mapTileNum[col][row] = 3;
+                    }else{
+                        mapTileNum[col][row] = 2;
+                    }
+                }
+            }
+        }
+    }
+    private void generateLandMap() {
+        Random rand = gp.rand;
+
+        for (int row = 0; row < gp.maxWorldRow; row++) {
+            for (int col = 0; col < gp.maxWorldCol; col++) {
+                mapTileNum[col][row] = 0;
+            }
+        }
+    }
     public void draw(Graphics2D g2) {
 
         int worldCol = 0;
@@ -135,9 +178,6 @@ public class TileManager {
                 worldCol = 0;
                 worldRow++;
             }
-
         }
-
-
     }
 }

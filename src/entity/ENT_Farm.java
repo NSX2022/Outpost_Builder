@@ -10,6 +10,7 @@ public class ENT_Farm extends Building {
         super(gp, faction);
         name = "Farm";
         images[0] = setup("/entity/tile_entity/farm",1);
+        images[1] = setup("/entity/tile_entity/farmA",1);
         health = 20;
         maxHealth = health;
         reIndex = 8;

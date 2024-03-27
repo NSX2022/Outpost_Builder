@@ -3,14 +3,11 @@ package entity;
 import faction.Faction;
 import main.GamePanel;
 import main.KeyHandler;
-import main.UtilityTool;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
-public class Camera extends Entity {
+public class Player extends Entity {
     KeyHandler keyH;
 
     public final int screenX;
@@ -18,9 +15,7 @@ public class Camera extends Entity {
 
     public Faction playerFaction;
 
-    //TODO: Move to a game generation method in GamePanel
-
-    public Camera (GamePanel gp, KeyHandler keyH) {
+    public Player(GamePanel gp, KeyHandler keyH) {
 
         super(gp);
         this.keyH = keyH;

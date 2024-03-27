@@ -14,7 +14,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
@@ -25,8 +24,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int tileSize = originalTileSize * scale; // 48*48
     public final int maxScreenCol = 16;
     public final int maxScreenRow = 9;
-    public final double screenWidth = tileSize * maxScreenCol; // 768
-    public final double screenHeight = tileSize * maxScreenRow; // 576
+    public final double screenWidth = tileSize * maxScreenCol; //768 (maybe? RyiSnow scale usage later??)* 1.2
+    public final double screenHeight = tileSize * maxScreenRow; //576 * 1.2
     public final int objDisplayLimit = 32;
     public final int entDisplayLimit = 32;
     Font pixelText16b;
@@ -37,11 +36,15 @@ public class GamePanel extends JPanel implements Runnable {
     BufferedImage tempScreen;
     Graphics2D g2;
 
-    //World Settings do not allow player to touch
-    public final int maxWorldCol = 71;
-    public final int maxWorldRow = 68;
+    //World Settings
+    public int maxWorldCol = 999;
+    public int maxWorldRow = 999;
+    public int waterBuffer = 9;
 
     //system
+    public Random rand = new Random();
+    public Long seed = rand.nextLong(100000000, 999999999);
+
     TileManager tileM = new TileManager(this);
     public KeyHandler keyH = new KeyHandler(this);
     public CollisionChecker cChecker = new CollisionChecker(this);
@@ -53,15 +56,13 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
     public int latestFPS;
     public Point clickPoint = new Point();
-    public Random rand = new Random();
-    public Long seed = rand.nextLong(100000000, 999999999);
 
     public double screenRatioX;
     public double screenRatioY;
     public NameGenerator nameGen = new NameGenerator();
 
     //entity and obj
-    public Camera player = new Camera(this, keyH);
+    public Player player = new Player(this, keyH);
     public SuperObject[] obj = new SuperObject[objDisplayLimit];
     public Entity[] ent = new Entity[entDisplayLimit];
 
@@ -90,6 +91,9 @@ public class GamePanel extends JPanel implements Runnable {
     public Faction[] factions = new Faction[maxFactions];
     public SuperObject[][] factionFlags = new SuperObject[objDisplayLimit][50];
     public boolean showTerritory = true;
+
+    //Settings
+    public boolean staticAnims = false;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension((int)screenWidth, (int)screenHeight));
@@ -202,13 +206,26 @@ public class GamePanel extends JPanel implements Runnable {
                 if(gameState == playState){
                     if(seconds % 2 == 0){
                         for(int i = 0; i < tileM.tile.length; i++){
-                            if(tileM.tile[i] != null /*&& tileM.tile[i].animated*/){
-                                tileM.tile[i].nextFrame();
+                            if(staticAnims){
+                                if(tileM.tile[i] != null){
+                                    tileM.tile[i].nextFrame();
+                                }
+                            }else{
+                                if(tileM.tile[i] != null && rand.nextBoolean()){
+                                    tileM.tile[i].nextFrame();
+                                }
                             }
+
                         }
                         for(int i = 0; i < ent.length; i++){
-                            if(ent[i] != null){
-                                ent[i].nextFrame();
+                            if(staticAnims){
+                                if(ent[i] != null){
+                                    ent[i].nextFrame();
+                                }
+                            }else{
+                                if(ent[i] != null && rand.nextBoolean()){
+                                    ent[i].nextFrame();
+                                }
                             }
                         }
                     }
@@ -508,10 +525,10 @@ public class GamePanel extends JPanel implements Runnable {
             float g = (float) (rand.nextFloat() / 2f + 0.1);
             float b = (float) (rand.nextFloat() / 2f + 0.1);
             factions[i].factionColor = new Color(r,g,b);
-            //TODO: Generate all buildings
+            //TODO: Rand generate all buildings
             factions[i].factionBuildings[0] = new ENT_KingCourt(this, factions[i]);
             //TODO: Select a rectangle on the map for AI faction starting territory and place generated buildings
-            //TODO: Rectangle for territory is centered on King's Court and can expand
+            //Rectangle for territory is centered on King's Court and can expand
             aSetter.addPremadeEntity(30 * i + xOffset, 29 + yOffset, factions[i].factionBuildings[0]);
             factions[i].relation = Faction.playerRelation.NEUTRAL;
             factions[i].name = nameGen.newName();
@@ -522,23 +539,29 @@ public class GamePanel extends JPanel implements Runnable {
 
         //For testing
         factions[1].factionBuildings[1] = aSetter.newEntity("farm", factions[1], 10, 11);
+        factions[1].factionBuildings[2] = aSetter.newEntity("farm", factions[1], 10, 12);
 
         //place AI factions in corners
         if(aiFactionsNum >= 4) {
-        //corner coords
-            //TODO: make compatible with random sized maps
-            factions[1].factionBuildings[0].worldX = 9 * tileSize;
-            factions[1].factionBuildings[0].worldY = 10 * tileSize;
+            factions[1].factionBuildings[0].worldX = waterBuffer * tileSize;
+            factions[1].factionBuildings[0].worldY = waterBuffer * tileSize;
 
-            factions[2].factionBuildings[0].worldX = 9 * tileSize;
-            factions[2].factionBuildings[0].worldY = 57 * tileSize;
+            factions[2].factionBuildings[0].worldX = (maxWorldCol - 1 - waterBuffer) * tileSize;
+            factions[2].factionBuildings[0].worldY = waterBuffer * tileSize;
 
-            factions[3].factionBuildings[0].worldX = 61 * tileSize;
-            factions[3].factionBuildings[0].worldY = 10 * tileSize;
+            factions[3].factionBuildings[0].worldX = waterBuffer * tileSize;
+            factions[3].factionBuildings[0].worldY = (maxWorldRow - 1 - waterBuffer) * tileSize;
 
-            factions[4].factionBuildings[0].worldX = 61 * tileSize;
-            factions[4].factionBuildings[0].worldY = 57 * tileSize;
+            factions[4].factionBuildings[0].worldX = (maxWorldCol - 1 - waterBuffer) * tileSize;
+            factions[4].factionBuildings[0].worldY = (maxWorldRow - 1 - waterBuffer) * tileSize;
         }
+        //center coords
+        int centerX = (maxWorldCol / 2) * tileSize;
+        int centerY = (maxWorldRow / 2) * tileSize;
+
+        //player faction is at the center of the map
+        factions[0].factionBuildings[0].worldX = centerX;
+        factions[0].factionBuildings[0].worldY = centerY;
 
         if(gameType != 3) {
             aSetter.setObject();
