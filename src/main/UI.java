@@ -16,7 +16,6 @@ public class UI {
     GamePanel gp;
     Graphics2D g2;
     public Font pixelText16b;
-    public boolean messageOn = false;
     ArrayList<String> message = new ArrayList<>();
     ArrayList<Integer> messageCounter = new ArrayList<>();
     public boolean gameFinished = false;
@@ -35,10 +34,16 @@ public class UI {
     public BufferedImage silk_icon;
     public BufferedImage gem_icon;
 
+    //Build menu
+    public BufferedImage shift_tip;
+
+    public int baseFontSize = 6;
+
     public double playTime = 0;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
 
     public Boolean showIcons = true;
+    public Boolean buildMenu = false;
 
     public UI(GamePanel gp) {
         this.gp = gp;
@@ -70,6 +75,8 @@ public class UI {
         smokeleaf_icon = setup("/ui/icons/smokeleaf_icon",2);
         silk_icon = setup("/ui/icons/silk_icon",2);
         gem_icon = setup("/ui/icons/gem_icon",2);
+
+        shift_tip = setup("/ui/build_menu/shift_tip",1);
     }
 
     public void draw(Graphics2D g2) {
@@ -82,6 +89,7 @@ public class UI {
             if(showIcons) {
                 drawResourceIcons();
             }
+            drawBuildMenu();
             drawMessage();
         }
         if(gp.gameState == gp.pauseState){
@@ -95,10 +103,10 @@ public class UI {
 
     public void drawFPScounter() {
         g2.setColor(Color.magenta);
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 10f));
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 12f + baseFontSize));
         String text = String.valueOf(gp.latestFPS);
         int x = getXforCenteredText(text);
-        int y = 10;
+        int y = 10 + baseFontSize;
         g2.drawString(text, x, y);
     }
 
@@ -109,7 +117,7 @@ public class UI {
             g2.fillRect(0, 0, (int)gp.screenWidth2, (int)gp.screenHeight2);
 
             //TITLE
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96f));
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 98f + baseFontSize));
             String text = "Nations Will Rise";
             int x = getXforCenteredText(text);
             int y = gp.tileSize * 2;
@@ -127,7 +135,7 @@ public class UI {
             g2.drawImage(gp.titleLogo, x, y, gp.tileSize * 3, gp.tileSize * 3, null);
 
             //MENU
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48f));
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 50f + baseFontSize));
 
             text = "NEW GAME";
             x = getXforCenteredText(text);
@@ -164,7 +172,7 @@ public class UI {
             g2.setColor(Color.black);
             g2.fillRect(0, 0, (int)gp.screenWidth2, (int)gp.screenHeight2);
 
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 40f));
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 40f + baseFontSize));
             g2.setColor(Color.white);
 
             String text = "Back";
@@ -204,7 +212,7 @@ public class UI {
             g2.setColor(Color.black);
             g2.fillRect(0, 0, (int)gp.screenWidth2, (int)gp.screenHeight2);
 
-            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 40f));
+            g2.setFont(g2.getFont().deriveFont(Font.BOLD, 40f + baseFontSize));
             g2.setColor(Color.white);
 
             String text = "> Back";
@@ -212,7 +220,7 @@ public class UI {
             int y = gp.tileSize;
             g2.drawString(text, x ,y);
 
-            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20f));
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20f + baseFontSize));
             text = "F to toggle flags, G to toggle resource icons";
             x = getXforCenteredText(text);
             y += gp.tileSize * 2;
@@ -240,7 +248,7 @@ public class UI {
 
         int messageX = gp.tileSize * 2;
         int messageY = gp.tileSize * 4;
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 16f));
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 16f + baseFontSize));
 
         for(int i = 0; i < message.size(); i++) {
 
@@ -262,7 +270,7 @@ public class UI {
     }
 
     public void drawPauseScreen() {
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80f));
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80f + baseFontSize));
         String text = "PAUSED";
         int x = getXforCenteredText(text);
         int y = (int)gp.screenHeight/2;
@@ -277,6 +285,8 @@ public class UI {
     }
 
     public void drawMenu(Entity entity) {
+        String text;
+
         if(entity.menuType > 0){
             //Menu backdrop
             int x = (int) (gp.screenWidth - gp.tileSize * 4);
@@ -284,21 +294,21 @@ public class UI {
             g2.setColor(Color.black);
             menuRect = new Rectangle(x, y, (int) (gp.tileSize * 4),(int) gp.screenHeight);
             g2.fillRect(x,y, (int) (gp.tileSize * 4),(int) gp.screenHeight);
-            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30f));
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30f + baseFontSize));
 
             //Menu text
             switch (entity.menuType) {
                 case 1:
                     //Building name
-                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30f));
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30f + baseFontSize));
                     g2.setColor(Color.white);
                     y += gp.tileSize;
                     x += gp.tileSize / 3;
-                    String text = entity.name;
+                    text = entity.name;
                     g2.drawString(text, x, y);
 
                     //stats
-                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 22f));
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20f + baseFontSize));
                     y += gp.tileSize;
                     x += gp.tileSize/4;
                     text = "level " + entity.level;
@@ -351,13 +361,13 @@ public class UI {
                     text = "Faction: ";
                     g2.drawString(text, x, y);
 
-                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 18f));
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 18f + baseFontSize));
 
                     y += gp.tileSize/2;
                     text = String.valueOf(entity.faction);
                     g2.drawString(text, x, y);
 
-                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 22f));
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 22f + baseFontSize));
 
                     y += gp.tileSize * 2;
                     text = "[click] to exit";
@@ -367,7 +377,7 @@ public class UI {
                 case 2:
                     //King's Court
                     g2.setColor(Color.white);
-                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 14f));
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 14f + baseFontSize));
 
                     y += gp.tileSize/2;
                     text = "Faction: Player";
@@ -381,18 +391,26 @@ public class UI {
                     break;
                 case 3:
                     //King's Court (AI)
-                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 22f));
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 22f + baseFontSize));
                     g2.setColor(Color.white);
                     y += gp.tileSize/2;
                     text = "Faction: ";
                     g2.drawString(text, x, y);
 
-                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 18f));
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 18f + baseFontSize));
                     y += gp.tileSize/2;
-                    text = entity.faction.toString();
-                    g2.drawString(text, x, y);
+                    if(entity.faction.toString().length() > 16){
+                        text = entity.faction.toString().substring(0, entity.faction.toString().indexOf(" "));
+                        g2.drawString(text, x, y);
+                        y += gp.tileSize/2;
+                        text = entity.faction.toString().substring(entity.faction.toString().indexOf(" ") + 1);
+                        g2.drawString(text, x, y);
+                    }else{
+                        text = entity.faction.toString();
+                        g2.drawString(text, x, y);
+                    }
 
-                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 22f));
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 22f + baseFontSize));
                     y += gp.tileSize;
                     text = "[click] to exit";
                     g2.drawString(text, x, y);
@@ -415,7 +433,7 @@ public class UI {
         }
     }
     public void drawResourceIcons() {
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 28f));
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 28f + baseFontSize));
         //left edge of the screen: draw icons and a number of how many
         int x = 0;
         int y = 0;
@@ -493,6 +511,19 @@ public class UI {
             x += gp.tileSize / 3 + gp.tileSize / 5;
             text = String.valueOf(gp.player.playerFaction.resources[7]);
             g2.drawString(text, x, y);
+        }
+    }
+
+    public void drawBuildMenu(){
+        int x = (int)gp.screenWidth/2 - gp.tileSize *  4;
+        int y;
+        if(buildMenu){
+            y = (int) gp.screenHeight - gp.tileSize *  5;
+            g2.drawImage(shift_tip, x, y, null);
+            //TODO: draw rectangle of menu and building icons and more :D ebin!!! :D :D :D
+        }else{
+            y = (int) gp.screenHeight - gp.tileSize;
+            g2.drawImage(shift_tip, x, y, null);
         }
     }
 

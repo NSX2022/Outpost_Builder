@@ -135,4 +135,12 @@ public class Entity {
             frame = 0;
         }
     }
+
+    public BufferedImage getImage() {
+        return images[frame];
+    }
+
+    public void setImage(BufferedImage image) {
+        images[frame] = image;
+    }
 }

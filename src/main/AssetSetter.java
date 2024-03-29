@@ -5,6 +5,8 @@ import entity.*;
 import faction.Faction;
 import object.*;
 
+import java.util.Random;
+
 public class AssetSetter {
 
     GamePanel gp;
@@ -22,17 +24,9 @@ public class AssetSetter {
     }
 
     public void setEntity() {
-        //TODO: Randomly generate trees and other resources with detectAreas
-        addEntity(51, 41, "tree", null);
+        //TODO: Randomly generate trees and other resources that have detectAreas
 
-
-        /*test player buildings
-        addEntity(29, 34, "farm", gp.player.playerFaction);
-        addEntity(30, 35, "farm", gp.player.playerFaction);
-        addEntity(31, 34, "farm", gp.player.playerFaction);
-        addEntity(31, 33, "mine", gp.player.playerFaction);
-        addEntity(31, 32, "mine", gp.player.playerFaction);
-        */
+        Random rand = gp.rand;
     }
 
     public void addEntity(int x, int y, String entName, Faction faction){

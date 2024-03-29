@@ -48,4 +48,12 @@ public class SuperObject {
             g2.drawImage(image, screenX, screenY, null);
         }
     }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
 }

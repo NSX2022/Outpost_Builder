@@ -9,6 +9,8 @@ public class Tile {
 
     public boolean collision = false;
     public int frame = 0;
+    public String name = "";
+    public int worldX, worldY;
 
     public final String[] tagsLib = {
             "Fertile", "Flammable", "Mineable", "Lumber", "Destroyed"
@@ -54,7 +56,12 @@ public class Tile {
         }
     }
 
+    public BufferedImage getImage() {
+        return images[frame];
+    }
 
 
-
+    public void setImage(BufferedImage image) {
+        images[frame] = image;
+    }
 }

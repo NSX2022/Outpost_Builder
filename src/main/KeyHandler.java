@@ -134,6 +134,15 @@ public class KeyHandler implements KeyListener {
                 gp.gameState = gp.playState;
             }
         }
+        /*TEST: Zoom in/out
+
+        if(code == KeyEvent.VK_MINUS){
+            gp.zoomInOut(-1);
+        }
+        if(code == KeyEvent.VK_EQUALS){
+            gp.zoomInOut(1);
+        }
+         */
         if(code == KeyEvent.VK_ESCAPE) {
             //TODO save before exiting
             System.exit(0);
@@ -145,6 +154,23 @@ public class KeyHandler implements KeyListener {
         }
 
         //TODO: Arrow keys to move where a building should be placed after selecting it
+        if(code == KeyEvent.VK_SHIFT){
+            gp.ui.buildMenu = !gp.ui.buildMenu;
+        }
+        if(gp.ui.buildMenu){
+            if(code == KeyEvent.VK_UP) {
+
+            }
+            if(code == KeyEvent.VK_DOWN) {
+
+            }
+            if(code == KeyEvent.VK_LEFT) {
+
+            }
+            if(code == KeyEvent.VK_RIGHT) {
+
+            }
+        }
     }
 
     @Override

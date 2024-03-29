@@ -1,33 +1,38 @@
 package main;
 
+
 import entity.*;
 import faction.Faction;
-import object.*;
-import tile.*;
+import object.SuperObject;
+import tile.Tile;
+import tile.TileManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 import java.util.Random;
 
+import static main.Main.setTitle;
+
 public class GamePanel extends JPanel implements Runnable {
     //Screen Settings
     final int originalTileSize = 16; //16x16 tile
     final int scale = 3;
-    public final int tileSize = originalTileSize * scale; // 48*48
-    public final int maxScreenCol = 16;
-    public final int maxScreenRow = 9;
-    public final double screenWidth = tileSize * maxScreenCol; //768 (maybe? RyiSnow scale usage later??)* 1.2
-    public final double screenHeight = tileSize * maxScreenRow; //576 * 1.2
-    public final int objDisplayLimit = 32;
-    public final int entDisplayLimit = 32;
+    public int tileSize = originalTileSize * scale; // 48*48
+    public int maxScreenCol = 16;
+    public int maxScreenRow = 9;
+    public double screenWidth = tileSize * maxScreenCol * 1.2; //768 (maybe? RyiSnow scale usage later??)* 1.2
+    public double screenHeight = tileSize * maxScreenRow * 1.2; //576 * 1.2
+
     Font pixelText16b;
 
     //FULLSCREEN
@@ -41,14 +46,18 @@ public class GamePanel extends JPanel implements Runnable {
     public int maxWorldRow = 999;
     public int waterBuffer = 9;
 
+    //Settings
+    public boolean staticAnims = false;
+    public int objDisplayLimit = 48;
+    public int entDisplayLimit = 48;
+
     //system
     public Random rand = new Random();
     public Long seed = rand.nextLong(100000000, 999999999);
-
+    public AssetSetter aSetter = new AssetSetter(this);
     TileManager tileM = new TileManager(this);
     public KeyHandler keyH = new KeyHandler(this);
     public CollisionChecker cChecker = new CollisionChecker(this);
-    public AssetSetter aSetter = new AssetSetter(this);
     public Sound music = new Sound();
     public Sound se = new Sound();
     public UI ui = new UI(this);
@@ -89,11 +98,7 @@ public class GamePanel extends JPanel implements Runnable {
     //Factions
     public int maxFactions = 10;
     public Faction[] factions = new Faction[maxFactions];
-    public SuperObject[][] factionFlags = new SuperObject[objDisplayLimit][50];
     public boolean showTerritory = true;
-
-    //Settings
-    public boolean staticAnims = false;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension((int)screenWidth, (int)screenHeight));
@@ -205,26 +210,44 @@ public class GamePanel extends JPanel implements Runnable {
                 }
                 if(gameState == playState){
                     if(seconds % 2 == 0){
-                        for(int i = 0; i < tileM.tile.length; i++){
-                            if(staticAnims){
-                                if(tileM.tile[i] != null){
-                                    tileM.tile[i].nextFrame();
-                                }
-                            }else{
-                                if(tileM.tile[i] != null && rand.nextBoolean()){
-                                    tileM.tile[i].nextFrame();
+                        if(gameType != 3) {
+                            setTitle("Outpost Builder - " + factions[0].power);
+                        }
+                        for(Tile tile : tileM.tile){
+                            if(tile != null) {
+                                int worldX = tile.worldX;
+                                int worldY = tile.worldY;
+
+                                if(     worldX + tileSize > player.worldX - player.screenX &&
+                                        worldX - tileSize < player.worldX + player.screenX &&
+                                        worldY + tileSize > player.worldY - player.screenY &&
+                                        worldY  - tileSize < player.worldY + player.screenY) {
+                                    if(staticAnims){
+                                        tile.nextFrame();
+                                    }else{
+                                        if(rand.nextBoolean()){
+                                            tile.nextFrame();
+                                        }
+                                    }
                                 }
                             }
-
                         }
-                        for(int i = 0; i < ent.length; i++){
-                            if(staticAnims){
-                                if(ent[i] != null){
-                                    ent[i].nextFrame();
-                                }
-                            }else{
-                                if(ent[i] != null && rand.nextBoolean()){
-                                    ent[i].nextFrame();
+                        for (Entity entity : ent) {
+                            if(entity != null){
+                                int worldX = entity.worldX;
+                                int worldY = entity.worldY;
+
+                                if(     worldX + tileSize > player.worldX - player.screenX &&
+                                        worldX - tileSize < player.worldX + player.screenX &&
+                                        worldY + tileSize > player.worldY - player.screenY &&
+                                        worldY  - tileSize < player.worldY + player.screenY) {
+                                    if (staticAnims) {
+                                        entity.nextFrame();
+                                    } else {
+                                        if (rand.nextBoolean()) {
+                                            entity.nextFrame();
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -321,6 +344,9 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
+        if(tileSize < 1){
+            tileSize = 1;
+        }
         if(gameState == playState) {
             player.update();
         }
@@ -358,14 +384,30 @@ public class GamePanel extends JPanel implements Runnable {
             //entities
             for(int i = 0; i < ent.length; i++) {
                 if(ent[i] != null) {
-                    ent[i].draw(g2, this);
+                    int worldX = ent[i].worldX;
+                    int worldY = ent[i].worldY;
+
+                    if(     worldX + tileSize > player.worldX - player.screenX &&
+                            worldX - tileSize < player.worldX + player.screenX &&
+                            worldY + tileSize > player.worldY - player.screenY &&
+                            worldY  - tileSize < player.worldY + player.screenY) {
+                        ent[i].draw(g2, this);
+                    }
                 }
             }
 
             //object
             for(int i = 0; i < obj.length; i++) {
                 if(obj[i] != null) {
-                    obj[i].draw(g2, this);
+                    int worldX = obj[i].worldX;
+                    int worldY = obj[i].worldY;
+
+                    if(     worldX + tileSize > player.worldX - player.screenX &&
+                            worldX - tileSize < player.worldX + player.screenX &&
+                            worldY + tileSize > player.worldY - player.screenY &&
+                            worldY  - tileSize < player.worldY + player.screenY) {
+                        obj[i].draw(g2, this);
+                    }
                 }
             }
 
@@ -450,12 +492,6 @@ public class GamePanel extends JPanel implements Runnable {
         screenRatioY = screenHeight2 / screenHeight;
     }
 
-    //World gen
-    //TODO: World gen methods
-    public void genTiles(int x1, int x2, int y1, int y2) {
-
-    }
-
     public void genFactions(int aiFactionsNum) {
         int xOffset = 0;
         int yOffset = 0;
@@ -500,7 +536,7 @@ public class GamePanel extends JPanel implements Runnable {
                 //TODO: Simulation mode
                 break;
         }
-        System.out.println(gameType);
+        //System.out.println(gameType);
         factions[0] = player.playerFaction;
         if(gameType != 3){
             factions[0].factionBuildings[0] = new ENT_KingCourt(this, factions[0]);
@@ -537,10 +573,6 @@ public class GamePanel extends JPanel implements Runnable {
             yOffset +=1;
         }
 
-        //For testing
-        factions[1].factionBuildings[1] = aSetter.newEntity("farm", factions[1], 10, 11);
-        factions[1].factionBuildings[2] = aSetter.newEntity("farm", factions[1], 10, 12);
-
         //place AI factions in corners
         if(aiFactionsNum >= 4) {
             factions[1].factionBuildings[0].worldX = waterBuffer * tileSize;
@@ -555,13 +587,14 @@ public class GamePanel extends JPanel implements Runnable {
             factions[4].factionBuildings[0].worldX = (maxWorldCol - 1 - waterBuffer) * tileSize;
             factions[4].factionBuildings[0].worldY = (maxWorldRow - 1 - waterBuffer) * tileSize;
         }
-        //center coords
-        int centerX = (maxWorldCol / 2) * tileSize;
-        int centerY = (maxWorldRow / 2) * tileSize;
-
-        //player faction is at the center of the map
-        factions[0].factionBuildings[0].worldX = centerX;
-        factions[0].factionBuildings[0].worldY = centerY;
+        if(gameType != 3){
+            //center coords
+            int centerX = (maxWorldCol / 2) * tileSize;
+            int centerY = (maxWorldRow / 2) * tileSize;
+            //player faction is at the center of the map
+            factions[0].factionBuildings[0].worldX = centerX;
+            factions[0].factionBuildings[0].worldY = centerY;
+        }
 
         if(gameType != 3) {
             aSetter.setObject();
@@ -575,9 +608,91 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
+        if(gameType != 3){
+            player.worldX = factions[0].factionBuildings[0].worldX;
+            player.worldY = factions[0].factionBuildings[0].worldY;
+        }
         System.out.println("Faction flags updated");
+        if(gameType != 3) {
+            setTitle("Outpost Builder - " + factions[0].power);
+        }else{
+            setTitle("Outpost Builder - Simulation");
+        }
+
     }
 
+    //Test function, do not use
+    @Deprecated
+    public void zoomInOut(int zoomAmount){
+        int oldWorldWidth = tileSize * maxWorldCol;
+        tileSize += zoomAmount;
+        int newWorldWidth = tileSize * maxWorldCol;
+        rescaleImages(tileSize);
+        //setActorPos();
+        System.out.println(tileSize);
+    }
+
+    public void rescaleImages(int tileSize) {
+        // Rescale Entity images
+        for (Entity entity : ent) {
+            if (entity == null) {
+                continue;
+            }
+            BufferedImage originalImage = entity.getImage();
+            int newWidth = (int) (originalImage.getWidth() * tileSize);
+            int newHeight = (int) (originalImage.getHeight() * tileSize);
+            Image scaledImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+            BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = resizedImage.createGraphics();
+            g2d.drawImage(scaledImage, 0, 0, null);
+            g2d.dispose();
+            entity.setImage(resizedImage);
+        }
+
+        // Rescale Tile images
+        for (Tile tile : tileM.tile) {
+            if (tile == null) {
+                continue;
+            }
+            BufferedImage originalImage = tile.getImage();
+            int newWidth = (int) (originalImage.getWidth() * tileSize);
+            int newHeight = (int) (originalImage.getHeight() * tileSize);
+            Image scaledImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+            BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = resizedImage.createGraphics();
+            g2d.drawImage(scaledImage, 0, 0, null);
+            g2d.dispose();
+            tile.setImage(resizedImage);
+        }
+
+        // Rescale SuperObject images
+        for (SuperObject superObject : obj) {
+            if (superObject == null) {
+                continue;
+            }
+            BufferedImage originalImage = superObject.getImage();
+            int newWidth = (int) (originalImage.getWidth() * tileSize);
+            int newHeight = (int) (originalImage.getHeight() * tileSize);
+            Image scaledImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+            BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = resizedImage.createGraphics();
+            g2d.drawImage(scaledImage, 0, 0, null);
+            g2d.dispose();
+            superObject.setImage(resizedImage);
+        }
+    }
+
+
+    private BufferedImage scaleImage(BufferedImage image, int tileSize) {
+        int newWidth = tileSize;
+        int newHeight = tileSize;
+
+        AffineTransform tx = new AffineTransform();
+        tx.scale((double)newWidth / image.getWidth(), (double)newHeight / image.getHeight());
+
+        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+        return op.filter(image, null);
+    }
     @Override
     public synchronized void addMouseListener(MouseListener l) {
         super.addMouseListener(l);

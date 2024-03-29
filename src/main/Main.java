@@ -10,9 +10,7 @@ public class Main {
     public static void main(String[] args) {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
-        window.setTitle("Outpost");
-
-        //create new JFrame for README window?
+        window.setTitle("Loading...");
 
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
@@ -23,5 +21,8 @@ public class Main {
 
         gamePanel.setupGame();
         gamePanel.startGameThread();
+    }
+    public static void setTitle(String title) {
+        window.setTitle(title);
     }
 }

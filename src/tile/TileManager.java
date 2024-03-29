@@ -44,7 +44,15 @@ public class TileManager {
         setup(0, "grass00", false);
         setup(1, "mountain00", true);
         setup(2, "water00", true); //waters 00 and 01 are the impassable border tiles
+
         setup(3, "water01", true);
+        /*
+        frameSet[0] = newSetup("water01");
+        frameSet[1] = newSetup("water01A");
+        frameSet[2] = newSetup("water01B");
+        tile[3].images = frameSet;
+         */
+
         setup(4, "port00", true); //for trading
     }
 
@@ -58,6 +66,7 @@ public class TileManager {
             tile[index].collision = collision;
             tile[index].images[0] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/" + imageName + ".png")));
             tile[index].images[0] = uTool.scaleImage(tile[index].images[0], gp.tileSize, gp.tileSize);
+            tile[index].name = imageName;
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -113,15 +122,15 @@ public class TileManager {
 
         Random rand = gp.rand;
 
-        gp.maxWorldCol = rand.nextInt(49, 80);
-        gp.maxWorldRow = rand.nextInt(49, 80);
+        gp.maxWorldCol = rand.nextInt(64, 94);
+        gp.maxWorldRow = rand.nextInt(64, 94);
 
-        gp.maxWorldCol = 100;
-        gp.maxWorldRow = 100;
-        gp.waterBuffer = 35;
+        gp.waterBuffer = 20;
 
         generateLandMap();
         addWaterMargin();
+        gp.aSetter.setEntity();
+        gp.aSetter.setObject();
     }
     private void addWaterMargin() {
         Random rand = gp.rand;
@@ -149,6 +158,8 @@ public class TileManager {
                 mapTileNum[col][row] = 0;
             }
         }
+        //System.out.println(gp.maxWorldRow);
+        //System.out.println(gp.maxWorldCol);
     }
     public void draw(Graphics2D g2) {
 
@@ -169,6 +180,8 @@ public class TileManager {
                     worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
                     worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                     worldY  - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+                tile[tileNum].worldX = worldX;
+                tile[tileNum].worldY = worldY;
                 g2.drawImage(tile[tileNum].images[tile[tileNum].frame], screenX, screenY, null);
             }
 
