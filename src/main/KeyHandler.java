@@ -38,7 +38,6 @@ public class KeyHandler implements KeyListener {
                             //TODO: Load and enter last game from .dat file
                             break;
                         case 2:
-                            //TODO: Controls/help screen
                             gp.ui.titleScreenState = 2;
                             break;
                         case 3:
@@ -65,7 +64,6 @@ public class KeyHandler implements KeyListener {
                         case 1:
                             gameTypeHolder = 1;
                             gp.gameStart = true;
-                            //TODO: Proper setup
                             gp.gameType = gp.keyH.gameTypeHolder;
                             gp.genFactions(4);
                             gp.gameState = gp.playState;
@@ -77,7 +75,6 @@ public class KeyHandler implements KeyListener {
                             gameTypeHolder = 2;
                             System.out.println(gp.gameType);
                             gp.gameStart = true;
-                            //TODO: Proper setup
                             gp.gameType = gp.keyH.gameTypeHolder;
                             gp.genFactions(4);
                             gp.gameState = gp.playState;
@@ -87,7 +84,6 @@ public class KeyHandler implements KeyListener {
                         case 3:
                             gameTypeHolder = 3;
                             gp.gameStart = true;
-                            //TODO: Proper setup
                             gp.gameType = gp.keyH.gameTypeHolder;
                             gp.genFactions(4);
                             gp.gameState = gp.playState;
@@ -170,6 +166,10 @@ public class KeyHandler implements KeyListener {
             if(code == KeyEvent.VK_RIGHT) {
 
             }
+        }
+        if(code == KeyEvent.VK_R){
+            gp.player.worldX = (gp.maxWorldCol / 2) * gp.tileSize;;
+            gp.player.worldY = (gp.maxWorldRow / 2) * gp.tileSize;;
         }
     }
 

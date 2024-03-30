@@ -8,7 +8,7 @@ import java.net.URL;
 public class Sound {
 
     Clip clip;
-    URL soundURL[] = new URL[40];
+    URL[] soundURL = new URL[40];
 
     public Sound() {
 

@@ -58,6 +58,7 @@ public class Faction {
         if(!isPlayer && !isDefeated) {
             //TODO: build up a nation and all of that stuff
             //TODO: Create StateMachine and actionLock timer
+            //TODO: Update power
             //actionLock: pray to our lord and saviour RyiSnow
         }
     }

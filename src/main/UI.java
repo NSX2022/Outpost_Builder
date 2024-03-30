@@ -1,6 +1,6 @@
 package main;
 
-import entity.Entity;
+import entity.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -43,6 +43,8 @@ public class UI {
     DecimalFormat dFormat = new DecimalFormat("#0.00");
 
     public Boolean showIcons = true;
+
+    //buildMenu
     public Boolean buildMenu = false;
 
     public UI(GamePanel gp) {
@@ -200,7 +202,7 @@ public class UI {
                 g2.drawString(">", x - gp.tileSize ,y);
             }
 
-            text = "Simulation (TODO)";
+            text = "Simulation";
             //player is only an observer
             x = getXforCenteredText(text);
             y += gp.tileSize;
@@ -221,14 +223,9 @@ public class UI {
             g2.drawString(text, x ,y);
 
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20f + baseFontSize));
-            text = "F to toggle flags, G to toggle resource icons";
+            text = "Toggles: F flags, G resource icons, C territory";
             x = getXforCenteredText(text);
             y += gp.tileSize * 2;
-            g2.drawString(text, x, y);
-
-            text = "C to toggle territory";
-            x = getXforCenteredText(text);
-            y += gp.tileSize;
             g2.drawString(text, x, y);
 
             text = "WASD to move camera";
@@ -236,12 +233,32 @@ public class UI {
             y += gp.tileSize;
             g2.drawString(text, x, y);
 
-            text = "-/+ to zoom (TODO)";
+            text = "R to reset camera";
             x = getXforCenteredText(text);
             y += gp.tileSize;
             g2.drawString(text, x, y);
 
-        }
+            text = "SHIFT to open build menu";
+            x = getXforCenteredText(text);
+            y += gp.tileSize;
+            g2.drawString(text, x, y);
+
+            text = "1-9 to select building";
+            x = getXforCenteredText(text);
+            y += gp.tileSize;
+            g2.drawString(text, x, y);
+
+            text = "P to pause";
+            x = getXforCenteredText(text);
+            y += gp.tileSize;
+            g2.drawString(text, x, y);
+
+            text = "ESC to save and quit";
+            x = getXforCenteredText(text);
+            y += gp.tileSize;
+            g2.drawString(text, x, y);
+
+            }
     }
 
     public void drawMessage() {
@@ -287,7 +304,7 @@ public class UI {
     public void drawMenu(Entity entity) {
         String text;
 
-        if(entity.menuType > 0){
+        if(entity.menuType > 0 && !buildMenu){
             //Menu backdrop
             int x = (int) (gp.screenWidth - gp.tileSize * 4);
             int y = 0;
@@ -515,15 +532,22 @@ public class UI {
     }
 
     public void drawBuildMenu(){
-        int x = (int)gp.screenWidth/2 - gp.tileSize *  4;
-        int y;
-        if(buildMenu){
-            y = (int) gp.screenHeight - gp.tileSize *  5;
-            g2.drawImage(shift_tip, x, y, null);
-            //TODO: draw rectangle of menu and building icons and more :D ebin!!! :D :D :D
+        if(gp.gameType != 3){
+            int x = (int)gp.screenWidth/2 - gp.tileSize *  6;
+            int y;
+            if(buildMenu){
+                y = (int) gp.screenHeight - gp.tileSize *  5;
+                g2.drawImage(shift_tip, x, y, null);
+                //TODO: draw rectangle of menu and building icons and more
+                g2.setColor(Color.black);
+                y = (int) gp.screenHeight - gp.tileSize *  4;
+                g2.fillRect(x, y, gp.tileSize * 12, gp.tileSize * 4);
+            }else{
+                y = (int) gp.screenHeight - gp.tileSize;
+                g2.drawImage(shift_tip, x, y, null);
+            }
         }else{
-            y = (int) gp.screenHeight - gp.tileSize;
-            g2.drawImage(shift_tip, x, y, null);
+            buildMenu = false;
         }
     }
 

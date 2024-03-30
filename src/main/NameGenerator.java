@@ -24,7 +24,8 @@ public class NameGenerator {
             "Exiles", "Outcasts", "Founders", "Good", "Ideals", "Empire", "Imperial", "Travellers", "Huntsmen",
             "Guardians", "Wall", "Force", "Students", "Devotees", "Firepower", "Escalation", "Elite", "Kingdom",
             "Fiefdom", "Dukes", "Lords", "Age", "Papacy", "Temple", "Church", "Order", "Cabal", "Cult", "Lore",
-            "Legend", "Myth", "Crusade", "Crusaders", "Tower", "Fortress", "Progenitor"
+            "Legend", "Myth", "Crusade", "Crusaders", "Tower", "Fortress", "Progenitor", "Division", "Ghost",
+            "Elites", "League", "Confederacy", "Federation", "Infiltration", "Kings", "Men", "Dead"
     };
 
     protected static String[] adjectives = {
@@ -42,7 +43,8 @@ public class NameGenerator {
             "Repulsive", "Stolen", "Waiting", "Cowering", "Charging", "Collapsing", "Evil", "Hardened", "Rabid", "Double", "Long", "Berserk",
             "Barren", "Brazen", "Hated", "Hollow", "Branded", "Whole", "Holy", "Unholy", "Bought", "Sold", "Captured", "Deep", "Sleeping",
             "Shallow", "Honest", "Young", "Drowning", "Bizarre", "Heroic", "Forced", "Voluntary", "Violent", "Peaceful", "Weeping",
-            "Sons of the", "The Greater", "The Lesser", "Legion of"
+            "Sons of the", "The Greater", "The Lesser", "Legion of", "Elite", "Fast", "Fast and Violent", "Last of all", "First of all",
+            "Miserable", "Unforgiving", "Steel"
     };
 
     private boolean positionIsOdd(int i) {
@@ -94,21 +96,15 @@ public class NameGenerator {
             }else{
                 message = word1 + "'s " + word2;
             }
-
-
-            return message;
         }else{
-
             while(Objects.equals(word1, word2))
             {
                 word1 = getAdj();
                 word2 = getNoun();
             }
-
             message = word1 + " " + word2;
-
-            return message;
         }
+        return message;
     }
 
     private char getConsonant(Random randomNumberGenerator) {

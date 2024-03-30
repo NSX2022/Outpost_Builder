@@ -84,7 +84,7 @@ public class Entity {
             g2.drawRect(clickArea.x, clickArea.y, clickArea.width, clickArea.height);
         }
 
-        if(menuOn) {
+        if(menuOn && !gp.ui.buildMenu) {
             gp.ui.drawMenu(this);
             g2.setColor(Color.white);
             g2.drawRect(clickArea.x, clickArea.y, clickArea.width, clickArea.height);
