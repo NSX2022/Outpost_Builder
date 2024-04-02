@@ -14,7 +14,7 @@ public class ENT_Boulder extends Entity{
     public ENT_Boulder(GamePanel gp) {
         super(gp);
         name = "Boulder";
-        health = 100;
+        health = 300;
         images[0] = setup("/entity/tile_entity/boulder",1);
         maxHealth = health;
         reIndex = -1;

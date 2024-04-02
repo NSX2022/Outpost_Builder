@@ -16,6 +16,8 @@ public class ENT_Farm extends Building {
         reIndex = 8;
         menuType = 1;
         resourceYield = 2;
+        powerVal = 2;
+        resCost = new int[]{0,2,4,0,0,1,0,0,0};
     }
 
     public BufferedImage image() {

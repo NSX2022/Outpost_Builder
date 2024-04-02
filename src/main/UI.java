@@ -36,10 +36,27 @@ public class UI {
 
     //Build menu
     public BufferedImage shift_tip;
+    public BufferedImage money_icon_mini;
+    public BufferedImage wheat_icon_mini;
+    public BufferedImage lumber_icon_mini;
+    public BufferedImage iron_icon_mini;
+    public BufferedImage stone_icon_mini;
+    public BufferedImage gold_icon_mini;
+    public BufferedImage smokeleaf_icon_mini;
+    public BufferedImage silk_icon_mini;
+    public BufferedImage gem_icon_mini;
+    //contd.
+    public BufferedImage farm;
+    public BufferedImage mine;
+    public BufferedImage fortress;
+    public BufferedImage outpost;
+    public BufferedImage wall;
+    public BufferedImage logging_camp;
+    public BufferedImage quarry;
+    public int menuNum;
 
     public int baseFontSize = 6;
 
-    public double playTime = 0;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
 
     public Boolean showIcons = true;
@@ -78,7 +95,29 @@ public class UI {
         silk_icon = setup("/ui/icons/silk_icon",2);
         gem_icon = setup("/ui/icons/gem_icon",2);
 
+        //Build Menu
         shift_tip = setup("/ui/build_menu/shift_tip",1);
+
+        money_icon_mini = setup("/ui/icons/money_icon",3);
+        wheat_icon_mini = setup("/ui/icons/wheat_icon",3);
+        lumber_icon_mini = setup("/ui/icons/lumber_icon",3);
+        iron_icon_mini = setup("/ui/icons/iron_icon",3);
+        stone_icon_mini = setup("/ui/icons/stone_icon",3);
+        gold_icon_mini = setup("/ui/icons/gold_icon",3);
+        smokeleaf_icon_mini = setup("/ui/icons/smokeleaf_icon",3);
+        silk_icon_mini = setup("/ui/icons/silk_icon",3);
+        gem_icon_mini = setup("/ui/icons/gem_icon",3);
+        //icons for buildings
+        farm = setup("/entity/tile_entity/farm",1);
+        mine = setup("/entity/tile_entity/mine",1);
+        fortress = setup("/entity/tile_entity/building_fortress",1);
+        outpost = setup("/entity/tile_entity/outpost",1);
+        wall = setup("/entity/tile_entity/wall_cross",1);
+        logging_camp = setup("/entity/tile_entity/logging_camp",1);
+        quarry = setup("/entity/tile_entity/quarry",1);
+
+
+
     }
 
     public void draw(Graphics2D g2) {
@@ -404,7 +443,7 @@ public class UI {
                     text = "[click] to exit";
                     g2.drawString(text, x, y);
 
-                    //TODO: Player faction info + faction management
+                    //Player faction info + faction management???
                     break;
                 case 3:
                     //King's Court (AI)
@@ -533,15 +572,56 @@ public class UI {
 
     public void drawBuildMenu(){
         if(gp.gameType != 3){
+            int[] menuCosts = new int[9];
+
             int x = (int)gp.screenWidth/2 - gp.tileSize *  6;
             int y;
             if(buildMenu){
                 y = (int) gp.screenHeight - gp.tileSize *  5;
                 g2.drawImage(shift_tip, x, y, null);
-                //TODO: draw rectangle of menu and building icons and more
                 g2.setColor(Color.black);
                 y = (int) gp.screenHeight - gp.tileSize *  4;
                 g2.fillRect(x, y, gp.tileSize * 12, gp.tileSize * 4);
+
+                //TODO: Menu details
+                //Farm
+                menuNum = 1;
+                x = (int)gp.screenWidth/2 - gp.tileSize *  6;
+                y = (int) gp.screenHeight - gp.tileSize * 4;
+                menuCosts = new int[]{0,2,4,0,0,1,0,0,0};
+                drawMenuBuildCost(x, y, menuCosts, farm);
+                //Mine
+                menuNum = 2;
+                x += (int) (gp.tileSize * 1.1);
+                menuCosts = new int[]{0,1,6,0,0,1,0,0,3};
+                drawMenuBuildCost(x, y, menuCosts, mine);
+                //Fortress
+                menuNum = 3;
+                x += (int) (gp.tileSize * 1.1);
+                menuCosts = new int[]{0,6,4,10,0,10,0,0,16};
+                drawMenuBuildCost(x, y, menuCosts, fortress);
+                //Outpost
+                menuNum = 4;
+                x += (int) (gp.tileSize * 1.1);
+                menuCosts = new int[]{0,2,2,0,0,1,0,0,4};
+                drawMenuBuildCost(x, y, menuCosts, outpost);
+                //Wall
+                menuNum = 5;
+                x += (int) (gp.tileSize * 0.6);
+                menuCosts = new int[]{0,2,0,0,0,0,0,0,1};
+                drawMenuBuildCost(x, y, menuCosts, wall);
+                //Lumberyard
+                menuNum = 6;
+                x += (int) (gp.tileSize * 1.1);
+                menuCosts = new int[]{0,4,0,0,0,2,0,0,8};
+                drawMenuBuildCost(x, y, menuCosts, logging_camp);
+                //Quarry
+                menuNum = 7;
+                x += (int) (gp.tileSize * 1.1);
+                menuCosts = new int[]{0,0,3,0,0,3,0,0,6};
+                drawMenuBuildCost(x, y, menuCosts, quarry);
+
+
             }else{
                 y = (int) gp.screenHeight - gp.tileSize;
                 g2.drawImage(shift_tip, x, y, null);
@@ -551,14 +631,81 @@ public class UI {
         }
     }
 
-    public BufferedImage setup(String imagePath, int divider) {
+    public void drawMenuBuildCost(int x, int y, int[] costs, BufferedImage building){
+        int xPos = x;
+        int yPos = y;
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 8f + baseFontSize));
+        g2.drawImage(building, xPos, yPos, null);
+
+        yPos += (int) (gp.tileSize/2);
+
+        g2.setColor(Color.yellow);
+        g2.drawString(String.valueOf(menuNum), xPos, yPos);
+
+        yPos += (int) (gp.tileSize/3.2);
+        for(int i = 0; i < costs.length; i++){
+            if(costs[i] > 0){
+                yPos += (int) (gp.tileSize/2.1);
+                switch (i){
+                    case 0:
+                        g2.drawImage(gold_icon_mini, xPos, yPos, null);
+                        g2.setColor(Color.pink);
+                        g2.drawString(String.valueOf(costs[i]), xPos, yPos);
+                        break;
+                    case 1:
+                        g2.drawImage(stone_icon_mini, xPos, yPos, null);
+                        g2.setColor(Color.pink);
+                        g2.drawString(String.valueOf(costs[i]), xPos, yPos);
+                        break;
+                    case 2:
+                        g2.drawImage(lumber_icon_mini, xPos, yPos, null);
+                        g2.setColor(Color.pink);
+                        g2.drawString(String.valueOf(costs[i]), xPos, yPos);
+                        break;
+                    case 3:
+                        g2.drawImage(money_icon_mini, xPos, yPos, null);
+                        g2.setColor(Color.pink);
+                        g2.drawString(String.valueOf(costs[i]), xPos, yPos);
+                        break;
+                    case 4:
+                        g2.drawImage(smokeleaf_icon_mini, xPos, yPos, null);
+                        g2.setColor(Color.pink);
+                        g2.drawString(String.valueOf(costs[i]), xPos, yPos);
+                        break;
+                    case 5:
+                        g2.drawImage(iron_icon_mini, xPos, yPos, null);
+                        g2.setColor(Color.pink);
+                        g2.drawString(String.valueOf(costs[i]), xPos, yPos);
+                        break;
+                    case 6:
+                        g2.drawImage(silk_icon_mini, xPos, yPos, null);
+                        g2.setColor(Color.pink);
+                        g2.drawString(String.valueOf(costs[i]), xPos, yPos);
+                        break;
+                    case 7:
+                        g2.drawImage(gem_icon_mini, xPos, yPos, null);
+                        g2.setColor(Color.pink);
+                        g2.drawString(String.valueOf(costs[i]), xPos, yPos);
+                        break;
+                    case 8:
+                        g2.drawImage(wheat_icon_mini, xPos, yPos, null);
+                        g2.setColor(Color.pink);
+                        g2.drawString(String.valueOf(costs[i]), xPos, yPos);
+                        break;
+                }
+            }
+        }
+
+    }
+
+    public BufferedImage setup(String imagePath, double divider) {
 
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
 
         try{
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(imagePath + ".png")));
-            image = uTool.scaleImage(image, gp.tileSize / divider, gp.tileSize / divider);
+            image = uTool.scaleImage(image, (int) (gp.tileSize / divider), (int) (gp.tileSize / divider));
         }catch(IOException e){
             e.printStackTrace();
         }

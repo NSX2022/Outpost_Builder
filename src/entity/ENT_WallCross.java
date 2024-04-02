@@ -14,6 +14,7 @@ public class ENT_WallCross extends Building {
         maxHealth = health;
         reIndex = -1;
         menuType = 0;
+        resCost = new int[]{0,2,0,0,0,0,0,0,1};
         //Adjust solidArea if Citizen entities can walk through it
     }
 

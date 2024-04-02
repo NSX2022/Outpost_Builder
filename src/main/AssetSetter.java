@@ -3,7 +3,6 @@ package main;
 
 import entity.*;
 import faction.Faction;
-import object.*;
 
 import java.util.Random;
 
@@ -89,7 +88,7 @@ public class AssetSetter {
             case "hut_building":
                 for(int i = 0; i < gp.ent.length; i++)  {
                     if(gp.ent[i] == null) {
-                        ent = new ENT_Hut(gp, faction);
+                        ent = new ENT_Outpost(gp, faction);
                         ent.worldX = x * gp.tileSize;
                         ent.worldY = y * gp.tileSize;
 
@@ -223,7 +222,7 @@ public class AssetSetter {
             case "hut_building":
                 for(int i = 0; i < gp.ent.length; i++)  {
                     if(gp.ent[i] == null) {
-                        ent = new ENT_Hut(gp, faction);
+                        ent = new ENT_Outpost(gp, faction);
                         ent.worldX = x * gp.tileSize;
                         ent.worldY = y * gp.tileSize;
 

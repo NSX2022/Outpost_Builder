@@ -27,7 +27,7 @@ public class Faction {
     public int[] resources = new int[]{0,8,8,0,0,8,0,0,10};
     public int gpPos = -1;
 
-    //King's Court as the central building, when clicked opens a menu to view whole faction
+    //King's Court as the central building, when clicked opens a menu to view whole faction?
     public Entity[] factionBuildings = new Entity[99];
 
     public int population;
@@ -42,7 +42,7 @@ public class Faction {
 
     }
 
-    //Power based off of number of buildings, military, and resources
+    //Power based off of number of buildings, military
     public int power = 0;
 
     //Default

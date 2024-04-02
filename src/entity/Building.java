@@ -15,15 +15,16 @@ import java.io.IOException;
 
 public class Building extends Entity{
 
-    //TODO: Bind faction flags to each building
-
-    enum buildingState {
+    public enum buildingState {
         NORMAL,
         DAMAGED,
         DEFEATED
     }
 
     public OBJ_Flag flag = new OBJ_Flag(gp);
+    //Index 0 = gold, 1 = stone, 2 = lumber, 3 = money, 4 = smokeleaf, 5 = iron, 6 = silk, 7 = gem, 8 = wheat
+    public int[] resCost = new int[]{0,0,0,0,0,0,0,0,0};
+    int powerVal = 0;
 
     public Building(GamePanel gp, Faction faction) {
         super(gp);

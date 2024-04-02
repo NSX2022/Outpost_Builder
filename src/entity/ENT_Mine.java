@@ -16,6 +16,8 @@ public class ENT_Mine extends Building {
         reIndex = 5;
         menuType = 1;
         resourceYield = 1;
+        powerVal = 2;
+        resCost = new int[]{0,1,6,0,0,1,0,0,3};
     }
 
     public BufferedImage image() {

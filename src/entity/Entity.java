@@ -81,11 +81,14 @@ public class Entity {
         }
 
         if(gp.keyH.checkDrawTime) {
+            g2.setColor(Color.magenta);
             g2.drawRect(clickArea.x, clickArea.y, clickArea.width, clickArea.height);
         }
 
-        if(menuOn && !gp.ui.buildMenu) {
-            gp.ui.drawMenu(this);
+        if(menuOn) {
+            if(gp.ui.buildMenu){
+                gp.ui.drawMenu(this);
+            }
             g2.setColor(Color.white);
             g2.drawRect(clickArea.x, clickArea.y, clickArea.width, clickArea.height);
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20f));
