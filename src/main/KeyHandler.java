@@ -1,5 +1,9 @@
 package main;
 
+import entity.Building;
+import entity.ENT_Farm;
+import entity.Entity;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -272,14 +276,82 @@ public class KeyHandler implements KeyListener {
         }
         if(canPlace){
             if(code == KeyEvent.VK_ENTER){
-                //TODO: place building after checking if space occupied by building or entity
-                if(gp.factions[0].territory.intersects(gp.ui.preview.territoryCheck)){
-                    //check all entities and objects
-                    //testing
-                    //System.out.println("toPlace value: " + toPlace);
+                if(canPlace()){
+                    switch (toPlace){
+                        //TODO: Check if the player has enough resources
+                        case 1:
+                            //Farm
+                            if(canAfford(gp.ui.farmCost)) {
+                                for (int i = 0; i < gp.factions[0].factionBuildings.length; i++) {
+                                    if (gp.factions[0].factionBuildings[i] == null) {
+                                        Entity ent = new ENT_Farm(gp, gp.factions[0]);
+                                        gp.factions[0].factionBuildings[i] = ent;
+                                        ent.worldX = gp.ui.preview.worldX;
+                                        ent.worldY = gp.ui.preview.worldY;
+                                        for (int j = 0; j < gp.ent.length; j++) {
+                                            if (gp.ent[j] == null) {
+                                                gp.ent[j] = ent;
+                                                j = 9999999;
+                                            }
+                                        }
+                                        //System.out.println("place attempt FARM");
 
+                                        //TODO: Subtract required resources
+                                        //gp.factions[0].resources -= gp.ui.farmCost;
+                                        ent = null;
+                                        break;
+                                    }
+                                }
+                            }else{
+                                gp.ui.addMessage("Can't afford to place this");
+                                break;
+                            }
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+                        case 5:
+                            break;
+                        case 6:
+                            break;
+                        case 7:
+                            break;
+                    }
                 }
             }
         }
     }
+
+    public boolean canPlace(){
+
+        if(gp.factions[0].territory.intersects(gp.ui.preview.territoryCheck)){
+            //check all entities and objects
+            //TODO: Check if place attempt is on land
+
+            for(int i = 0; i < gp.factions.length; i++) {
+                if(gp.factions[i] != null) {
+                    for(int k = 0; k < gp.factions[i].factionBuildings.length; k++) {
+                        if(gp.factions[i].factionBuildings[k] != null && gp.factions[i].factionBuildings[k].worldX == gp.ui.preview.worldX
+                        && gp.factions[i].factionBuildings[k].worldY == gp.ui.preview.worldY){
+                            gp.ui.addMessage("Space is occupied");
+                            return false;
+                        }
+                    }
+                }
+            }
+            System.out.println("toPlace value: " + toPlace);
+            return true;
+        }else{
+            gp.ui.addMessage("Place within your territory");
+        }
+        return false;
+    }
+        public boolean canAfford(int[] costs){
+
+
+
+            return false;
+        }
 }
