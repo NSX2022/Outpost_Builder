@@ -15,7 +15,6 @@ public class ENT_Lumberyard extends Building {
         reIndex = 2;
         menuType = 1;
         powerVal = 2;
-        resCost = new int[]{0,4,0,0,0,2,0,0,8};
     }
 
     public BufferedImage image() {

@@ -1,0 +1,3 @@
+-Remove quarry??
+Change territory.contains() to territory.intersects() if necessary
+TODO: Set int[]{} values for all building costs as public variables in UI

@@ -9,6 +9,8 @@ public class KeyHandler implements KeyListener {
     public boolean checkDrawTime = false;
     GamePanel gp;
     public int gameTypeHolder;
+    public int toPlace;
+    public boolean canPlace = false;
 
     //In-game view
     public boolean drawFactionFlags = true;
@@ -150,22 +152,71 @@ public class KeyHandler implements KeyListener {
         }
 
         //TODO: Arrow keys to move where a building should be placed after selecting it
-        if(code == KeyEvent.VK_SHIFT){
-            gp.ui.buildMenu = !gp.ui.buildMenu;
-        }
         if(gp.ui.buildMenu){
             if(code == KeyEvent.VK_UP) {
-
+                gp.ui.preview.worldY -= gp.tileSize;
             }
             if(code == KeyEvent.VK_DOWN) {
-
+                gp.ui.preview.worldY += gp.tileSize;
             }
             if(code == KeyEvent.VK_LEFT) {
-
+                gp.ui.preview.worldX -= gp.tileSize;
             }
             if(code == KeyEvent.VK_RIGHT) {
-
+                gp.ui.preview.worldX += gp.tileSize;
             }
+
+            //Select building from menu
+            if(code == KeyEvent.VK_1){
+                gp.ui.addMessage("ENTER to place Farm");
+                toPlace = 1;
+                gp.ui.preview.setImage(gp.ui.farm);
+                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
+                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+            }
+            if(code == KeyEvent.VK_2){
+                gp.ui.addMessage("ENTER to place Mine");
+                toPlace = 2;
+                gp.ui.preview.setImage(gp.ui.mine);
+                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
+                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+            }
+            if(code == KeyEvent.VK_3){
+                gp.ui.addMessage("ENTER to place Fortress");
+                toPlace = 3;
+                gp.ui.preview.setImage(gp.ui.fortress);
+                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
+                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+            }
+            if(code == KeyEvent.VK_4){
+                gp.ui.addMessage("ENTER to place Outpost");
+                toPlace = 4;
+                gp.ui.preview.setImage(gp.ui.outpost);
+                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
+                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+            }
+            if(code == KeyEvent.VK_5){
+                gp.ui.addMessage("ENTER to place Wall");
+                toPlace = 5;
+                gp.ui.preview.setImage(gp.ui.wall);
+                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
+                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+            }
+            if(code == KeyEvent.VK_6){
+                gp.ui.addMessage("ENTER to place Lumberyard");
+                toPlace = 6;
+                gp.ui.preview.setImage(gp.ui.logging_camp);
+                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
+                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+            }
+            if(code == KeyEvent.VK_7){
+                gp.ui.addMessage("ENTER to place Quarry");
+                toPlace = 7;
+                gp.ui.preview.setImage(gp.ui.quarry);
+                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
+                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+            }
+
         }
         if(code == KeyEvent.VK_R){
             gp.player.worldX = (gp.maxWorldCol / 2) * gp.tileSize;;
@@ -204,6 +255,31 @@ public class KeyHandler implements KeyListener {
         }
         if(code == KeyEvent.VK_C) {
             gp.showTerritory = !gp.showTerritory;
+        }
+
+        //Build menu
+        if(code == KeyEvent.VK_SHIFT){
+            if(gp.ui.buildMenu){
+                //TODO: Unselect to-be-built building
+                canPlace = false;
+                gp.ui.preview.worldX = 99999;
+                gp.ui.preview.worldY = 99999;
+
+            }else{
+                canPlace = true;
+            }
+            gp.ui.buildMenu = !gp.ui.buildMenu;
+        }
+        if(canPlace){
+            if(code == KeyEvent.VK_ENTER){
+                //TODO: place building after checking if space occupied by building or entity
+                if(gp.factions[0].territory.intersects(gp.ui.preview.territoryCheck)){
+                    //check all entities and objects
+                    //testing
+                    //System.out.println("toPlace value: " + toPlace);
+
+                }
+            }
         }
     }
 }

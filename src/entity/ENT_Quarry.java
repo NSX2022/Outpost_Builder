@@ -16,7 +16,6 @@ public class ENT_Quarry extends Building {
         reIndex = 1;
         menuType = 1;
         powerVal = 2;
-        resCost = new int[]{0,0,3,0,1,2,0,0,6};
     }
 
     public BufferedImage image() {

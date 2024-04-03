@@ -6,18 +6,20 @@ import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
 import java.io.IOException;
 import java.util.Objects;
 
 public class Entity {
     public volatile int worldX, worldY;
     public int speed;
+    public ColorConvertOp op = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
 
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
     public String direction;
 
-    public int spriteCounter = 0;
     public int spriteNum = 1;
 
     //Menu when each building is clicked
@@ -78,6 +80,11 @@ public class Entity {
                 worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                 worldY  - gp.tileSize < gp.player.worldY + gp.player.screenY) {
             g2.drawImage(images[frame], screenX, screenY, null);
+        }
+
+        if (this instanceof Build_Preview) {
+            g2.setColor(Color.white);
+            g2.drawRect(((Build_Preview) this).territoryCheck.x, ((Build_Preview) this).territoryCheck.y, ((Build_Preview) this).territoryCheck.width, ((Build_Preview) this).territoryCheck.height);
         }
 
         if(gp.keyH.checkDrawTime) {

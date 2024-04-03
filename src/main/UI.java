@@ -54,6 +54,16 @@ public class UI {
     public BufferedImage logging_camp;
     public BufferedImage quarry;
     public int menuNum;
+    public Build_Preview preview;
+
+    //ONE place to put building cost values, edit them here
+    public int[] farmCost = {0,2,4,0,0,1,0,0,0};
+    public int[] mineCost = {0,1,6,0,0,1,0,0,3};
+    public int[] fortCost = {0,6,4,10,0,10,0,0,16};
+    public int[] outpostCost = {0,2,2,0,0,1,0,0,4};
+    public int[] wallCost = {0,2,0,0,0,0,0,0,1};
+    public int[] lumberyardCost = {0,4,0,0,0,2,0,0,8};
+    public int[] quarryCost = {0,0,3,0,1,2,0,0,6};
 
     public int baseFontSize = 6;
 
@@ -75,7 +85,12 @@ public class UI {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         loadIcons();
+        preview = new Build_Preview(gp, farm);
+        preview.worldX = 99999;
+        preview.worldY = 99999;
+        farm = setup("/entity/tile_entity/farm",1);
     }
 
     public void addMessage(String text) {
@@ -115,8 +130,6 @@ public class UI {
         wall = setup("/entity/tile_entity/wall_cross",1);
         logging_camp = setup("/entity/tile_entity/logging_camp",1);
         quarry = setup("/entity/tile_entity/quarry",1);
-
-
 
     }
 
@@ -572,7 +585,6 @@ public class UI {
 
     public void drawBuildMenu(){
         if(gp.gameType != 3){
-            int[] menuCosts = new int[9];
 
             int x = (int)gp.screenWidth/2 - gp.tileSize *  6;
             int y;
@@ -583,43 +595,35 @@ public class UI {
                 y = (int) gp.screenHeight - gp.tileSize *  4;
                 g2.fillRect(x, y, gp.tileSize * 12, gp.tileSize * 4);
 
-                //TODO: Menu details
                 //Farm
                 menuNum = 1;
                 x = (int)gp.screenWidth/2 - gp.tileSize *  6;
                 y = (int) gp.screenHeight - gp.tileSize * 4;
-                menuCosts = new int[]{0,2,4,0,0,1,0,0,0};
-                drawMenuBuildCost(x, y, menuCosts, farm);
+                drawMenuBuildCost(x, y, farmCost, farm);
                 //Mine
                 menuNum = 2;
                 x += (int) (gp.tileSize * 1.1);
-                menuCosts = new int[]{0,1,6,0,0,1,0,0,3};
-                drawMenuBuildCost(x, y, menuCosts, mine);
+                drawMenuBuildCost(x, y, mineCost, mine);
                 //Fortress
                 menuNum = 3;
                 x += (int) (gp.tileSize * 1.1);
-                menuCosts = new int[]{0,6,4,10,0,10,0,0,16};
-                drawMenuBuildCost(x, y, menuCosts, fortress);
+                drawMenuBuildCost(x, y, fortCost, fortress);
                 //Outpost
                 menuNum = 4;
                 x += (int) (gp.tileSize * 1.1);
-                menuCosts = new int[]{0,2,2,0,0,1,0,0,4};
-                drawMenuBuildCost(x, y, menuCosts, outpost);
+                drawMenuBuildCost(x, y, outpostCost, outpost);
                 //Wall
                 menuNum = 5;
                 x += (int) (gp.tileSize * 0.6);
-                menuCosts = new int[]{0,2,0,0,0,0,0,0,1};
-                drawMenuBuildCost(x, y, menuCosts, wall);
+                drawMenuBuildCost(x, y, wallCost, wall);
                 //Lumberyard
                 menuNum = 6;
                 x += (int) (gp.tileSize * 1.1);
-                menuCosts = new int[]{0,4,0,0,0,2,0,0,8};
-                drawMenuBuildCost(x, y, menuCosts, logging_camp);
+                drawMenuBuildCost(x, y, lumberyardCost, logging_camp);
                 //Quarry
                 menuNum = 7;
                 x += (int) (gp.tileSize * 1.1);
-                menuCosts = new int[]{0,0,3,0,0,3,0,0,6};
-                drawMenuBuildCost(x, y, menuCosts, quarry);
+                drawMenuBuildCost(x, y, quarryCost, quarry);
 
 
             }else{

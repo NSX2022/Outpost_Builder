@@ -41,11 +41,10 @@ Miscellaneous:
 
 Game Structure/Map:
     -Factions spawn in map corners ✓
-        -TODO: add scaling map functionality
     -Player spawns in map center ✓
     -Ports spawn in center of map sides
 
-    -Building Menu opened with L-SHIFT
+    -Building Menu opened with L-SHIFT✓
         -select building with numbers keys (ONLY WHILE MENU IS OPEN)
         -building placeholder is spawned at the player
             -move the placeholder with arrow keys

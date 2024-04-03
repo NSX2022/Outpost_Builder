@@ -60,7 +60,6 @@ public class GamePanel extends JPanel implements Runnable {
     public CollisionChecker cChecker = new CollisionChecker(this);
     public Sound music = new Sound();
     public Sound se = new Sound();
-    public UI ui = new UI(this);
     public UtilityTool uTool = new UtilityTool();
     Thread gameThread;
     public int latestFPS;
@@ -74,6 +73,9 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, keyH);
     public SuperObject[] obj = new SuperObject[objDisplayLimit];
     public Entity[] ent = new Entity[entDisplayLimit];
+
+    //UI
+    public UI ui = new UI(this);
 
     //game state
     public int gameState;
@@ -279,6 +281,9 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
+            ui.preview.territoryCheck.x = ui.preview.worldX - player.worldX + player.screenX;
+            ui.preview.territoryCheck.y = ui.preview.worldY - player.worldY + player.screenY;
+
             for(int i = 0; i < ent.length; i++) {
                 //check to see if the click point touches the draw area of an entity (Building, Citizen)
                 if(ent[i] != null && !Objects.equals(ent[i].name, "camera") && gameState == playState) {
@@ -424,6 +429,8 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
+            ui.preview.draw(g2, this);
+
             player.draw(g2);
 
             //UI
@@ -504,14 +511,14 @@ public class GamePanel extends JPanel implements Runnable {
                 break;
             case 1:
                 player.playerFaction.resources[0] = 0;
-                player.playerFaction.resources[1] = 8;
+                player.playerFaction.resources[1] = 12;
                 player.playerFaction.resources[2] = 8;
                 player.playerFaction.resources[3] = 0;
                 player.playerFaction.resources[4] = 0;
                 player.playerFaction.resources[5] = 8;
                 player.playerFaction.resources[6] = 0;
                 player.playerFaction.resources[7] = 0;
-                player.playerFaction.resources[8] = 10;
+                player.playerFaction.resources[8] = 20;
 
                 player.playerFaction.isPlayer = true;
                 player.playerFaction.playerRep = 999;
