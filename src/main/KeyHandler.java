@@ -1,8 +1,7 @@
 package main;
 
-import entity.Building;
-import entity.ENT_Farm;
-import entity.Entity;
+import entity.*;
+import faction.Faction;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -294,10 +293,8 @@ public class KeyHandler implements KeyListener {
                                                 j = 9999999;
                                             }
                                         }
-                                        //System.out.println("place attempt FARM");
 
-                                        //TODO: Subtract required resources
-                                        //gp.factions[0].resources -= gp.ui.farmCost;
+                                        subtractResources(gp.factions[0], gp.ui.farmCost);
                                         ent = null;
                                         break;
                                     }
@@ -306,17 +303,162 @@ public class KeyHandler implements KeyListener {
                                 gp.ui.addMessage("Can't afford to place this");
                                 break;
                             }
+                            break;
                         case 2:
+                            //Mine
+                            if(canAfford(gp.ui.mineCost)) {
+                                for (int i = 0; i < gp.factions[0].factionBuildings.length; i++) {
+                                    if (gp.factions[0].factionBuildings[i] == null) {
+                                        Entity ent = new ENT_Mine(gp, gp.factions[0]);
+                                        gp.factions[0].factionBuildings[i] = ent;
+                                        ent.worldX = gp.ui.preview.worldX;
+                                        ent.worldY = gp.ui.preview.worldY;
+                                        for (int j = 0; j < gp.ent.length; j++) {
+                                            if (gp.ent[j] == null) {
+                                                gp.ent[j] = ent;
+                                                j = 9999999;
+                                            }
+                                        }
+
+                                        subtractResources(gp.factions[0], gp.ui.mineCost);
+                                        ent = null;
+                                        break;
+                                    }
+                                }
+                            }else{
+                                gp.ui.addMessage("Can't afford to place this");
+                                break;
+                            }
                             break;
                         case 3:
+                            //Fortress
+                            if(canAfford(gp.ui.fortCost)) {
+                                for (int i = 0; i < gp.factions[0].factionBuildings.length; i++) {
+                                    if (gp.factions[0].factionBuildings[i] == null) {
+                                        Entity ent = new ENT_Fortress(gp, gp.factions[0]);
+                                        gp.factions[0].factionBuildings[i] = ent;
+                                        ent.worldX = gp.ui.preview.worldX;
+                                        ent.worldY = gp.ui.preview.worldY;
+                                        for (int j = 0; j < gp.ent.length; j++) {
+                                            if (gp.ent[j] == null) {
+                                                gp.ent[j] = ent;
+                                                j = 9999999;
+                                            }
+                                        }
+
+                                        subtractResources(gp.factions[0], gp.ui.fortCost);
+                                        ent = null;
+                                        break;
+                                    }
+                                }
+                            }else{
+                                gp.ui.addMessage("Can't afford to place this");
+                                break;
+                            }
                             break;
                         case 4:
+                            //Outpost
+                            if(canAfford(gp.ui.outpostCost)) {
+                                for (int i = 0; i < gp.factions[0].factionBuildings.length; i++) {
+                                    if (gp.factions[0].factionBuildings[i] == null) {
+                                        Entity ent = new ENT_Outpost(gp, gp.factions[0]);
+                                        gp.factions[0].factionBuildings[i] = ent;
+                                        ent.worldX = gp.ui.preview.worldX;
+                                        ent.worldY = gp.ui.preview.worldY;
+                                        for (int j = 0; j < gp.ent.length; j++) {
+                                            if (gp.ent[j] == null) {
+                                                gp.ent[j] = ent;
+                                                j = 9999999;
+                                            }
+                                        }
+
+                                        subtractResources(gp.factions[0], gp.ui.outpostCost);
+                                        ent = null;
+                                        break;
+                                    }
+                                }
+                            }else{
+                                gp.ui.addMessage("Can't afford to place this");
+                                break;
+                            }
                             break;
                         case 5:
+                            //Wall
+                            if(canAfford(gp.ui.wallCost)) {
+                                for (int i = 0; i < gp.factions[0].factionBuildings.length; i++) {
+                                    if (gp.factions[0].factionBuildings[i] == null) {
+                                        Entity ent = new ENT_WallCross(gp, gp.factions[0]);
+                                        gp.factions[0].factionBuildings[i] = ent;
+                                        ent.worldX = gp.ui.preview.worldX;
+                                        ent.worldY = gp.ui.preview.worldY;
+                                        for (int j = 0; j < gp.ent.length; j++) {
+                                            if (gp.ent[j] == null) {
+                                                gp.ent[j] = ent;
+                                                j = 9999999;
+                                            }
+                                        }
+
+                                        subtractResources(gp.factions[0], gp.ui.wallCost);
+                                        ent = null;
+                                        break;
+                                    }
+                                }
+                            }else{
+                                gp.ui.addMessage("Can't afford to place this");
+                                break;
+                            }
                             break;
                         case 6:
+                            //Lumberyard
+                            if(canAfford(gp.ui.lumberyardCost)) {
+                                for (int i = 0; i < gp.factions[0].factionBuildings.length; i++) {
+                                    if (gp.factions[0].factionBuildings[i] == null) {
+                                        Entity ent = new ENT_Lumberyard(gp, gp.factions[0]);
+                                        gp.factions[0].factionBuildings[i] = ent;
+                                        ent.worldX = gp.ui.preview.worldX;
+                                        ent.worldY = gp.ui.preview.worldY;
+                                        for (int j = 0; j < gp.ent.length; j++) {
+                                            if (gp.ent[j] == null) {
+                                                gp.ent[j] = ent;
+                                                j = 9999999;
+                                            }
+                                        }
+
+                                        subtractResources(gp.factions[0], gp.ui.lumberyardCost);
+                                        ent = null;
+                                        break;
+                                    }
+                                }
+                            }else{
+                                gp.ui.addMessage("Can't afford to place this");
+                                break;
+                            }
                             break;
                         case 7:
+                            //Quarry
+                            if(canAfford(gp.ui.quarryCost)) {
+                                for (int i = 0; i < gp.factions[0].factionBuildings.length; i++) {
+                                    if (gp.factions[0].factionBuildings[i] == null) {
+                                        Entity ent = new ENT_Quarry(gp, gp.factions[0]);
+                                        gp.factions[0].factionBuildings[i] = ent;
+                                        ent.worldX = gp.ui.preview.worldX;
+                                        ent.worldY = gp.ui.preview.worldY;
+                                        for (int j = 0; j < gp.ent.length; j++) {
+                                            if (gp.ent[j] == null) {
+                                                gp.ent[j] = ent;
+                                                j = 9999999;
+                                            }
+                                        }
+
+                                        subtractResources(gp.factions[0], gp.ui.quarryCost);
+                                        ent = null;
+                                        break;
+                                    }
+                                }
+                            }else{
+                                gp.ui.addMessage("Can't afford to place this");
+                                break;
+                            }
                             break;
                     }
                 }
@@ -348,10 +490,20 @@ public class KeyHandler implements KeyListener {
         }
         return false;
     }
-        public boolean canAfford(int[] costs){
+    public boolean canAfford(int[] costs){
 
-
-
-            return false;
+        for(int i = 0; i < gp.factions[0].resources.length; i++){
+            if(gp.factions[0].resources[i] < costs[i]){
+                return false;
+            }
         }
+
+        //return false;
+        return true;
+    }
+    public void subtractResources(Faction faction, int[] costs){
+        for(int i = 0; i < gp.factions[0].resources.length; i++){
+            gp.factions[faction.gpPos].resources[i] -= costs[i];
+        }
+    }
 }
