@@ -12,7 +12,8 @@ public class ENT_KingCourt extends Building {
         images[0] = setup("/entity/tile_entity/king_court",1);
         health = 200;
         maxHealth = health;
-        reIndex = -1;
+        reIndex = 3;
+        resourceYield = 1;
         menuType = 3;
     }
 

@@ -63,7 +63,7 @@ public class UI {
     public int[] outpostCost = {0,2,2,0,0,1,0,0,4};
     public int[] wallCost = {0,2,0,0,0,0,0,0,1};
     public int[] lumberyardCost = {0,4,0,0,0,2,0,0,8};
-    public int[] quarryCost = {0,0,3,0,1,2,0,0,6};
+    public int[] quarryCost = {0,0,3,0,0,2,0,0,6};
 
     public int baseFontSize = 6;
 
@@ -372,7 +372,7 @@ public class UI {
                     g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 30f + baseFontSize));
                     g2.setColor(Color.white);
                     y += gp.tileSize;
-                    x += gp.tileSize / 3;
+                    x += gp.tileSize / 5;
                     text = entity.name;
                     g2.drawString(text, x, y);
 
@@ -455,6 +455,8 @@ public class UI {
                     y += gp.tileSize;
                     text = "[click] to exit";
                     g2.drawString(text, x, y);
+
+
 
                     //Player faction info + faction management???
                     break;

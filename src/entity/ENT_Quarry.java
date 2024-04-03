@@ -16,6 +16,7 @@ public class ENT_Quarry extends Building {
         reIndex = 1;
         menuType = 1;
         powerVal = 2;
+        resourceYield = 1;
     }
 
     public BufferedImage image() {

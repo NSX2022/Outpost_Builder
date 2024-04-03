@@ -15,6 +15,7 @@ public class ENT_Lumberyard extends Building {
         reIndex = 2;
         menuType = 1;
         powerVal = 2;
+        resourceYield = 1;
     }
 
     public BufferedImage image() {

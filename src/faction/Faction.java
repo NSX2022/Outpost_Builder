@@ -13,7 +13,6 @@ public class Faction {
 
     GamePanel gp;
 
-    public int playerRep;
     public String name;
     public Boolean isDefeated = false;
     public Boolean isPlayer = false;

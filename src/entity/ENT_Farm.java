@@ -15,7 +15,7 @@ public class ENT_Farm extends Building {
         maxHealth = health;
         reIndex = 8;
         menuType = 1;
-        resourceYield = 2;
+        resourceYield = 1;
         powerVal = 2;
     }
 

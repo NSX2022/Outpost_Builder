@@ -296,6 +296,7 @@ public class KeyHandler implements KeyListener {
 
                                         subtractResources(gp.factions[0], gp.ui.farmCost);
                                         ent = null;
+                                        gp.updateFlags();
                                         break;
                                     }
                                 }
@@ -322,6 +323,7 @@ public class KeyHandler implements KeyListener {
 
                                         subtractResources(gp.factions[0], gp.ui.mineCost);
                                         ent = null;
+                                        gp.updateFlags();
                                         break;
                                     }
                                 }
@@ -348,6 +350,7 @@ public class KeyHandler implements KeyListener {
 
                                         subtractResources(gp.factions[0], gp.ui.fortCost);
                                         ent = null;
+                                        gp.updateFlags();
                                         break;
                                     }
                                 }
@@ -374,6 +377,7 @@ public class KeyHandler implements KeyListener {
 
                                         subtractResources(gp.factions[0], gp.ui.outpostCost);
                                         ent = null;
+                                        gp.updateFlags();
                                         break;
                                     }
                                 }
@@ -400,6 +404,7 @@ public class KeyHandler implements KeyListener {
 
                                         subtractResources(gp.factions[0], gp.ui.wallCost);
                                         ent = null;
+                                        gp.updateFlags();
                                         break;
                                     }
                                 }
@@ -426,6 +431,7 @@ public class KeyHandler implements KeyListener {
 
                                         subtractResources(gp.factions[0], gp.ui.lumberyardCost);
                                         ent = null;
+                                        gp.updateFlags();
                                         break;
                                     }
                                 }
@@ -452,6 +458,7 @@ public class KeyHandler implements KeyListener {
 
                                         subtractResources(gp.factions[0], gp.ui.quarryCost);
                                         ent = null;
+                                        gp.updateFlags();
                                         break;
                                     }
                                 }

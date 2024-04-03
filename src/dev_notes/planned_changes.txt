@@ -1,3 +1,4 @@
+! = Important
+
 -Remove quarry??
-Change territory.contains() to territory.intersects() if necessary
-TODO: Set int[]{} values for all building costs as public variables in UI
+-! Make cost of a building increase the more you place of that building

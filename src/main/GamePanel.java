@@ -18,6 +18,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
@@ -255,16 +256,11 @@ public class GamePanel extends JPanel implements Runnable {
                         }
                     }
                     if(seconds % 30 == 0) {
-                        for(int i = 0; i < factions.length; i++) {
-                            if(factions[i] != null) {
-                                factions[i].updateBuildings();
-                            }
-                        }
+                        updateFlags();
                         System.out.println("Faction flags updated");
                         if(keyH.checkDrawTime) {
                             ui.addMessage("Faction Flags Updated (Debug)");
                         }
-                        //TODO: Update territory
                     }
                     if(seconds >= 60) {
                         for(int i = 0; i < factions.length; i++) {
@@ -521,7 +517,6 @@ public class GamePanel extends JPanel implements Runnable {
                 player.playerFaction.resources[8] = 20;
 
                 player.playerFaction.isPlayer = true;
-                player.playerFaction.playerRep = 999;
                 player.playerFaction.relation = Faction.playerRelation.FRIENDLY;
                 break;
             case 2:
@@ -536,7 +531,6 @@ public class GamePanel extends JPanel implements Runnable {
                 player.playerFaction.resources[8] = 9999;
 
                 player.playerFaction.isPlayer = true;
-                player.playerFaction.playerRep = 999;
                 player.playerFaction.relation = Faction.playerRelation.FRIENDLY;
                 break;
             case 3:
@@ -559,7 +553,6 @@ public class GamePanel extends JPanel implements Runnable {
         //AI Factions
         for(int i = 1; i < aiFactionsNum + 1; i++) {
             factions[i] = new Faction(this);
-            factions[i].playerRep = 0;
             factions[i].isPlayer = false;
             factions[i].isDefeated = false;
             factions[i].gpPos = i;
@@ -689,6 +682,13 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    public void updateFlags() {
+        for(int i = 0; i < factions.length; i++) {
+            if(factions[i] != null) {
+                factions[i].updateBuildings();
+            }
+        }
+    }
 
     private BufferedImage scaleImage(BufferedImage image, int tileSize) {
         int newWidth = tileSize;
