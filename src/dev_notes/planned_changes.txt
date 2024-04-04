@@ -1,4 +1,4 @@
 ! = Important
 
 -Remove quarry??
--! Make cost of a building increase the more you place of that building
+-! Make cost of a building increase the more you place of that building (Reduced greatly for Wall)

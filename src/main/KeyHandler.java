@@ -154,7 +154,6 @@ public class KeyHandler implements KeyListener {
             gp.ui.addMessage("Debug Message :)");
         }
 
-        //TODO: Arrow keys to move where a building should be placed after selecting it
         if(gp.ui.buildMenu){
             if(code == KeyEvent.VK_UP) {
                 gp.ui.preview.worldY -= gp.tileSize;
@@ -263,7 +262,6 @@ public class KeyHandler implements KeyListener {
         //Build menu
         if(code == KeyEvent.VK_SHIFT){
             if(gp.ui.buildMenu){
-                //TODO: Unselect to-be-built building
                 canPlace = false;
                 gp.ui.preview.worldX = 99999;
                 gp.ui.preview.worldY = 99999;
@@ -277,7 +275,6 @@ public class KeyHandler implements KeyListener {
             if(code == KeyEvent.VK_ENTER){
                 if(canPlace()){
                     switch (toPlace){
-                        //TODO: Check if the player has enough resources
                         case 1:
                             //Farm
                             if(canAfford(gp.ui.farmCost)) {
@@ -490,7 +487,6 @@ public class KeyHandler implements KeyListener {
                     }
                 }
             }
-            System.out.println("toPlace value: " + toPlace);
             return true;
         }else{
             gp.ui.addMessage("Place within your territory");
@@ -498,14 +494,11 @@ public class KeyHandler implements KeyListener {
         return false;
     }
     public boolean canAfford(int[] costs){
-
         for(int i = 0; i < gp.factions[0].resources.length; i++){
             if(gp.factions[0].resources[i] < costs[i]){
                 return false;
             }
         }
-
-        //return false;
         return true;
     }
     public void subtractResources(Faction faction, int[] costs){

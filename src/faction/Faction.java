@@ -1,6 +1,7 @@
 package faction;
 
 import entity.Building;
+import entity.ENT_WallCross;
 import entity.Entity;
 import main.GamePanel;
 import object.*;
@@ -32,6 +33,9 @@ public class Faction {
     public int population;
     public Color factionColor;
 
+    //Progression
+    public Boolean hasFort = false;
+
     public enum playerRelation {
         FRIENDLY,
         HOSTILE,
@@ -49,7 +53,7 @@ public class Faction {
 
     public Faction(GamePanel gp) {
         this.gp = gp;
-        //System.out.println((factionBuildings).length);
+        relation = playerRelation.NEUTRAL;
     }
 
 
@@ -66,7 +70,7 @@ public class Faction {
         //Updated for new flag system
 
         for(int i = 0; i < factionBuildings.length; i++) {
-            if(factionBuildings[i] != null && factionBuildings[i] instanceof Building) {
+            if(factionBuildings[i] != null && factionBuildings[i] instanceof Building && !(factionBuildings[i] instanceof ENT_WallCross)) {
                 switch(relation) {
                     case DEFEATED:
                         ((Building) factionBuildings[i]).flag.image = ((Building) factionBuildings[i]).flag.images[0];

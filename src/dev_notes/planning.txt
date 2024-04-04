@@ -37,15 +37,9 @@ Miscellaneous:
 
     Add Temple and Market buildings
         -If a score system is implemented, temple costs a lot but adds a score mult/bonus
-        -Market generates money (slowly and/or not much), gens 1 random resource each harvest (?)
+        -Market gens 1 random resource each harvest (?)
 
 Game Structure/Map:
     -Factions spawn in map corners ✓
     -Player spawns in map center ✓
-    -Ports spawn in center of map sides
-
-    -Building Menu opened with L-SHIFT✓
-        -select building with numbers keys (ONLY WHILE MENU IS OPEN)
-        -building placeholder is spawned at the player
-            -move the placeholder with arrow keys
-                -ENTER to place
+    -!Ports spawn in center of map sides

@@ -257,7 +257,7 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                     if(seconds % 30 == 0) {
                         updateFlags();
-                        System.out.println("Faction flags updated");
+                        //System.out.println("Faction flags updated");
                         if(keyH.checkDrawTime) {
                             ui.addMessage("Faction Flags Updated (Debug)");
                         }
@@ -534,7 +534,7 @@ public class GamePanel extends JPanel implements Runnable {
                 player.playerFaction.relation = Faction.playerRelation.FRIENDLY;
                 break;
             case 3:
-                //TODO: Simulation mode
+                //Simulation Mode
                 break;
         }
         //System.out.println(gameType);
@@ -561,9 +561,7 @@ public class GamePanel extends JPanel implements Runnable {
             float g = (float) (rand.nextFloat() / 2f + 0.1);
             float b = (float) (rand.nextFloat() / 2f + 0.1);
             factions[i].factionColor = new Color(r,g,b);
-            //TODO: Rand generate all buildings
             factions[i].factionBuildings[0] = new ENT_KingCourt(this, factions[i]);
-            //TODO: Select a rectangle on the map for AI faction starting territory and place generated buildings
             //Rectangle for territory is centered on King's Court and can expand
             aSetter.addPremadeEntity(30 * i + xOffset, 29 + yOffset, factions[i].factionBuildings[0]);
             factions[i].relation = Faction.playerRelation.NEUTRAL;
@@ -612,7 +610,6 @@ public class GamePanel extends JPanel implements Runnable {
             player.worldX = factions[0].factionBuildings[0].worldX;
             player.worldY = factions[0].factionBuildings[0].worldY;
         }
-        System.out.println("Faction flags updated");
         if(gameType != 3) {
             setTitle("Outpost Builder - " + factions[0].power);
         }else{
