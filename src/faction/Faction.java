@@ -92,6 +92,9 @@ public class Faction {
                 ((Building) factionBuildings[i]).flag.worldY = factionBuildings[i].worldY;
             }
         }
+
+        //TODO Update Power
+
     }
 
     public void updateTerritory() {
