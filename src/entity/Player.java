@@ -1,5 +1,6 @@
 package entity;
 
+import environment.LightSource;
 import faction.Faction;
 import main.GamePanel;
 import main.KeyHandler;
@@ -10,10 +11,11 @@ import java.awt.image.BufferedImage;
 public class Player extends Entity {
     KeyHandler keyH;
 
-    public final int screenX;
-    public final int screenY;
+    public int screenX;
+    public int screenY;
 
     public Faction playerFaction;
+    public int lightSize;
 
     public Player(GamePanel gp, KeyHandler keyH) {
 
@@ -31,7 +33,6 @@ public class Player extends Entity {
         solidAreaDefaultY = solidArea.y;
         solidArea.width = 4;
         solidArea.height = 4;
-        //1px * 6 and perfect center on the Camera cross :)
 
         setDefaultValues();
         getPlayerImage();

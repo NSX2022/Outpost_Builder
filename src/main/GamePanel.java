@@ -2,6 +2,9 @@ package main;
 
 
 import entity.*;
+import environment.EnvironmentManager;
+import environment.LightSource;
+import environment.Lighting;
 import faction.Faction;
 import object.SuperObject;
 import tile.Tile;
@@ -18,7 +21,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
@@ -62,6 +65,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Sound music = new Sound();
     public Sound se = new Sound();
     public UtilityTool uTool = new UtilityTool();
+    public EnvironmentManager eManager = new EnvironmentManager(this);
     Thread gameThread;
     public int latestFPS;
     public Point clickPoint = new Point();
@@ -74,6 +78,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, keyH);
     public SuperObject[] obj = new SuperObject[objDisplayLimit];
     public Entity[] ent = new Entity[entDisplayLimit];
+    public ArrayList<LightSource> lights = new ArrayList<>();
 
     //UI
     public UI ui = new UI(this);
@@ -125,6 +130,8 @@ public class GamePanel extends JPanel implements Runnable {
         }catch(IOException e){
             e.printStackTrace();
         }
+
+        eManager.setup();
     }
     public void startGameThread() {
         gameThread = new Thread(this);
@@ -277,6 +284,7 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
+
             ui.preview.territoryCheck.x = ui.preview.worldX - player.worldX + player.screenX;
             ui.preview.territoryCheck.y = ui.preview.worldY - player.worldY + player.screenY;
 
@@ -354,6 +362,8 @@ public class GamePanel extends JPanel implements Runnable {
         if (gameState == pauseState) {
 
         }
+        updateLights();
+        eManager.update();
     }
 
     public void drawToTempScreen() {
@@ -429,6 +439,9 @@ public class GamePanel extends JPanel implements Runnable {
 
             player.draw(g2);
 
+            //ENVIRONMENT
+            eManager.draw(g2);
+
             //UI
             ui.draw(g2);
             if(menuOn) {
@@ -483,11 +496,6 @@ public class GamePanel extends JPanel implements Runnable {
     public void stopSE() {
 
         se.stop();
-    }
-
-    public boolean checkInRect(int x1, int y1, int x2, int y2, int x, int y) {
-        return x > x1 && x < x2 &&
-                y > y1 && y < y2;
     }
 
     public void getScreenRatio() {
@@ -684,6 +692,17 @@ public class GamePanel extends JPanel implements Runnable {
             if(factions[i] != null) {
                 factions[i].updateBuildings();
             }
+        }
+    }
+
+    public void updateLights() {
+        lights.clear();
+        for(int i = 0; i < ent.length; i++){
+            if(ent[i] == null) {
+                continue;
+            }
+            ent[i].lightSource.updateCoords(ent[i].worldX, ent[i].worldY);
+            lights.add(ent[i].lightSource);
         }
     }
 

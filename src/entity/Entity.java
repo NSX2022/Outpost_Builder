@@ -1,5 +1,6 @@
 package entity;
 
+import environment.LightSource;
 import faction.Faction;
 import main.GamePanel;
 import main.UtilityTool;
@@ -51,8 +52,14 @@ public class Entity {
 
     GamePanel gp;
 
+    public LightSource lightSource = new LightSource(0,0,0,null);
+
     public Entity(GamePanel gp) {
         this.gp = gp;
+        lightSource.circleSize = 360;
+        lightSource.worldX = worldX;
+        lightSource.worldY = worldY;
+        lightSource.gp = gp;
     }
 
     public BufferedImage setup(String imagePath, int divider) {
@@ -145,6 +152,7 @@ public class Entity {
             frame = 0;
         }
     }
+
 
     public BufferedImage getImage() {
         return images[frame];
