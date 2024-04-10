@@ -49,6 +49,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int maxWorldCol = 999;
     public int maxWorldRow = 999;
     public int waterBuffer = 9;
+    public int darknessOpacity = 235;
 
     //Settings
     public boolean staticAnims = false;
@@ -205,7 +206,6 @@ public class GamePanel extends JPanel implements Runnable {
                 delta = 0;
                 drawCount++;
             }
-
             if(timer >= 1000000000) {
                 //System.out.println("FPS: " + drawCount);
                 latestFPS = drawCount;
@@ -362,8 +362,7 @@ public class GamePanel extends JPanel implements Runnable {
         if (gameState == pauseState) {
 
         }
-        updateLights();
-        eManager.update();
+
     }
 
     public void drawToTempScreen() {
@@ -435,12 +434,13 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
+            updateLights();
+            eManager.update();
+            eManager.draw(g2);
+
             ui.preview.draw(g2, this);
 
             player.draw(g2);
-
-            //ENVIRONMENT
-            eManager.draw(g2);
 
             //UI
             ui.draw(g2);
@@ -697,14 +697,15 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void updateLights() {
         lights.clear();
-        for(int i = 0; i < ent.length; i++){
-            if(ent[i] == null) {
+        for (Entity entity : ent) {
+            if (entity == null) {
                 continue;
             }
-            ent[i].lightSource.updateCoords(ent[i].worldX, ent[i].worldY);
-            lights.add(ent[i].lightSource);
+            entity.lightSource.updateCoords(entity.worldX, entity.worldY);
+            lights.add(entity.lightSource);
         }
     }
+
 
     private BufferedImage scaleImage(BufferedImage image, int tileSize) {
         int newWidth = tileSize;
@@ -715,9 +716,5 @@ public class GamePanel extends JPanel implements Runnable {
 
         AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
         return op.filter(image, null);
-    }
-    @Override
-    public synchronized void addMouseListener(MouseListener l) {
-        super.addMouseListener(l);
     }
 }

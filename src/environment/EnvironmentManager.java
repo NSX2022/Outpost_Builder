@@ -22,6 +22,6 @@ public class EnvironmentManager {
 
     public void update(){
         //Update Weather and Lighting effects
-        lighting.updateDarkness();
+        lighting.updateDarkness(gp.lights);
     }
 }

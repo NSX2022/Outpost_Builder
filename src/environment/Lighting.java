@@ -3,118 +3,96 @@ package environment;
 import main.GamePanel;
 
 import java.awt.*;
-import java.awt.geom.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 public class Lighting {
 
-    GamePanel gp;
-    public BufferedImage darknessFilter;
-    public float brightness = 1f;
-    ArrayList<LightSource> lights;
-    Color[] color = new Color[12];
-    float[] fraction = new float[12];
+    private GamePanel gp;
+    private BufferedImage darknessFilter;
 
     public Lighting(GamePanel gp) {
         this.gp = gp;
-        // Create a buffered image
+        initializeDarknessFilter();
+    }
 
-        darknessFilter = new BufferedImage((int) gp.screenWidth, (int) gp.screenHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = (Graphics2D)darknessFilter.getGraphics();
+    private void initializeDarknessFilter() {
+        darknessFilter = new BufferedImage((int)gp.screenWidth, (int)gp.screenHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = darknessFilter.createGraphics();
+        Color darkColor = new Color(0, 0, 0, gp.darknessOpacity); // 5% of 255 (maximum alpha value)
+        g2d.setColor(darkColor);
 
-        // Create a gradation effect
-        color[0] = new Color(0,0,0,0.1f * brightness);
-        color[1] = new Color(0,0,0,0.42f * brightness);
-        color[2] = new Color(0,0,0,0.52f * brightness);
-        color[3] = new Color(0,0,0,0.61f * brightness);
-        color[4] = new Color(0,0,0,0.69f * brightness);
-        color[5] = new Color(0,0,0,0.76f * brightness);
-        color[6] = new Color(0,0,0,0.82f * brightness);
-        color[7] = new Color(0,0,0,0.87f * brightness);
-        color[8] = new Color(0,0,0,0.91f * brightness);
-        color[9] = new Color(0,0,0,0.94f * brightness);
-        color[10] = new Color(0,0,0,0.96f * brightness);
-        color[11] = new Color(0,0,0,0.98f * brightness);
-
-        fraction[0] = 0f;
-        fraction[1] = 0.4f;
-        fraction[2] = 0.5f;
-        fraction[3] = 0.6f;
-        fraction[4] = 0.65f;
-        fraction[5] = 0.7f;
-        fraction[6] = 0.75f;
-        fraction[7] = 0.8f;
-        fraction[8] = 0.85f;
-        fraction[9] = 0.9f;
-        fraction[10] = 0.95f;
-        fraction[11] = 1f;
-
-        g2.fillRect(0, 0, (int) gp.screenWidth, (int) gp.screenHeight);
-        g2.dispose();
+        // Fill the entire darkness filter with the transparent dark color
+        g2d.fillRect(0, 0, (int) gp.screenWidth, (int) gp.screenHeight);
+        g2d.dispose();
     }
 
     public void draw(Graphics2D g2) {
-        g2.drawImage(darknessFilter,0,0, null);
+        g2.drawImage(darknessFilter, 0, 0, null);
     }
 
-    public void updateDarkness() {
-        darknessFilter = new BufferedImage((int) gp.screenWidth, (int) gp.screenHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = (Graphics2D)darknessFilter.getGraphics();
-        lights = gp.lights;
+    public void updateDarkness(List<LightSource> lights) {
+        // Create an intermediate BufferedImage to render darkness and light sources separately
+        BufferedImage tempBuffer = new BufferedImage((int) gp.screenWidth, (int) gp.screenHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D tempG2 = tempBuffer.createGraphics();
 
-        Area screenArea = new Area(new Rectangle2D.Double(0,0,gp.screenWidth,gp.screenHeight));
+        // Clear the temporary buffer
+        tempG2.setColor(new Color(0, 0, 0, 0));
+        tempG2.fillRect(0, 0, (int) gp.screenWidth, (int) gp.screenHeight);
 
-        for(int i = 0; i < lights.size(); i++){
-            //use lights.get(i);
-            if(lights.get(i) == null || lights.get(i).getScreenCoords()[0] == -1 ||  lights.get(i).getScreenCoords()[1] == -1){
-                continue;
+        // Render darkness onto the temporary buffer
+        tempG2.setColor(new Color(0, 0, 0, 230)); // 5% transparency
+        tempG2.fillRect(0, 0, (int) gp.screenWidth, (int) gp.screenHeight);
+
+        // Draw light sources onto the temporary buffer
+        for (LightSource light : lights) {
+            if (light.isOnScreen()) {
+                drawLight(tempG2, light);
             }
-
-            int[] coords = lights.get(i).getScreenCoords();
-
-            Shape circleShape = new Ellipse2D.Double(coords[0],coords[1], lights.get(i).circleSize, lights.get(i).circleSize);
-
-            Area lightArea = new Area(circleShape);
-
-            screenArea.subtract(lightArea);
-
-            // Create a gradation effect
-            color[0] = new Color(0,0,0,0.1f * brightness);
-            color[1] = new Color(0,0,0,0.42f * brightness);
-            color[2] = new Color(0,0,0,0.52f * brightness);
-            color[3] = new Color(0,0,0,0.61f * brightness);
-            color[4] = new Color(0,0,0,0.69f * brightness);
-            color[5] = new Color(0,0,0,0.76f * brightness);
-            color[6] = new Color(0,0,0,0.82f * brightness);
-            color[7] = new Color(0,0,0,0.87f * brightness);
-            color[8] = new Color(0,0,0,0.91f * brightness);
-            color[9] = new Color(0,0,0,0.94f * brightness);
-            color[10] = new Color(0,0,0,0.96f * brightness);
-            color[11] = new Color(0,0,0,0.98f * brightness);
-
-            fraction[0] = 0f;
-            fraction[1] = 0.4f;
-            fraction[2] = 0.5f;
-            fraction[3] = 0.6f;
-            fraction[4] = 0.65f;
-            fraction[5] = 0.7f;
-            fraction[6] = 0.75f;
-            fraction[7] = 0.8f;
-            fraction[8] = 0.85f;
-            fraction[9] = 0.9f;
-            fraction[10] = 0.95f;
-            fraction[11] = 1f;
-
-            // Create a gradation paint settings
-            RadialGradientPaint gPaint = new RadialGradientPaint(coords[0], coords[1], ((float) lights.get(i).circleSize /2), fraction, color);
-            // Set the gradient data on g2
-            g2.setPaint(gPaint);
-            g2.fillRect(0, 0, (int) gp.screenWidth, (int) gp.screenHeight);
         }
-        System.out.println(lights.size());
+
+        // Blend the darkness and light sources
+        Graphics2D g2 = darknessFilter.createGraphics();
+        g2.setComposite(AlphaComposite.Clear);
+        g2.fillRect(0, 0, (int) gp.screenWidth, (int) gp.screenHeight);
+        g2.setComposite(AlphaComposite.SrcOver);
+        g2.drawImage(tempBuffer, 0, 0, null);
         g2.dispose();
+
+        // Dispose of the temporary graphics context
+        tempG2.dispose();
+    }
+
+    private void drawLight(Graphics2D g2, LightSource light) {
+        int[] screenCoords = light.getScreenCoords();
+        if (screenCoords[0] != -1 && screenCoords[1] != -1) {
+            int circleSize = light.circleSize;
+
+            Point2D center = new Point2D.Float(screenCoords[0], screenCoords[1]);
+            float[] fractions = light.fraction;
+            Color[] colors = light.color;
+            RadialGradientPaint gradient = new RadialGradientPaint(
+                    center,
+                    circleSize,
+                    fractions,
+                    colors,
+                    MultipleGradientPaint.CycleMethod.NO_CYCLE);
+
+            // Save the original composite
+            Composite originalComposite = g2.getComposite();
+
+            // Set the composite to DstOut to "knock out" the darkness
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_OUT));
+
+            // Fill the light source shape
+            g2.setPaint(gradient);
+            g2.fill(new Ellipse2D.Double(screenCoords[0] - circleSize / 2.0, screenCoords[1] - circleSize / 2.0, circleSize, circleSize));
+
+            // Restore the original composite
+            g2.setComposite(originalComposite);
+        }
     }
 
 }
