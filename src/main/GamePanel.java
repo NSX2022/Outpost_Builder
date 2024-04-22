@@ -49,7 +49,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int maxWorldCol = 999;
     public int maxWorldRow = 999;
     public int waterBuffer = 9;
-    public int darknessOpacity = 235;
+    public int darknessOpacity = 230;
 
     //Settings
     public boolean staticAnims = false;

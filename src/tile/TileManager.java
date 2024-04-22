@@ -33,6 +33,8 @@ public class TileManager {
     public void getTileImage() {
         BufferedImage[] frameSet = new BufferedImage[99];
         //Set tiles here, use frameSet for animated
+        //WARNING: All tiles change at the same time and look very ugly
+
         /* Example for animated grass
         frameSet[0] = newSetup("grass00");
         frameSet[1] = newSetup("grass00A");
@@ -132,6 +134,7 @@ public class TileManager {
         gp.aSetter.setEntity();
         gp.aSetter.setObject();
     }
+
     private void addWaterMargin() {
         Random rand = gp.rand;
         int waterMargin = gp.waterBuffer;
@@ -141,6 +144,7 @@ public class TileManager {
             for (int col = 0; col < gp.maxWorldCol; col++) {
                 if (row < waterMargin || row >= gp.maxWorldRow - waterMargin ||
                         col < waterMargin || col >= gp.maxWorldCol - waterMargin) {
+                    //chance of having the alt water image
                     if(rand.nextInt(0, 100) > 92 ){
                         mapTileNum[col][row] = 3;
                     }else{

@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Lighting {
@@ -34,7 +36,11 @@ public class Lighting {
     }
 
     public void updateDarkness(List<LightSource> lights) {
-        // Create an intermediate BufferedImage to render darkness and light sources separately
+        /*TODO: Update only when new lights are added, not every frame
+          TODO: use a BufferedImage that scrolls with worldX/worldY
+
+         */
+        //Creates an intermediate BufferedImage to render darkness and light sources separately
         BufferedImage tempBuffer = new BufferedImage((int) gp.screenWidth, (int) gp.screenHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D tempG2 = tempBuffer.createGraphics();
 
@@ -43,7 +49,7 @@ public class Lighting {
         tempG2.fillRect(0, 0, (int) gp.screenWidth, (int) gp.screenHeight);
 
         // Render darkness onto the temporary buffer
-        tempG2.setColor(new Color(0, 0, 0, 230)); // 5% transparency
+        tempG2.setColor(new Color(0, 0, 0, gp.darknessOpacity)); // current transparency
         tempG2.fillRect(0, 0, (int) gp.screenWidth, (int) gp.screenHeight);
 
         // Draw light sources onto the temporary buffer
@@ -73,6 +79,7 @@ public class Lighting {
             Point2D center = new Point2D.Float(screenCoords[0], screenCoords[1]);
             float[] fractions = light.fraction;
             Color[] colors = light.color;
+
             RadialGradientPaint gradient = new RadialGradientPaint(
                     center,
                     circleSize,

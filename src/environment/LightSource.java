@@ -18,7 +18,7 @@ public class LightSource {
         this.circleSize = circleSize;
 
         //Standard colors
-        color[0] = new Color(0,0,0,0.1f * brightness);
+        color[0] = new Color(0,0,0,0.3f * brightness);
         color[1] = new Color(0,0,0,0.42f * brightness);
         color[2] = new Color(0,0,0,0.52f * brightness);
         color[3] = new Color(0,0,0,0.61f * brightness);
