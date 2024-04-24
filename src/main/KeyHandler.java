@@ -117,15 +117,22 @@ public class KeyHandler implements KeyListener {
 
         //CAMERA
         if(code == KeyEvent.VK_W) {
+            //reset clickPoint to avoid errors/non-player clicks
+            gp.clickPoint = null;
             upPressed = true;
         }
         if(code == KeyEvent.VK_S) {
+            gp.clickPoint = null;
             downPressed = true;
         }
         if(code == KeyEvent.VK_A) {
+            //x and y
+            //gp.eManager.lighting.moveDarkness(gp.player.speed * -1, 0);
+            gp.clickPoint = null;
             leftPressed = true;
         }
         if(code == KeyEvent.VK_D) {
+            gp.clickPoint = null;
             rightPressed = true;
         }
         if(code == KeyEvent.VK_P) {
@@ -487,6 +494,8 @@ public class KeyHandler implements KeyListener {
                     }
                 }
             }
+            //TODO: Fix lighting
+            //gp.updateLights();
             return true;
         }else{
             gp.ui.addMessage("Place within your territory");

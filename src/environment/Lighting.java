@@ -21,13 +21,15 @@ public class Lighting {
     }
 
     private void initializeDarknessFilter() {
-        darknessFilter = new BufferedImage((int)gp.screenWidth, (int)gp.screenHeight, BufferedImage.TYPE_INT_ARGB);
+        darknessFilter = new BufferedImage(gp.maxWorldRow * gp.tileSize, gp.maxWorldCol * gp.tileSize
+                , BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = darknessFilter.createGraphics();
         Color darkColor = new Color(0, 0, 0, gp.darknessOpacity); // 5% of 255 (maximum alpha value)
         g2d.setColor(darkColor);
 
         // Fill the entire darkness filter with the transparent dark color
-        g2d.fillRect(0, 0, (int) gp.screenWidth, (int) gp.screenHeight);
+        g2d.fillRect(gp.maxWorldRow * gp.tileSize * -1, gp.maxWorldCol * gp.tileSize * -1
+                , gp.maxWorldRow * gp.tileSize, gp.maxWorldCol * gp.tileSize);
         g2d.dispose();
     }
 
@@ -100,6 +102,22 @@ public class Lighting {
             // Restore the original composite
             g2.setComposite(originalComposite);
         }
+    }
+
+    public void moveDarkness(int x, int y) {
+        // Calculate the offset based on player's movement
+        int offsetX = x - (int) (gp.screenWidth / 2);
+        int offsetY = y - (int) (gp.screenHeight / 2);
+
+        // Create a temporary BufferedImage to store the translated darkness filter
+        BufferedImage translatedDarknessFilter = new BufferedImage((int) gp.screenWidth, (int) gp.screenHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = translatedDarknessFilter.createGraphics();
+        // Draw the existing darkness filter at the new position
+        g2d.drawImage(darknessFilter, offsetX, offsetY, null);
+        // Disposethe graphics context
+        g2d.dispose();
+        // Update the darkness filter with the translated image
+        darknessFilter = translatedDarknessFilter;
     }
 
 }

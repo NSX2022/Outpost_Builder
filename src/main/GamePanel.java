@@ -264,9 +264,11 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                     if(seconds % 30 == 0) {
                         updateFlags();
+                        //TODO: FIX LIGHTS
+                        //updateLights();
                         //System.out.println("Faction flags updated");
                         if(keyH.checkDrawTime) {
-                            ui.addMessage("Faction Flags Updated (Debug)");
+                            ui.addMessage("DEBUG:Faction Flags Updated");
                         }
                     }
                     if(seconds >= 60) {
@@ -434,7 +436,7 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
-            updateLights();
+            //updateLights();
             eManager.update();
             eManager.draw(g2);
 
@@ -704,6 +706,7 @@ public class GamePanel extends JPanel implements Runnable {
             entity.lightSource.updateCoords(entity.worldX, entity.worldY);
             lights.add(entity.lightSource);
         }
+        eManager.lighting.updateDarkness(lights);
     }
 
 
