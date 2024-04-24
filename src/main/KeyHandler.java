@@ -13,6 +13,9 @@ public class KeyHandler implements KeyListener {
     GamePanel gp;
     public int gameTypeHolder;
     public int toPlace;
+
+    //sfx 1 = wood building sound, 2 = stone sound
+    public int sfxType;
     public boolean canPlace = false;
 
     //In-game view
@@ -279,6 +282,7 @@ public class KeyHandler implements KeyListener {
             gp.ui.buildMenu = !gp.ui.buildMenu;
         }
         if(canPlace){
+            sfxType = -1;
             if(code == KeyEvent.VK_ENTER){
                 if(canPlace()){
                     switch (toPlace){
@@ -301,6 +305,7 @@ public class KeyHandler implements KeyListener {
                                         subtractResources(gp.factions[0], gp.ui.farmCost);
                                         ent = null;
                                         gp.updateFlags();
+                                        sfxType = 1;
                                         break;
                                     }
                                 }
@@ -328,6 +333,7 @@ public class KeyHandler implements KeyListener {
                                         subtractResources(gp.factions[0], gp.ui.mineCost);
                                         ent = null;
                                         gp.updateFlags();
+                                        sfxType = 2;
                                         break;
                                     }
                                 }
@@ -355,6 +361,7 @@ public class KeyHandler implements KeyListener {
                                         subtractResources(gp.factions[0], gp.ui.fortCost);
                                         ent = null;
                                         gp.updateFlags();
+                                        sfxType = 1;
                                         break;
                                     }
                                 }
@@ -382,6 +389,7 @@ public class KeyHandler implements KeyListener {
                                         subtractResources(gp.factions[0], gp.ui.outpostCost);
                                         ent = null;
                                         gp.updateFlags();
+                                        sfxType = 1;
                                         break;
                                     }
                                 }
@@ -409,6 +417,7 @@ public class KeyHandler implements KeyListener {
                                         subtractResources(gp.factions[0], gp.ui.wallCost);
                                         ent = null;
                                         gp.updateFlags();
+                                        sfxType = 2;
                                         break;
                                     }
                                 }
@@ -436,6 +445,7 @@ public class KeyHandler implements KeyListener {
                                         subtractResources(gp.factions[0], gp.ui.lumberyardCost);
                                         ent = null;
                                         gp.updateFlags();
+                                        sfxType = 1;
                                         break;
                                     }
                                 }
@@ -463,6 +473,7 @@ public class KeyHandler implements KeyListener {
                                         subtractResources(gp.factions[0], gp.ui.quarryCost);
                                         ent = null;
                                         gp.updateFlags();
+                                        sfxType = 2;
                                         break;
                                     }
                                 }
@@ -470,6 +481,22 @@ public class KeyHandler implements KeyListener {
                                 gp.ui.addMessage("Can't afford to place this");
                                 break;
                             }
+                            break;
+                    }
+
+                    switch (sfxType) {
+                        case -1:
+                            //System.out.println("player can't afford or building doesn't have sfx");
+                            break;
+                        case 1:
+                            gp.stopSE();
+                            gp.playSE(3);
+                            break;
+                        case 2:
+                            gp.stopSE();
+                            gp.playSE(4);
+                            break;
+                        case 3:
                             break;
                     }
                 }
