@@ -1,5 +1,6 @@
 package main;
 
+import com.sun.source.tree.ArrayAccessTree;
 import entity.*;
 
 import javax.imageio.ImageIO;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class UI {
@@ -18,6 +20,11 @@ public class UI {
     public Font pixelText16b;
     ArrayList<String> message = new ArrayList<>();
     ArrayList<Integer> messageCounter = new ArrayList<>();
+
+    //ArrayList for resource changes, index of list corresponds to resource indexes
+    ArrayList<Integer>[] changesQue = new ArrayList[8];
+    int[] resChange = new int[8];
+
     public boolean gameFinished = false;
     public int commandNum = 0;
     public int titleScreenState = 0; // 0: title screen 1: mode select 2: story?
@@ -60,7 +67,7 @@ public class UI {
     public int[] farmCost = {0,2,4,0,0,1,0,0,0};
     public int[] mineCost = {0,1,6,0,0,1,0,0,3};
     public int[] fortCost = {0,6,4,10,0,10,0,0,16};
-    public int[] outpostCost = {0,2,2,0,0,1,0,0,4};
+    public int[] outpostCost = {0,1,2,0,0,1,0,0,1};
     public int[] wallCost = {0,2,0,0,0,0,0,0,1};
     public int[] lumberyardCost = {0,4,0,0,0,2,0,0,8};
     public int[] quarryCost = {0,0,3,0,0,2,0,0,6};
@@ -142,6 +149,8 @@ public class UI {
         if(gp.gameState == gp.playState) {
             if(showIcons) {
                 drawResourceIcons();
+                //TODO: FIX
+                //drawResourceChanges();
             }
             drawBuildMenu();
             drawMessage();
@@ -334,6 +343,46 @@ public class UI {
                     message.remove(i);
                     messageCounter.remove(i);
                 }
+            }
+        }
+    }
+
+    public void drawResourceChanges() {
+        //TODO: FIX
+        if(changesQue.length != 0){
+            resChange = gp.player.playerFaction.resources;
+            for(int i = 0; i < 8; i++){
+                    if(changesQue[i] != null){
+                        resChange[i] += Integer.parseInt(String.valueOf(changesQue[i]));
+                        changesQue[i].clear();
+                    }
+            }
+
+            //draw
+            //use red for subtractive changes, green for additive
+
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 18f + baseFontSize));
+            //left edge of the screen: draw icons and a number of how many
+            int x = 0;
+            int y = 0;
+            String text = "";
+            g2.setColor(Color.white);
+
+            if(showIcons && gp.gameType != 3) {
+                //money
+                y += gp.tileSize / 3 + gp.tileSize / 8;
+                x += gp.tileSize / 3 + gp.tileSize / 3;
+
+                if(resChange[3] != 0){
+                    if(resChange[3] > 0){
+                        g2.setColor(Color.green);
+                    }else{
+                        g2.setColor(Color.red);
+                    }
+                    text = String.valueOf(resChange[3]);
+                    g2.drawString(text, x, y);
+                }
+                //wheat
             }
         }
     }

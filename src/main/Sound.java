@@ -15,7 +15,7 @@ public class Sound {
         soundURL[0] = getClass().getResource("/sound/music/hundred_year_war_orchestra_wav.wav");
         soundURL[1] = getClass().getResource("/sound/music/main_ambience_wav.wav");
         soundURL[2] = getClass().getResource("/sound/se/war_cry_wav.wav");
-        soundURL[3] = getClass().getResource("/sound/se/build_wood_sfx.wav");
+        soundURL[3] = getClass().getResource("/sound/se/build_wood_sfx2.wav");
         soundURL[4] = getClass().getResource("/sound/se/build_sfx_2.wav");
 
     }
@@ -39,8 +39,8 @@ public class Sound {
     public void loop() {
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
-    public void stop() {
 
+    public void stop() {
         if(clip != null){
             clip.stop();
         }

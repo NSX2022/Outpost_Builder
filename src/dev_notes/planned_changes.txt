@@ -1,3 +1,4 @@
 ! = Important
 
 -! Make cost of a building increase the more you place of that building (Reduced greatly for Wall)
+- Make an indicator to show changes in resources, green if >0, red if <0, don't show if 0
