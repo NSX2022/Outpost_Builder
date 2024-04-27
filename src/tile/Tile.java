@@ -7,6 +7,8 @@ public class Tile {
 
     public BufferedImage[] images = new BufferedImage[99];
 
+    //TODO: Store all tiles in a 2D array based off of columns and rows
+
     public boolean collision = false;
     public int frame = 0;
     public String name = "";

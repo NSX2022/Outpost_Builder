@@ -509,6 +509,7 @@ public class KeyHandler implements KeyListener {
         if(gp.factions[0].territory.intersects(gp.ui.preview.territoryCheck)){
             //check all entities and objects
             //TODO: Check if place attempt is on land
+            //TODO: Check if place attempt is on solid tile
 
             for(int i = 0; i < gp.factions.length; i++) {
                 if(gp.factions[i] != null) {

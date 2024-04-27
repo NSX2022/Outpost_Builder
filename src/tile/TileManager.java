@@ -197,4 +197,13 @@ public class TileManager {
             }
         }
     }
+    public Tile getTile(int worldX, int worldY) {
+        Tile toRet = null;
+        //round
+        //cycle through 2d array of tiles to see if t
+
+
+
+        return toRet;
+    }
 }
