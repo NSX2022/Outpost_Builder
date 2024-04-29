@@ -13,11 +13,39 @@ public class Tile {
     public int frame = 0;
     public String name = "";
     public int worldX, worldY;
+    public int col, row;
 
     public final String[] tagsLib = {
             "Fertile", "Flammable", "Mineable", "Lumber", "Destroyed"
     };
     public String[] tags;
+
+    public Tile(String name, BufferedImage[] frames, Boolean collision) {
+        images = frames;
+        this.name = name;
+        this.collision = collision;
+    }
+
+    public Tile(Tile t) {
+        this.images = t.images;
+        this.name = t.name;
+        this.collision = t.collision;
+    }
+
+    public Tile(String name, BufferedImage img, Boolean collision) {
+        images[0] = img;
+        this.name = name;
+        this.collision = collision;
+    }
+
+    public Tile(BufferedImage[] images, boolean collision, String name, int col, int row) {
+        this.images = images;
+        this.collision = collision;
+        this.name = name;
+        this.col = col;
+        this.row = row;
+    }
+
 
 
     public void addTag(String tag){

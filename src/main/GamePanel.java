@@ -62,7 +62,8 @@ public class GamePanel extends JPanel implements Runnable {
     public AssetSetter aSetter = new AssetSetter(this);
     TileManager tileM = new TileManager(this);
     public KeyHandler keyH = new KeyHandler(this);
-    public CollisionChecker cChecker = new CollisionChecker(this);
+    //TODO: Fix to use 2D array
+    //public CollisionChecker cChecker = new CollisionChecker(this);
     public Sound music = new Sound();
     public Sound se = new Sound();
     public UtilityTool uTool = new UtilityTool();
@@ -223,7 +224,8 @@ public class GamePanel extends JPanel implements Runnable {
                         if(gameType != 3) {
                             setTitle("Outpost Builder - " + factions[0].power);
                         }
-                        for(Tile tile : tileM.tile){
+                        //TODO: Update for 2D array
+                        /*for(Tile tile : tileM.tile){
                             if(tile != null) {
                                 int worldX = tile.worldX;
                                 int worldY = tile.worldY;
@@ -242,6 +244,8 @@ public class GamePanel extends JPanel implements Runnable {
                                 }
                             }
                         }
+
+                         */
                         for (Entity entity : ent) {
                             if(entity != null){
                                 int worldX = entity.worldX;
@@ -657,6 +661,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         // Rescale Tile images
+        /* Doesn't work with 2D array
         for (Tile tile : tileM.tile) {
             if (tile == null) {
                 continue;
@@ -671,6 +676,8 @@ public class GamePanel extends JPanel implements Runnable {
             g2d.dispose();
             tile.setImage(resizedImage);
         }
+
+         */
 
         // Rescale SuperObject images
         for (SuperObject superObject : obj) {

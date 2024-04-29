@@ -30,7 +30,6 @@ public class Faction {
     //King's Court as the central building, when clicked opens a menu to view whole faction?
     public Entity[] factionBuildings = new Entity[99];
 
-    public int population;
     public Color factionColor;
 
     //Progression

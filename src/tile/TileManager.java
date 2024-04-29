@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
@@ -16,65 +17,30 @@ import java.util.Random;
 public class TileManager {
 
     GamePanel gp;
-    public Tile[] tile;
-    public int[][] mapTileNum;
+    public Tile[][] mapTiles;
+    //use tileTemplates to store the template of each tile, based off of it's index (like old ver)
+    public Tile[] tileTemplates = new Tile[99];
+
 
     public TileManager(GamePanel gp) {
 
         this.gp = gp;
-
-        tile = new Tile[10000];
-        mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
-        getTileImage();
+        //Obselete with 2D Array
+        //getTileImage();
         //loadMap("/maps/templateMap.txt", 0);
+
+        initializeTiles();
         genMap();
     }
 
-    public void getTileImage() {
-        BufferedImage[] frameSet = new BufferedImage[99];
-        //Set tiles here, use frameSet for animated
-        //WARNING: All tiles change at the same time and look very ugly
-
-        /* Example for animated grass
-        frameSet[0] = newSetup("grass00");
-        frameSet[1] = newSetup("grass00A");
-        tile[0] = new Tile();
-        tile[0].images = frameSet;
-        frameSet = new BufferedImage[99];
-         */
-
-        setup(0, "grass00", false);
-        setup(1, "mountain00", true);
-        setup(2, "water00", true); //waters 00 and 01 are the impassable border tiles
-
-        setup(3, "water01", true);
-        /*
-        frameSet[0] = newSetup("water01");
-        frameSet[1] = newSetup("water01A");
-        frameSet[2] = newSetup("water01B");
-        tile[3].images = frameSet;
-         */
-
-        setup(4, "port00", true); //for trading
+    public void initializeTiles() {
+        tileTemplates[0] = new Tile("grass", setup("grass00"), false);
+        tileTemplates[1] = new Tile("mountain", setup("mountain00"), false);
+        tileTemplates[2] = new Tile("water0", setup("water00"), false);
+        tileTemplates[3] = new Tile("water1", new BufferedImage[]{setup("water01"), setup("water01A"), setup("water01B")}, false);
     }
 
-
-    public void setup(int index, String imageName, boolean collision) {
-
-        UtilityTool uTool = new UtilityTool();
-
-        try{
-            tile[index] = new Tile();
-            tile[index].collision = collision;
-            tile[index].images[0] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/" + imageName + ".png")));
-            tile[index].images[0] = uTool.scaleImage(tile[index].images[0], gp.tileSize, gp.tileSize);
-            tile[index].name = imageName;
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    public BufferedImage newSetup(String imageName) {
+    public BufferedImage setup(String imageName) {
         UtilityTool uTool = new UtilityTool();
         BufferedImage toRet = new BufferedImage(48, 48, 2);
 
@@ -87,6 +53,7 @@ public class TileManager {
         return toRet;
     }
 
+    /*
     public void loadMap(String map, int indexMargin) {
         try {
             InputStream is = getClass().getResourceAsStream(map);
@@ -119,9 +86,9 @@ public class TileManager {
             e.printStackTrace();
         }
     }
+     */
 
     public void genMap() {
-
         Random rand = gp.rand;
 
         gp.maxWorldCol = rand.nextInt(64, 94);
@@ -129,81 +96,95 @@ public class TileManager {
 
         gp.waterBuffer = 20;
 
+        mapTiles = new Tile[gp.maxWorldCol][gp.maxWorldRow];
+
         generateLandMap();
         addWaterMargin();
-        gp.aSetter.setEntity();
-        gp.aSetter.setObject();
+        addLandVariation();
+        addResourceEntities();
     }
 
     private void addWaterMargin() {
         Random rand = gp.rand;
         int waterMargin = gp.waterBuffer;
 
-
         for (int row = 0; row < gp.maxWorldRow; row++) {
             for (int col = 0; col < gp.maxWorldCol; col++) {
+                // Create a new tile and set its properties
+                Tile tile;
                 if (row < waterMargin || row >= gp.maxWorldRow - waterMargin ||
                         col < waterMargin || col >= gp.maxWorldCol - waterMargin) {
-                    //chance of having the alt water image
-                    if(rand.nextInt(0, 100) > 92 ){
-                        mapTileNum[col][row] = 3;
-                    }else{
-                        mapTileNum[col][row] = 2;
+                    if (rand.nextInt(0, 100) > 92) {
+                        tile = new Tile(tileTemplates[3].images, tileTemplates[3].collision, tileTemplates[3].name, col, row);
+                    } else {
+                        tile = new Tile(tileTemplates[2].images, tileTemplates[2].collision, tileTemplates[2].name, col, row);
                     }
+                } else {
+                    tile = new Tile(tileTemplates[0].images, tileTemplates[0].collision, tileTemplates[0].name, col, row);
                 }
+                tile.worldX = col * gp.tileSize;
+                tile.worldY = row * gp.tileSize;
+
+                mapTiles[col][row] = tile;
             }
         }
     }
+
     private void generateLandMap() {
         Random rand = gp.rand;
 
         for (int row = 0; row < gp.maxWorldRow; row++) {
             for (int col = 0; col < gp.maxWorldCol; col++) {
-                mapTileNum[col][row] = 0;
+                // Create a new tile and set its properties
+                Tile tile = new Tile(tileTemplates[0].images, tileTemplates[0].collision, tileTemplates[0].name, col, row);
+                tile.worldX = col * gp.tileSize;
+                tile.worldY = row * gp.tileSize;
+
+                mapTiles[col][row] = tile;
             }
         }
-        //System.out.println(gp.maxWorldRow);
-        //System.out.println(gp.maxWorldCol);
     }
+
+    public void addLandVariation() {
+        //TODO: Spread sand, snow, et al in the land section of the map as biomes
+    }
+
+    public void addResourceEntities() {
+        //TODO: Add trees, rocks, et al
+    }
+
     public void draw(Graphics2D g2) {
+        int playerWorldX = gp.player.worldX;
+        int playerWorldY = gp.player.worldY;
+        int playerScreenX = gp.player.screenX;
+        int playerScreenY = gp.player.screenY;
+        int tileSize = gp.tileSize;
 
-        int worldCol = 0;
-        int worldRow = 0;
+        for (int col = 0; col < gp.maxWorldCol; col++) {
+            for (int row = 0; row < gp.maxWorldRow; row++) {
+                Tile tile = mapTiles[col][row];
+                if (tile != null) {
+                    int screenX = tile.worldX - playerWorldX + playerScreenX;
+                    int screenY = tile.worldY - playerWorldY + playerScreenY;
 
-        while(worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
-
-            int tileNum = mapTileNum[worldCol][worldRow];
-
-            int worldX = worldCol * gp.tileSize;
-            int worldY = worldRow * gp.tileSize;
-            int screenX = worldX - gp.player.worldX + gp.player.screenX;
-            int screenY = worldY - gp.player.worldY + gp.player.screenY;
-
-            //only render in frame
-            if(     worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
-                    worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
-                    worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
-                    worldY  - gp.tileSize < gp.player.worldY + gp.player.screenY) {
-                tile[tileNum].worldX = worldX;
-                tile[tileNum].worldY = worldY;
-                g2.drawImage(tile[tileNum].images[tile[tileNum].frame], screenX, screenY, null);
-            }
-
-            worldCol++;
-
-            if(worldCol == gp.maxWorldCol) {
-                worldCol = 0;
-                worldRow++;
+                    // Render the tile if it's within the screen bounds
+                    if (screenX + tileSize > 0 && screenX < gp.screenWidth &&
+                            screenY + tileSize > 0 && screenY < gp.screenHeight) {
+                        g2.drawImage(tile.getImage(), screenX, screenY, null);
+                    }
+                }
             }
         }
     }
+    
     public Tile getTile(int worldX, int worldY) {
-        Tile toRet = null;
-        //round
-        //cycle through 2d array of tiles to see if t
-
-
-
-        return toRet;
+        int col = worldX / gp.tileSize;
+        int row = worldY / gp.tileSize;
+        if (col >= 0 && col < gp.maxWorldCol && row >= 0 && row < gp.maxWorldRow) {
+            return mapTiles[col][row];
+        }else{
+            System.out.println("Attempted to access Tile outside of the map");
+        }
+        return null;
     }
 }
