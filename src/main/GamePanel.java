@@ -224,20 +224,22 @@ public class GamePanel extends JPanel implements Runnable {
                         if(gameType != 3) {
                             setTitle("Outpost Builder - " + factions[0].power);
                         }
-                        //TODO: Update for 2D array
-                        /*for(Tile tile : tileM.tile){
-                            if(tile != null) {
-                                int worldX = tile.worldX;
-                                int worldY = tile.worldY;
+                        int playerWorldX = player.worldX;
+                        int playerWorldY = player.worldY;
+                        int playerScreenX = player.screenX;
+                        int playerScreenY = player.screenY;
 
-                                if(     worldX + tileSize > player.worldX - player.screenX &&
-                                        worldX - tileSize < player.worldX + player.screenX &&
-                                        worldY + tileSize > player.worldY - player.screenY &&
-                                        worldY  - tileSize < player.worldY + player.screenY) {
-                                    if(staticAnims){
-                                        tile.nextFrame();
-                                    }else{
-                                        if(rand.nextBoolean()){
+                        for (int col = 0; col < maxWorldCol; col++) {
+                            for (int row = 0; row < maxWorldRow; row++) {
+                                Tile tile = tileM.mapTiles[col][row];
+                                if (tile != null) {
+                                    int screenX = tile.worldX - playerWorldX + playerScreenX;
+                                    int screenY = tile.worldY - playerWorldY + playerScreenY;
+
+                                    //check if on screen
+                                    if (screenX + tileSize > 0 && screenX < screenWidth &&
+                                            screenY + tileSize > 0 && screenY < screenHeight) {
+                                        if(rand.nextBoolean()) {
                                             tile.nextFrame();
                                         }
                                     }
@@ -245,7 +247,6 @@ public class GamePanel extends JPanel implements Runnable {
                             }
                         }
 
-                         */
                         for (Entity entity : ent) {
                             if(entity != null){
                                 int worldX = entity.worldX;

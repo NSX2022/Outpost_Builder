@@ -46,8 +46,6 @@ public class Tile {
         this.row = row;
     }
 
-
-
     public void addTag(String tag){
         for(int i = 0; i < tagsLib.length; i++){
             if(tagsLib[i].equals(tag)){

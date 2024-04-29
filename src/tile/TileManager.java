@@ -110,7 +110,7 @@ public class TileManager {
 
         for (int row = 0; row < gp.maxWorldRow; row++) {
             for (int col = 0; col < gp.maxWorldCol; col++) {
-                // Create a new tile and set its properties
+                //set tile properties
                 Tile tile;
                 if (row < waterMargin || row >= gp.maxWorldRow - waterMargin ||
                         col < waterMargin || col >= gp.maxWorldCol - waterMargin) {
@@ -135,7 +135,7 @@ public class TileManager {
 
         for (int row = 0; row < gp.maxWorldRow; row++) {
             for (int col = 0; col < gp.maxWorldCol; col++) {
-                // Create a new tile and set its properties
+                //set tile properties
                 Tile tile = new Tile(tileTemplates[0].images, tileTemplates[0].collision, tileTemplates[0].name, col, row);
                 tile.worldX = col * gp.tileSize;
                 tile.worldY = row * gp.tileSize;
@@ -167,7 +167,7 @@ public class TileManager {
                     int screenX = tile.worldX - playerWorldX + playerScreenX;
                     int screenY = tile.worldY - playerWorldY + playerScreenY;
 
-                    // Render the tile if it's within the screen bounds
+                    //check if on screen
                     if (screenX + tileSize > 0 && screenX < gp.screenWidth &&
                             screenY + tileSize > 0 && screenY < gp.screenHeight) {
                         g2.drawImage(tile.getImage(), screenX, screenY, null);
