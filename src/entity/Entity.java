@@ -107,6 +107,15 @@ public class Entity {
             g2.drawRect(clickArea.x, clickArea.y, clickArea.width, clickArea.height);
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 20f));
 
+
+            if(this instanceof ENT_Tree) {
+                g2.setColor(Color.pink);
+                g2.drawRect(((ENT_Tree) this).detectionArea.x, ((ENT_Tree) this).detectionArea.y, ((ENT_Tree)this).detectionArea.width, ((ENT_Tree)this).detectionArea.height);
+            }
+            g2.setColor(Color.white);
+            //Also add for other entities with detection areas
+        }
+        if(menuOn || health < maxHealth){
             if(health >= maxHealth/1.2) {
                 g2.setColor(Color.green);
             }else if(health >= 2) {
@@ -115,12 +124,6 @@ public class Entity {
                 g2.setColor(Color.red);
             }
             g2.drawString(String.valueOf(health), clickArea.x + gp.tileSize/2, clickArea.y + gp.tileSize);
-            if(this instanceof ENT_Tree) {
-                g2.setColor(Color.pink);
-                g2.drawRect(((ENT_Tree) this).detectionArea.x, ((ENT_Tree) this).detectionArea.y, ((ENT_Tree)this).detectionArea.width, ((ENT_Tree)this).detectionArea.height);
-            }
-            g2.setColor(Color.white);
-            //Also add for other entities with detection areas
         }
         if(faction != null) {
             //Draw first letter of faction name in Faction Color
