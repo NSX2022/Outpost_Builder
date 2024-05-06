@@ -15,7 +15,6 @@ public class Player extends Entity {
     public int screenY;
 
     public Faction playerFaction;
-    public int lightSize;
 
     public Player(GamePanel gp, KeyHandler keyH) {
 

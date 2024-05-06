@@ -93,7 +93,14 @@ public class Faction {
         }
 
         //TODO Update Power
-
+        power = 0;
+        for(int i = 0; i < factionBuildings.length; i++){
+            if(factionBuildings[i] != null && factionBuildings[i] instanceof Building && !(factionBuildings[i] instanceof ENT_WallCross)) {
+                if(((Building)factionBuildings[i]).powerVal > 0) {
+                    power += ((Building)factionBuildings[i]).powerVal;
+                }
+            }
+        }
     }
 
     public void updateTerritory() {

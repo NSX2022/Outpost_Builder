@@ -17,6 +17,7 @@ public class ENT_WallCross extends Building {
         landClaim = new Rectangle(0,0,0,0);
         reIndex = -1;
         menuType = 0;
+        powerVal = 0;
         //Adjust solidArea if Citizen entities can walk through it
     }
 

@@ -14,6 +14,7 @@ public class ENT_KingCourt extends Building {
         maxHealth = health;
         reIndex = 3;
         resourceYield = 1;
+        powerVal = 0;
         menuType = 3;
     }
 

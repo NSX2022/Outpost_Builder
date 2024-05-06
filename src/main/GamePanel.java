@@ -239,7 +239,7 @@ public class GamePanel extends JPanel implements Runnable {
                                     //check if on screen
                                     if (screenX + tileSize > 0 && screenX < screenWidth &&
                                             screenY + tileSize > 0 && screenY < screenHeight) {
-                                        if(rand.nextBoolean()) {
+                                        if(rand.nextBoolean() || staticAnims) {
                                             tile.nextFrame();
                                         }
                                     }
