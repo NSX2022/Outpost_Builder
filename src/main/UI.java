@@ -27,7 +27,7 @@ public class UI {
 
     public boolean gameFinished = false;
     public int commandNum = 0;
-    public int titleScreenState = 0; // 0: title screen 1: mode select 2: story?
+    public int titleScreenState = 0; // 0: title screen 1: mode select
     public Rectangle menuRect;
 
     //Icon images, in order
@@ -43,6 +43,8 @@ public class UI {
 
     //Build menu
     public BufferedImage shift_tip;
+    //TODO
+    public BufferedImage tab_tip;
     public BufferedImage money_icon_mini;
     public BufferedImage wheat_icon_mini;
     public BufferedImage lumber_icon_mini;
@@ -119,6 +121,10 @@ public class UI {
 
         //Build Menu
         shift_tip = setup("/ui/build_menu/shift_tip",1);
+
+        //Power Menu
+        //TODO
+        tab_tip = setup("/ui/build_menu/tab_tip",1);
 
         money_icon_mini = setup("/ui/icons/money_icon",3);
         wheat_icon_mini = setup("/ui/icons/wheat_icon",3);
@@ -765,6 +771,13 @@ public class UI {
             e.printStackTrace();
         }
         return image;
+    }
+
+    public void drawPowerMenu() {
+        int x = (int)gp.screenWidth/2 - gp.tileSize *  6;
+        int y = 0;
+
+
     }
 
     //TODO: Particle System (RyiSnow)

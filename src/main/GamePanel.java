@@ -53,8 +53,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     //Settings
     public boolean staticAnims = false;
-    public int objDisplayLimit = 96;
-    public int entDisplayLimit = 96;
+    public int objDisplayLimit = 512; //96
+    public int entDisplayLimit = 512; //96
 
     //system
     public Random rand = new Random();

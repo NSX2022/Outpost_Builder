@@ -506,16 +506,17 @@ public class KeyHandler implements KeyListener {
 
     public boolean canPlace(){
 
-        if(gp.factions[0].territory.intersects(gp.ui.preview.territoryCheck)){
+        if(gp.factions[0].territory.intersects(gp.ui.preview.territoryCheck) &&
+        !(gp.tileM.getTile(gp.ui.preview.worldX, gp.ui.preview.worldY).tags.contains("Water"))) {
             //check all entities and objects
             //TODO: Check if place attempt is on land
             //TODO: Check if place attempt is on solid tile
 
-            for(int i = 0; i < gp.factions.length; i++) {
-                if(gp.factions[i] != null) {
-                    for(int k = 0; k < gp.factions[i].factionBuildings.length; k++) {
-                        if(gp.factions[i].factionBuildings[k] != null && gp.factions[i].factionBuildings[k].worldX == gp.ui.preview.worldX
-                        && gp.factions[i].factionBuildings[k].worldY == gp.ui.preview.worldY){
+            for (int i = 0; i < gp.factions.length; i++) {
+                if (gp.factions[i] != null) {
+                    for (int k = 0; k < gp.factions[i].factionBuildings.length; k++) {
+                        if (gp.factions[i].factionBuildings[k] != null && gp.factions[i].factionBuildings[k].worldX == gp.ui.preview.worldX
+                                && gp.factions[i].factionBuildings[k].worldY == gp.ui.preview.worldY) {
                             gp.ui.addMessage("Space is occupied");
                             return false;
                         }
@@ -525,6 +526,8 @@ public class KeyHandler implements KeyListener {
             //TODO: Fix lighting
             //gp.updateLights();
             return true;
+        }else if(gp.tileM.getTile(gp.ui.preview.worldX, gp.ui.preview.worldY).tags.contains("Water")){
+            gp.ui.addMessage("Place on land");
         }else{
             gp.ui.addMessage("Place within your territory");
         }

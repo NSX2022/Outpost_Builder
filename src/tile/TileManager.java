@@ -116,11 +116,14 @@ public class TileManager {
                         col < waterMargin || col >= gp.maxWorldCol - waterMargin) {
                     if (rand.nextInt(0, 100) > 92) {
                         tile = new Tile(tileTemplates[3].images, tileTemplates[3].collision, tileTemplates[3].name, col, row);
+                        tile.tags.add("Water");
                     } else {
                         tile = new Tile(tileTemplates[2].images, tileTemplates[2].collision, tileTemplates[2].name, col, row);
+                        tile.tags.add("Water");
                     }
                 } else {
                     tile = new Tile(tileTemplates[0].images, tileTemplates[0].collision, tileTemplates[0].name, col, row);
+                    tile.tags.add("Fertile");
                 }
                 tile.worldX = col * gp.tileSize;
                 tile.worldY = row * gp.tileSize;
@@ -152,6 +155,7 @@ public class TileManager {
     public void addResourceEntities() {
         //TODO: Add trees, rocks, et al
     }
+    //^Use Perlin Noise for these?
 
     public void draw(Graphics2D g2) {
         int playerWorldX = gp.player.worldX;
