@@ -43,8 +43,9 @@ public class UI {
 
     //Build menu
     public BufferedImage shift_tip;
-    //TODO
+    //TODO power menu
     public BufferedImage tab_tip;
+
     public BufferedImage money_icon_mini;
     public BufferedImage wheat_icon_mini;
     public BufferedImage lumber_icon_mini;
@@ -81,7 +82,9 @@ public class UI {
     public Boolean showIcons = true;
 
     //buildMenu
-    public Boolean buildMenu = false;
+    public boolean buildMenu = false;
+    //power meni
+    public boolean power_menu = false;
 
     public UI(GamePanel gp) {
         this.gp = gp;
@@ -160,6 +163,7 @@ public class UI {
             }
             drawBuildMenu();
             drawMessage();
+            drawPowerMenu();
         }
         if(gp.gameState == gp.pauseState){
             drawPauseScreen();
@@ -777,7 +781,11 @@ public class UI {
         int x = (int)gp.screenWidth/2 - gp.tileSize *  6;
         int y = 0;
 
+        g2.drawImage(tab_tip,x,y,null);
 
+        if(power_menu){
+            //TODO
+        }
     }
 
     //TODO: Particle System (RyiSnow)
