@@ -5,6 +5,7 @@ import faction.Faction;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed;
@@ -17,12 +18,21 @@ public class KeyHandler implements KeyListener {
     //sfx 1 = wood building sound, 2 = stone sound
     public int sfxType;
     public boolean canPlace = false;
+    //TODO: Finish
+    public ArrayList<String> buildings = new ArrayList<>();
 
     //In-game view
     public boolean drawFactionFlags = true;
 
     public KeyHandler(GamePanel gp) {
         this.gp = gp;
+        buildings.add("Farm");
+        buildings.add("Mine");
+        buildings.add("Fortress");
+        buildings.add("Outpost");
+        buildings.add("Wall");
+        buildings.add("Lumberyard");
+        buildings.add("Quarry");
     }
 
     @Override
@@ -180,53 +190,25 @@ public class KeyHandler implements KeyListener {
 
             //Select building from menu
             if(code == KeyEvent.VK_1){
-                gp.ui.addMessage("ENTER to place Farm");
-                toPlace = 1;
-                gp.ui.preview.setImage(gp.ui.farm);
-                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
-                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+                setPreview(1);
             }
             if(code == KeyEvent.VK_2){
-                gp.ui.addMessage("ENTER to place Mine");
-                toPlace = 2;
-                gp.ui.preview.setImage(gp.ui.mine);
-                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
-                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+                setPreview(2);
             }
             if(code == KeyEvent.VK_3){
-                gp.ui.addMessage("ENTER to place Fortress");
-                toPlace = 3;
-                gp.ui.preview.setImage(gp.ui.fortress);
-                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
-                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+                setPreview(3);
             }
             if(code == KeyEvent.VK_4){
-                gp.ui.addMessage("ENTER to place Outpost");
-                toPlace = 4;
-                gp.ui.preview.setImage(gp.ui.outpost);
-                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
-                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+                setPreview(4);
             }
             if(code == KeyEvent.VK_5){
-                gp.ui.addMessage("ENTER to place Wall");
-                toPlace = 5;
-                gp.ui.preview.setImage(gp.ui.wall);
-                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
-                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+                setPreview(5);
             }
             if(code == KeyEvent.VK_6){
-                gp.ui.addMessage("ENTER to place Lumberyard");
-                toPlace = 6;
-                gp.ui.preview.setImage(gp.ui.logging_camp);
-                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
-                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+                setPreview(6);
             }
             if(code == KeyEvent.VK_7){
-                gp.ui.addMessage("ENTER to place Quarry");
-                toPlace = 7;
-                gp.ui.preview.setImage(gp.ui.quarry);
-                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
-                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+                setPreview(7);
             }
 
         }
@@ -344,7 +326,7 @@ public class KeyHandler implements KeyListener {
                             break;
                         case 3:
                             //Fortress
-                            if(canAfford(gp.ui.fortCost)) {
+                            if(canAfford(gp.ui.fortCost) && !gp.factions[0].hasFort) {
                                 for (int i = 0; i < gp.factions[0].factionBuildings.length; i++) {
                                     if (gp.factions[0].factionBuildings[i] == null) {
                                         Entity ent = new ENT_Fortress(gp, gp.factions[0]);
@@ -359,6 +341,8 @@ public class KeyHandler implements KeyListener {
                                         }
 
                                         subtractResources(gp.factions[0], gp.ui.fortCost);
+                                        gp.factions[0].hasFort = true;
+                                        buildings.remove("Fortress");
                                         ent = null;
                                         gp.updateFlags();
                                         sfxType = 1;
@@ -366,7 +350,12 @@ public class KeyHandler implements KeyListener {
                                     }
                                 }
                             }else{
-                                gp.ui.addMessage("Can't afford to place this");
+                                if(gp.factions[0].hasFort){
+                                    gp.ui.addMessage("You already have a fortress");
+                                }else{
+                                    gp.ui.addMessage("Can't afford to place this");
+                                }
+
                                 break;
                             }
                             break;
@@ -509,8 +498,6 @@ public class KeyHandler implements KeyListener {
         if(gp.factions[0].territory.intersects(gp.ui.preview.territoryCheck) &&
         !(gp.tileM.getTile(gp.ui.preview.worldX, gp.ui.preview.worldY).tags.contains("Water"))) {
             //check all entities and objects
-            //TODO: Check if place attempt is on land
-            //TODO: Check if place attempt is on solid tile
 
             for (int i = 0; i < gp.factions.length; i++) {
                 if (gp.factions[i] != null) {
@@ -544,6 +531,61 @@ public class KeyHandler implements KeyListener {
     public void subtractResources(Faction faction, int[] costs){
         for(int i = 0; i < gp.factions[0].resources.length; i++){
             gp.factions[faction.gpPos].resources[i] -= costs[i];
+        }
+    }
+    public void setPreview(int code){
+        String building = buildings.get(code - 1);
+
+        switch(building) {
+            case "Farm":
+                gp.ui.addMessage("ENTER to place Farm");
+                toPlace = 1;
+                gp.ui.preview.setImage(gp.ui.farm);
+                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
+                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+                break;
+            case "Mine":
+                gp.ui.addMessage("ENTER to place Mine");
+                toPlace = 2;
+                gp.ui.preview.setImage(gp.ui.mine);
+                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
+                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+                break;
+            case "Fortress":
+                gp.ui.addMessage("ENTER to place Fortress");
+                toPlace = 3;
+                gp.ui.preview.setImage(gp.ui.fortress);
+                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
+                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+                break;
+            case "Outpost":
+                gp.ui.addMessage("ENTER to place Outpost");
+                toPlace = 4;
+                gp.ui.preview.setImage(gp.ui.outpost);
+                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
+                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+                break;
+            case "Wall":
+                gp.ui.addMessage("ENTER to place Wall");
+                toPlace = 5;
+                gp.ui.preview.setImage(gp.ui.wall);
+                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
+                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+                break;
+            case "Lumberyard":
+                gp.ui.addMessage("ENTER to place Lumberyard");
+                toPlace = 6;
+                gp.ui.preview.setImage(gp.ui.logging_camp);
+                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
+                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+                break;
+            case "Quarry":
+                gp.ui.addMessage("ENTER to place Quarry");
+                toPlace = 7;
+                gp.ui.preview.setImage(gp.ui.quarry);
+                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
+                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+                break;
         }
     }
 }

@@ -163,7 +163,7 @@ public class UI {
             }
             drawBuildMenu();
             drawMessage();
-            drawPowerMenu();
+            //drawPowerMenu();
         }
         if(gp.gameState == gp.pauseState){
             drawPauseScreen();
@@ -646,6 +646,7 @@ public class UI {
 
     public void drawBuildMenu(){
         if(gp.gameType != 3){
+            menuNum = 0;
 
             int x = (int)gp.screenWidth/2 - gp.tileSize *  6;
             int y;
@@ -657,32 +658,34 @@ public class UI {
                 g2.fillRect(x, y, gp.tileSize * 12, gp.tileSize * 4);
 
                 //Farm
-                menuNum = 1;
+                menuNum++;
                 x = (int)gp.screenWidth/2 - gp.tileSize *  6;
                 y = (int) gp.screenHeight - gp.tileSize * 4;
                 drawMenuBuildCost(x, y, farmCost, farm);
                 //Mine
-                menuNum = 2;
+                menuNum++;
                 x += (int) (gp.tileSize * 1.1);
                 drawMenuBuildCost(x, y, mineCost, mine);
                 //Fortress
-                menuNum = 3;
-                x += (int) (gp.tileSize * 1.1);
-                drawMenuBuildCost(x, y, fortCost, fortress);
+                if(!gp.factions[0].hasFort){
+                    menuNum++;
+                    x += (int) (gp.tileSize * 1.1);
+                    drawMenuBuildCost(x, y, fortCost, fortress);
+                }
                 //Outpost
-                menuNum = 4;
+                menuNum++;
                 x += (int) (gp.tileSize * 1.1);
                 drawMenuBuildCost(x, y, outpostCost, outpost);
                 //Wall
-                menuNum = 5;
+                menuNum++;
                 x += (int) (gp.tileSize * 0.6);
                 drawMenuBuildCost(x, y, wallCost, wall);
                 //Lumberyard
-                menuNum = 6;
+                menuNum++;
                 x += (int) (gp.tileSize * 1.1);
                 drawMenuBuildCost(x, y, lumberyardCost, logging_camp);
                 //Quarry
-                menuNum = 7;
+                menuNum++;
                 x += (int) (gp.tileSize * 1.1);
                 drawMenuBuildCost(x, y, quarryCost, quarry);
 

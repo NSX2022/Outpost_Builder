@@ -33,7 +33,8 @@ public class Faction {
     public Color factionColor;
 
     //Progression
-    public Boolean hasFort = false;
+    public boolean hasFort = false;
+    public boolean hasLibrary = false;
 
     public enum playerRelation {
         FRIENDLY,
