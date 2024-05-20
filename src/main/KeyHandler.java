@@ -33,6 +33,7 @@ public class KeyHandler implements KeyListener {
         buildings.add("Wall");
         buildings.add("Lumberyard");
         buildings.add("Quarry");
+        buildings.add("Library");
     }
 
     @Override
@@ -210,7 +211,9 @@ public class KeyHandler implements KeyListener {
             if(code == KeyEvent.VK_7){
                 setPreview(7);
             }
-
+            if(code == KeyEvent.VK_8){
+                setPreview(8);
+            }
         }
         if(code == KeyEvent.VK_R){
             gp.player.worldX = (gp.maxWorldCol / 2) * gp.tileSize;;
@@ -471,6 +474,41 @@ public class KeyHandler implements KeyListener {
                                 break;
                             }
                             break;
+                        case 8:
+                            //Library
+                            if(canAfford(gp.ui.libraryCost) && !gp.factions[0].hasLibrary) {
+                                for (int i = 0; i < gp.factions[0].factionBuildings.length; i++) {
+                                    if (gp.factions[0].factionBuildings[i] == null) {
+                                        Entity ent = new ENT_Library(gp, gp.factions[0]);
+                                        gp.factions[0].factionBuildings[i] = ent;
+                                        ent.worldX = gp.ui.preview.worldX;
+                                        ent.worldY = gp.ui.preview.worldY;
+                                        for (int j = 0; j < gp.ent.length; j++) {
+                                            if (gp.ent[j] == null) {
+                                                gp.ent[j] = ent;
+                                                j = 9999999;
+                                            }
+                                        }
+
+                                        subtractResources(gp.factions[0], gp.ui.libraryCost);
+                                        gp.factions[0].hasLibrary = true;
+                                        buildings.remove("Library");
+                                        ent = null;
+                                        gp.updateFlags();
+                                        sfxType = 1;
+                                        break;
+                                    }
+                                }
+                            }else{
+                                if(gp.factions[0].hasLibrary){
+                                    gp.ui.addMessage("You already have a library");
+                                }else{
+                                    gp.ui.addMessage("Can't afford to place this");
+                                }
+
+                                break;
+                            }
+                            break;
                     }
 
                     switch (sfxType) {
@@ -583,6 +621,13 @@ public class KeyHandler implements KeyListener {
                 gp.ui.addMessage("ENTER to place Quarry");
                 toPlace = 7;
                 gp.ui.preview.setImage(gp.ui.quarry);
+                gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
+                gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
+                break;
+            case "Library":
+                gp.ui.addMessage("ENTER to place Library");
+                toPlace = 8;
+                gp.ui.preview.setImage(gp.ui.library);
                 gp.ui.preview.worldX = Math.round((float) gp.player.worldX / gp.tileSize)*gp.tileSize;
                 gp.ui.preview.worldY = Math.round((float) gp.player.worldY / gp.tileSize)*gp.tileSize;
                 break;

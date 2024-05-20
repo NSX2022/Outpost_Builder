@@ -63,6 +63,9 @@ public class UI {
     public BufferedImage wall;
     public BufferedImage logging_camp;
     public BufferedImage quarry;
+    public BufferedImage library;
+
+
     public int menuNum;
     public Build_Preview preview;
 
@@ -74,6 +77,7 @@ public class UI {
     public int[] wallCost = {0,2,0,0,0,0,0,0,1};
     public int[] lumberyardCost = {0,4,0,0,0,2,0,0,8};
     public int[] quarryCost = {0,0,3,0,0,2,0,0,6};
+    public int[] libraryCost = {0,0,6,6,0,6,0,0,18};
 
     public int baseFontSize = 6;
 
@@ -146,6 +150,7 @@ public class UI {
         wall = setup("/entity/tile_entity/wall_cross",1);
         logging_camp = setup("/entity/tile_entity/logging_camp",1);
         quarry = setup("/entity/tile_entity/quarry",1);
+        library = setup("/entity/tile_entity/library",1);
 
     }
 
@@ -163,7 +168,7 @@ public class UI {
             }
             drawBuildMenu();
             drawMessage();
-            //drawPowerMenu();
+            drawPowerMenu();
         }
         if(gp.gameState == gp.pauseState){
             drawPauseScreen();
@@ -688,8 +693,12 @@ public class UI {
                 menuNum++;
                 x += (int) (gp.tileSize * 1.1);
                 drawMenuBuildCost(x, y, quarryCost, quarry);
-
-
+                //Library
+                if(!gp.factions[0].hasLibrary){
+                    menuNum++;
+                    x += (int) (gp.tileSize * 1.1);
+                    drawMenuBuildCost(x, y, libraryCost, library);
+                }
             }else{
                 y = (int) gp.screenHeight - gp.tileSize;
                 g2.drawImage(shift_tip, x, y, null);
@@ -788,6 +797,15 @@ public class UI {
 
         if(power_menu){
             //TODO
+
+        }
+    }
+
+    //increment the global cost of buildings when a faction builds one
+    //decrease over time if necessary
+    public void incrementCost(int building){
+        switch(building){
+
         }
     }
 
