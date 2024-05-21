@@ -28,7 +28,7 @@ public class Faction {
     public int gpPos = -1;
 
     //King's Court as the central building, when clicked opens a menu to view whole faction?
-    public Entity[] factionBuildings = new Entity[99];
+    public Entity[] factionBuildings;
 
     public Color factionColor;
 
@@ -54,6 +54,7 @@ public class Faction {
     public Faction(GamePanel gp) {
         this.gp = gp;
         relation = playerRelation.NEUTRAL;
+        factionBuildings = new Entity[gp.objDisplayLimit];
     }
 
 
@@ -63,6 +64,8 @@ public class Faction {
             //TODO: Create StateMachine and actionLock timer
             //TODO: Update power
             //actionLock: pray to our lord and saviour RyiSnow
+
+
         }
     }
 
