@@ -266,6 +266,9 @@ public class KeyHandler implements KeyListener {
             }
             gp.ui.buildMenu = !gp.ui.buildMenu;
         }
+        if(code == KeyEvent.VK_K){
+            gp.ui.power_menu = !gp.ui.power_menu;
+        }
         if(canPlace){
             sfxType = -1;
             if(code == KeyEvent.VK_ENTER){

@@ -42,7 +42,6 @@ public class Faction {
         NEUTRAL,
         ALLIED,
         DEFEATED
-
     }
 
     //Power based off of number of buildings, military
@@ -96,7 +95,6 @@ public class Faction {
             }
         }
 
-        //TODO Update Power
         power = 0;
         for(int i = 0; i < factionBuildings.length; i++){
             if(factionBuildings[i] != null && factionBuildings[i] instanceof Building && !(factionBuildings[i] instanceof ENT_WallCross)) {
@@ -104,6 +102,9 @@ public class Faction {
                     power += ((Building)factionBuildings[i]).powerVal;
                 }
             }
+        }
+        if(hasFort){
+            power *= 1.2;
         }
     }
 

@@ -650,7 +650,7 @@ public class UI {
     }
 
     public void drawBuildMenu(){
-        if(gp.gameType != 3){
+        if(gp.gameType != 3 && !power_menu){
             menuNum = 0;
 
             int x = (int)gp.screenWidth/2 - gp.tileSize *  6;
@@ -795,14 +795,18 @@ public class UI {
 
         g2.drawImage(tab_tip,x,y,null);
 
-        if(power_menu){
-            //TODO
+        if(power_menu && !buildMenu){
+            g2.setColor(Color.BLACK);
+            g2.fillRect(x, y, gp.tileSize * 12, gp.tileSize * 4);
 
+        }else{
+            power_menu = false;
         }
     }
 
     //increment the global cost of buildings when a faction builds one
     //decrease over time if necessary
+    //TODO
     public void incrementCost(int building){
         switch(building){
 
