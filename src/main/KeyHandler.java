@@ -296,6 +296,7 @@ public class KeyHandler implements KeyListener {
                                         ent = null;
                                         gp.updateFlags();
                                         sfxType = 1;
+                                        gp.ui.incrementCost(toPlace);
                                         break;
                                     }
                                 }
@@ -324,6 +325,7 @@ public class KeyHandler implements KeyListener {
                                         ent = null;
                                         gp.updateFlags();
                                         sfxType = 2;
+                                        gp.ui.incrementCost(toPlace);
                                         break;
                                     }
                                 }
@@ -354,6 +356,7 @@ public class KeyHandler implements KeyListener {
                                         ent = null;
                                         gp.updateFlags();
                                         sfxType = 1;
+                                        gp.ui.incrementCost(toPlace);
                                         break;
                                     }
                                 }
@@ -387,6 +390,7 @@ public class KeyHandler implements KeyListener {
                                         ent = null;
                                         gp.updateFlags();
                                         sfxType = 1;
+                                        gp.ui.incrementCost(toPlace);
                                         break;
                                     }
                                 }
@@ -415,6 +419,7 @@ public class KeyHandler implements KeyListener {
                                         ent = null;
                                         gp.updateFlags();
                                         sfxType = 2;
+                                        gp.ui.incrementCost(toPlace);
                                         break;
                                     }
                                 }
@@ -443,6 +448,7 @@ public class KeyHandler implements KeyListener {
                                         ent = null;
                                         gp.updateFlags();
                                         sfxType = 1;
+                                        gp.ui.incrementCost(toPlace);
                                         break;
                                     }
                                 }
@@ -471,6 +477,7 @@ public class KeyHandler implements KeyListener {
                                         ent = null;
                                         gp.updateFlags();
                                         sfxType = 2;
+                                        gp.ui.incrementCost(toPlace);
                                         break;
                                     }
                                 }
@@ -501,6 +508,7 @@ public class KeyHandler implements KeyListener {
                                         ent = null;
                                         gp.updateFlags();
                                         sfxType = 1;
+                                        gp.ui.incrementCost(toPlace);
                                         break;
                                     }
                                 }

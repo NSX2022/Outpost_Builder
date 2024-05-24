@@ -834,12 +834,51 @@ public class UI {
         }
     }
 
+    public int indexOfSmallest(int[] array){
+
+        // add this
+        if (array.length == 0)
+            return -1;
+
+        int index = 0;
+        int min = 9999;
+
+        for (int i = 1; i < array.length; i++){
+            if (array[i] > 0 && array[i] < min){
+                min = array[i];
+                index = i;
+            }
+        }
+        return index;
+    }
+
     //increment the global cost of buildings when a faction builds one
     //decrease over time if necessary
     //TODO
     public void incrementCost(int building){
         switch(building){
-
+            case 1:
+                //Farm
+                farmCost[indexOfSmallest(farmCost)] += 1;
+                break;
+            case 2:
+                //Mine
+                mineCost[indexOfSmallest(mineCost)] += 1;
+                break;
+            case 3:
+                fortCost[indexOfSmallest(fortCost)] += 2;
+                break;
+            case 4:
+                //Don't increment on Walls or Outposts
+                break;
+            case 5:
+                break;
+            case 6:
+                lumberyardCost[indexOfSmallest(lumberyardCost)] += 1;
+            case 7:
+                quarryCost[indexOfSmallest(quarryCost)] += 1;
+            case 8:
+                libraryCost[indexOfSmallest(libraryCost)] += 2;
         }
     }
 
