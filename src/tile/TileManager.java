@@ -187,8 +187,8 @@ public class TileManager {
         if (col >= 0 && col < gp.maxWorldCol && row >= 0 && row < gp.maxWorldRow) {
             return mapTiles[col][row];
         }else{
-            System.out.println("Attempted to access Tile outside of the map");
+            System.out.println("Attempted to access Tile outside of the map: r"+row+"/c"+col);
         }
-        return null;
+        return mapTiles[0][0];
     }
 }

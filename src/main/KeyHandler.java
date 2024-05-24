@@ -270,6 +270,14 @@ public class KeyHandler implements KeyListener {
         }
         if(code == KeyEvent.VK_K){
             gp.ui.power_menu = !gp.ui.power_menu;
+            if(gp.ui.buildMenu && gp.ui.power_menu){
+                gp.ui.buildMenu = false;
+            }
+            if(gp.ui.power_menu){
+                canPlace = false;
+                gp.ui.preview.worldX = 99999;
+                gp.ui.preview.worldY = 99999;
+            }
         }
         if(canPlace){
             sfxType = -1;
