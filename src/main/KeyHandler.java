@@ -3,8 +3,10 @@ package main;
 import entity.*;
 import faction.Faction;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class KeyHandler implements KeyListener {
@@ -553,6 +555,15 @@ public class KeyHandler implements KeyListener {
             }
             //TODO: Fix lighting
             //gp.updateLights();
+
+            for(int j = 1; j < gp.factions.length - 1; j++){
+                if(gp.factions[j] != null){
+                    if(gp.factions[j].territory.intersects(gp.ui.preview.territoryCheck)){
+                        gp.ui.addMessage("Cannot place in enemy territory");
+                        return false;
+                    }
+                }
+            }
             return true;
         }else if(gp.tileM.getTile(gp.ui.preview.worldX, gp.ui.preview.worldY).tags.contains("Water")){
             gp.ui.addMessage("Place on land");
@@ -574,6 +585,7 @@ public class KeyHandler implements KeyListener {
             gp.factions[faction.gpPos].resources[i] -= costs[i];
         }
     }
+
     public void setPreview(int code){
         String building = buildings.get(code - 1);
 

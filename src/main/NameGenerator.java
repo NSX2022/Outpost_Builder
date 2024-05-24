@@ -25,7 +25,8 @@ public class NameGenerator {
             "Guardians", "Wall", "Force", "Students", "Devotees", "Firepower", "Escalation", "Elite", "Kingdom",
             "Fiefdom", "Dukes", "Lords", "Age", "Papacy", "Temple", "Church", "Order", "Cabal", "Cult", "Lore",
             "Legend", "Myth", "Crusade", "Crusaders", "Tower", "Fortress", "Progenitor", "Division", "Ghost",
-            "Elites", "League", "Confederacy", "Federation", "Infiltration", "Kings", "Men", "Dead"
+            "Elites", "League", "Confederacy", "Federation", "Infiltration", "Kings", "Men", "Dead", "Phantoms",
+            "Swarm", "Machine", "Battle", "Slaves"
     };
 
     protected static String[] adjectives = {
@@ -44,7 +45,7 @@ public class NameGenerator {
             "Barren", "Brazen", "Hated", "Hollow", "Branded", "Whole", "Holy", "Unholy", "Bought", "Sold", "Captured", "Deep", "Sleeping",
             "Shallow", "Honest", "Young", "Drowning", "Bizarre", "Heroic", "Forced", "Voluntary", "Violent", "Peaceful", "Weeping",
             "Sons of the", "The Greater", "The Lesser", "Legion of", "Elite", "Fast", "Fast and Violent", "Last of all", "First of all",
-            "Miserable", "Unforgiving", "Steel"
+            "Miserable", "Unforgiving", "Steel", "United", "Broken", "Slaves to"
     };
 
     private boolean positionIsOdd(int i) {

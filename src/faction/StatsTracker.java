@@ -15,4 +15,5 @@ public class StatsTracker {
     public StatsTracker(GamePanel gp){
         this.gp = gp;
     }
+
 }

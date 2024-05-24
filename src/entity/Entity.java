@@ -100,7 +100,7 @@ public class Entity {
         }
 
         if(menuOn) {
-            if(gp.ui.buildMenu){
+            if(gp.ui.buildMenu && !gp.ui.power_menu){
                 gp.ui.drawMenu(this);
             }
             g2.setColor(Color.white);
@@ -155,7 +155,6 @@ public class Entity {
             frame = 0;
         }
     }
-
 
     public BufferedImage getImage() {
         return images[frame];

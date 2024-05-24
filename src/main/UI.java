@@ -87,7 +87,7 @@ public class UI {
 
     //buildMenu
     public boolean buildMenu = false;
-    //power meni
+    //power menu
     public boolean power_menu = false;
 
     public UI(GamePanel gp) {
@@ -420,7 +420,7 @@ public class UI {
     public void drawMenu(Entity entity) {
         String text;
 
-        if(entity.menuType > 0 && !buildMenu){
+        if(entity.menuType > 0 && !buildMenu && !power_menu){
             //Menu backdrop
             int x = (int) (gp.screenWidth - gp.tileSize * 4);
             int y = 0;
@@ -615,6 +615,8 @@ public class UI {
             text = String.valueOf(gp.player.playerFaction.resources[1]);
             g2.drawString(text, x, y);
 
+            //Unused resources
+            /*
             y += gp.tileSize / 12;
             x = 0;
             g2.drawImage(gold_icon, x, y, null);
@@ -646,16 +648,18 @@ public class UI {
             x += gp.tileSize / 3 + gp.tileSize / 5;
             text = String.valueOf(gp.player.playerFaction.resources[7]);
             g2.drawString(text, x, y);
+
+             */
         }
     }
 
     public void drawBuildMenu(){
-        if(gp.gameType != 3 && !power_menu){
+        if(gp.gameType != 3){
             menuNum = 0;
 
             int x = (int)gp.screenWidth/2 - gp.tileSize *  6;
             int y;
-            if(buildMenu){
+            if(buildMenu && !gp.ui.power_menu){
                 y = (int) gp.screenHeight - gp.tileSize *  5;
                 g2.drawImage(shift_tip, x, y, null);
                 g2.setColor(Color.black);
@@ -792,12 +796,38 @@ public class UI {
     public void drawPowerMenu() {
         int x = (int)gp.screenWidth/2 - gp.tileSize *  6;
         int y = 0;
+        String text;
 
         g2.drawImage(tab_tip,x,y,null);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 12f + baseFontSize));
 
         if(power_menu && !buildMenu){
             g2.setColor(Color.BLACK);
-            g2.fillRect(x, y, gp.tileSize * 12, gp.tileSize * 4);
+            g2.fillRect(x, y, gp.tileSize * 15, gp.tileSize * 4);
+
+            for(int i = 0; i < gp.factions.length; i++){
+                if(gp.factions[i] != null){
+                    y = gp.tileSize/2;
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 12f + baseFontSize));
+                    g2.setColor(gp.factions[i].factionColor);
+
+                    text = gp.factions[i].toString();
+
+                    g2.drawString(text, x, y);
+
+                    y += gp.tileSize/2;
+
+                    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 10f + baseFontSize));
+
+                    g2.drawString("Power: " + gp.factions[i].power,x,y);
+
+                    x += (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth() + gp.tileSize /1.6;
+                }
+            }
+            y = gp.tileSize * 4;
+            x = (int)gp.screenWidth/2 - gp.tileSize *  6;
+
+            g2.drawImage(tab_tip, x, y, null);
 
         }else{
             power_menu = false;
