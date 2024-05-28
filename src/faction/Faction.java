@@ -116,7 +116,7 @@ public class Faction {
                         break;
                 }
                 placeAt = getBuildPoint();
-                while(!aiCanPlace(placeAt)){
+                while(!aiCanPlace()){
                     placeAt = getBuildPoint();
                 }
                 build();
@@ -213,7 +213,7 @@ public class Faction {
     }
 
     //TODO
-    public boolean aiCanPlace(Point buildPoint){
+    public boolean aiCanPlace(){
         int[] cost = new int[99];
 
         switch(nextBuilding){
@@ -221,19 +221,52 @@ public class Faction {
             case "Farm":
                 cost = gp.ui.farmCost;
                 break;
+            case "Mine":
+                cost = gp.ui.mineCost;
+                break;
+            case "Fort":
+                cost = gp.ui.fortCost;
+                break;
+            case "Outpost":
+                cost = gp.ui.outpostCost;
+                break;
+            case "Wall":
+                cost = gp.ui.wallCost;
+                break;
+            case "Lumberyard":
+                cost = gp.ui.lumberyardCost;
+                break;
+            case "Quarry":
+                cost = gp.ui.quarryCost;
+                break;
+            case "Library":
+                cost = gp.ui.libraryCost;
+                break;
         }
 
         if(canAfford(cost)){
-            if(territory.contains(buildPoint)){
-                if(gp.tileM.getTile(buildPoint.x, buildPoint.y).tags.contains("Water")){
+            if(territory.contains(placeAt)){
+                if(gp.tileM.getTile(placeAt.x, placeAt.y).tags.contains("Water")){
                     return false;
                 }
             }
+            for(int i = 0; i < otherFactions.length; i++){
+                if(otherFactions[i].territory.contains(placeAt)){
+                    return false;
+                }
+            }
+            if(!territory.contains(placeAt)){
+                return false;
+            }
+            for(int i = 0; i < factionBuildings.length; i++){
+                if(factionBuildings[i].worldX == placeAt.x && factionBuildings[i].worldY == placeAt.y){
+                    return false;
+                }
+            }
+
         }else{
             return false;
         }
-
-
         return true;
     }
 
@@ -302,8 +335,32 @@ public class Faction {
 
     public void build(){
         //TODO
-        switch (nextBuilding){
+        switch(nextBuilding){
+            //TODO
+            case "Farm":
 
+                break;
+            case "Mine":
+
+                break;
+            case "Fort":
+
+                break;
+            case "Outpost":
+
+                break;
+            case "Wall":
+
+                break;
+            case "Lumberyard":
+
+                break;
+            case "Quarry":
+
+                break;
+            case "Library":
+
+                break;
         }
     }
 
