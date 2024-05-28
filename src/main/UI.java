@@ -875,10 +875,43 @@ public class UI {
                 break;
             case 6:
                 lumberyardCost[indexOfSmallest(lumberyardCost)] += 1;
+                break;
             case 7:
                 quarryCost[indexOfSmallest(quarryCost)] += 1;
+                break;
             case 8:
                 libraryCost[indexOfSmallest(libraryCost)] += 2;
+                break;
+        }
+    }
+
+    public void incrementCost(String building){
+        switch(building){
+            case "Farm":
+                //Farm
+                farmCost[indexOfSmallest(farmCost)] += 1;
+                break;
+            case "Mine":
+                //Mine
+                mineCost[indexOfSmallest(mineCost)] += 1;
+                break;
+            case "Fort":
+                fortCost[indexOfSmallest(fortCost)] += 2;
+                break;
+            case "Outpost":
+                //Don't increment on Walls or Outposts
+                break;
+            case "Wall":
+                break;
+            case "Lumberyard":
+                lumberyardCost[indexOfSmallest(lumberyardCost)] += 1;
+                break;
+            case "Quarry":
+                quarryCost[indexOfSmallest(quarryCost)] += 1;
+                break;
+            case "Library":
+                libraryCost[indexOfSmallest(libraryCost)] += 2;
+                break;
         }
     }
 

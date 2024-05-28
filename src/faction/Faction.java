@@ -1,8 +1,6 @@
 package faction;
 
-import entity.Building;
-import entity.ENT_WallCross;
-import entity.Entity;
+import entity.*;
 import main.GamePanel;
 import object.*;
 
@@ -334,32 +332,174 @@ public class Faction {
     }
 
     public void build(){
-        //TODO
         switch(nextBuilding){
-            //TODO
             case "Farm":
+                for (int i = 0; i < this.factionBuildings.length; i++) {
+                    if (this.factionBuildings[i] == null) {
+                        Entity ent = new ENT_Farm(gp, this);
+                        this.factionBuildings[i] = ent;
+                        ent.worldX = placeAt.x;
+                        ent.worldY = placeAt.y;
+                        for (int j = 0; j < gp.ent.length; j++) {
+                            if (gp.ent[j] == null) {
+                                gp.ent[j] = ent;
+                                j = 9999999;
+                            }
+                        }
 
+                        gp.keyH.subtractResources(this, gp.ui.farmCost);
+                        gp.updateFlags();
+                        gp.ui.incrementCost(nextBuilding);
+                        break;
+                    }
+                }
                 break;
             case "Mine":
+                for (int i = 0; i < this.factionBuildings.length; i++) {
+                    if (this.factionBuildings[i] == null) {
+                        Entity ent = new ENT_Mine(gp, this);
+                        this.factionBuildings[i] = ent;
+                        ent.worldX = placeAt.x;
+                        ent.worldY = placeAt.y;
+                        for (int j = 0; j < gp.ent.length; j++) {
+                            if (gp.ent[j] == null) {
+                                gp.ent[j] = ent;
+                                j = 9999999;
+                            }
+                        }
 
+                        gp.keyH.subtractResources(this, gp.ui.mineCost);
+                        gp.updateFlags();
+                        gp.ui.incrementCost(nextBuilding);
+                        break;
+                    }
+                }
                 break;
             case "Fort":
+                for (int i = 0; i < this.factionBuildings.length; i++) {
+                    if (this.factionBuildings[i] == null) {
+                        Entity ent = new ENT_Fortress(gp, this);
+                        this.factionBuildings[i] = ent;
+                        ent.worldX = placeAt.x;
+                        ent.worldY = placeAt.y;
+                        for (int j = 0; j < gp.ent.length; j++) {
+                            if (gp.ent[j] == null) {
+                                gp.ent[j] = ent;
+                                j = 9999999;
+                            }
+                        }
 
+                        gp.keyH.subtractResources(this, gp.ui.fortCost);
+                        gp.updateFlags();
+                        gp.ui.incrementCost(nextBuilding);
+                        break;
+                    }
+                }
                 break;
             case "Outpost":
+                for (int i = 0; i < this.factionBuildings.length; i++) {
+                    if (this.factionBuildings[i] == null) {
+                        Entity ent = new ENT_Outpost(gp, this);
+                        this.factionBuildings[i] = ent;
+                        ent.worldX = placeAt.x;
+                        ent.worldY = placeAt.y;
+                        for (int j = 0; j < gp.ent.length; j++) {
+                            if (gp.ent[j] == null) {
+                                gp.ent[j] = ent;
+                                j = 9999999;
+                            }
+                        }
 
+                        gp.keyH.subtractResources(this, gp.ui.outpostCost);
+                        gp.updateFlags();
+                        gp.ui.incrementCost(nextBuilding);
+                        break;
+                    }
+                }
                 break;
             case "Wall":
+                for (int i = 0; i < this.factionBuildings.length; i++) {
+                    if (this.factionBuildings[i] == null) {
+                        Entity ent = new ENT_WallCross(gp, this);
+                        this.factionBuildings[i] = ent;
+                        ent.worldX = placeAt.x;
+                        ent.worldY = placeAt.y;
+                        for (int j = 0; j < gp.ent.length; j++) {
+                            if (gp.ent[j] == null) {
+                                gp.ent[j] = ent;
+                                j = 9999999;
+                            }
+                        }
 
+                        gp.keyH.subtractResources(this, gp.ui.wallCost);
+                        gp.updateFlags();
+                        gp.ui.incrementCost(nextBuilding);
+                        break;
+                    }
+                }
                 break;
             case "Lumberyard":
+                for (int i = 0; i < this.factionBuildings.length; i++) {
+                    if (this.factionBuildings[i] == null) {
+                        Entity ent = new ENT_Lumberyard(gp, this);
+                        this.factionBuildings[i] = ent;
+                        ent.worldX = placeAt.x;
+                        ent.worldY = placeAt.y;
+                        for (int j = 0; j < gp.ent.length; j++) {
+                            if (gp.ent[j] == null) {
+                                gp.ent[j] = ent;
+                                j = 9999999;
+                            }
+                        }
 
+                        gp.keyH.subtractResources(this, gp.ui.lumberyardCost);
+                        gp.updateFlags();
+                        gp.ui.incrementCost(nextBuilding);
+                        break;
+                    }
+                }
                 break;
             case "Quarry":
+                for (int i = 0; i < this.factionBuildings.length; i++) {
+                    if (this.factionBuildings[i] == null) {
+                        Entity ent = new ENT_Quarry(gp, this);
+                        this.factionBuildings[i] = ent;
+                        ent.worldX = placeAt.x;
+                        ent.worldY = placeAt.y;
+                        for (int j = 0; j < gp.ent.length; j++) {
+                            if (gp.ent[j] == null) {
+                                gp.ent[j] = ent;
+                                j = 9999999;
+                            }
+                        }
 
+                        gp.keyH.subtractResources(this, gp.ui.quarryCost);
+                        gp.updateFlags();
+                        gp.ui.incrementCost(nextBuilding);
+                        break;
+                    }
+                }
                 break;
             case "Library":
+                for (int i = 0; i < this.factionBuildings.length; i++) {
+                    if (this.factionBuildings[i] == null) {
+                        Entity ent = new ENT_Library(gp, this);
+                        this.factionBuildings[i] = ent;
+                        ent.worldX = placeAt.x;
+                        ent.worldY = placeAt.y;
+                        for (int j = 0; j < gp.ent.length; j++) {
+                            if (gp.ent[j] == null) {
+                                gp.ent[j] = ent;
+                                j = 9999999;
+                            }
+                        }
 
+                        gp.keyH.subtractResources(this, gp.ui.libraryCost);
+                        gp.updateFlags();
+                        gp.ui.incrementCost(nextBuilding);
+                        break;
+                    }
+                }
                 break;
         }
     }
