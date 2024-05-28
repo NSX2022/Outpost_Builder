@@ -854,7 +854,7 @@ public class UI {
 
     //increment the global cost of buildings when a faction builds one
     //decrease over time if necessary
-    //TODO
+
     public void incrementCost(int building){
         switch(building){
             case 1:

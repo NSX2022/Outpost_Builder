@@ -14,7 +14,7 @@ public class ENT_Fortress extends Building {
         maxHealth = health;
         reIndex = -1;
         menuType = 1;
-        powerVal = 6;
+        powerVal = 26;
     }
 
     public BufferedImage image() {

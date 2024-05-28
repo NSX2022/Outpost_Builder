@@ -60,7 +60,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Random rand = new Random();
     public Long seed = rand.nextLong(100000000, 999999999);
     public AssetSetter aSetter = new AssetSetter(this);
-    TileManager tileM = new TileManager(this);
+    public TileManager tileM = new TileManager(this);
     public KeyHandler keyH = new KeyHandler(this);
     //TODO: Fix to use 2D array
     //public CollisionChecker cChecker = new CollisionChecker(this);

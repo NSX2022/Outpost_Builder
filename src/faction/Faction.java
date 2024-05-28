@@ -8,7 +8,9 @@ import object.*;
 
 import java.awt.*;
 import java.awt.geom.Area;
+import java.awt.geom.PathIterator;
 import java.util.Arrays;
+import java.util.Random;
 
 public class Faction {
 
@@ -36,6 +38,25 @@ public class Faction {
     public boolean hasFort = false;
     public boolean hasLibrary = false;
 
+    //AI
+    private String nextBuilding;
+    //use if needed --> private String priorityResource;
+    private final int economyState = 0;
+    //Build up resource generators
+    private final int expandState = 1;
+    //Capture large amounts of territory
+    private final int rushPortState = 2;
+    //Build access to ports
+    private final int captureResourcesState = 3;
+    //Seize control of natural resources (trees, boulders, etc.)
+    public int currentState = economyState;
+    private int stoneIncome = 0;
+    private int wheatIncome = 0;
+    private int ironIncome = 0;
+    private int lumberIncome = 0;
+    private Faction[] otherFactions = new Faction[99];
+    public Point placeAt;
+
     public enum playerRelation {
         FRIENDLY,
         HOSTILE,
@@ -59,13 +80,83 @@ public class Faction {
 
     public void update() {
         if(!isPlayer && !isDefeated) {
+            setupOtherFactions();
             //TODO: build up a nation and all of that stuff
-            //TODO: Create StateMachine and actionLock timer
-            //TODO: Update power
-            //actionLock: pray to our lord and saviour RyiSnow
 
+            if(!gp.ui.gameFinished){
+                switch (currentState){
+                    case economyState:
+                        int[] incomes = new int[]{wheatIncome, lumberIncome, ironIncome, stoneIncome};
 
+                        if(getSmallest(incomes, incomes.length) == wheatIncome) {
+                            nextBuilding = "Farm";
+                        }else if(getSmallest(incomes, incomes.length) == lumberIncome){
+                            nextBuilding = "Lumberyard";
+                        }else if(getSmallest(incomes, incomes.length) == ironIncome){
+                            nextBuilding = "Mine";
+                        }else if(getSmallest(incomes, incomes.length) == stoneIncome){
+                            nextBuilding = "Quarry";
+                        }
+
+                        if(buildLibFort()) {
+                            if (canAfford(gp.ui.libraryCost) && !hasLibrary) {
+                                nextBuilding = "Library";
+                            } else if (canAfford(gp.ui.fortCost) && !hasFort) {
+                                nextBuilding = "Fort";
+                            }
+                        }
+
+                        break;
+                    case expandState:
+                        nextBuilding = "Outpost";
+                        break;
+                    case rushPortState:
+                        break;
+                    case captureResourcesState:
+                        break;
+                }
+                placeAt = getBuildPoint();
+                while(!aiCanPlace(placeAt)){
+                    placeAt = getBuildPoint();
+                }
+                build();
+            }
         }
+    }
+
+    public boolean buildLibFort(){
+        if(!hasMostPower()){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean hasMostPower(){
+
+        for(int i = 0; i < otherFactions.length; i++){
+            if(this.power < otherFactions[i].power){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public int getSmallest(int[] a, int total){
+        int temp;
+        for (int i = 0; i < total; i++)
+        {
+            for (int j = i + 1; j < total; j++)
+            {
+                if (a[i] > a[j])
+                {
+                    temp = a[i];
+                    a[i] = a[j];
+                    a[j] = temp;
+                }
+            }
+        }
+        return a[0];
     }
 
     public void updateBuildings() {
@@ -119,6 +210,120 @@ public class Faction {
                 territory.add(new Area(adjRect));
             }
         }
+    }
+
+    //TODO
+    public boolean aiCanPlace(Point buildPoint){
+        int[] cost = new int[99];
+
+        switch(nextBuilding){
+            //TODO
+            case "Farm":
+                cost = gp.ui.farmCost;
+                break;
+        }
+
+        if(canAfford(cost)){
+            if(territory.contains(buildPoint)){
+                if(gp.tileM.getTile(buildPoint.x, buildPoint.y).tags.contains("Water")){
+                    return false;
+                }
+            }
+        }else{
+            return false;
+        }
+
+
+        return true;
+    }
+
+    public Point getBuildPoint() {
+        int x = -1;
+        int y = -1;
+        Random rand = gp.rand;
+
+        // Convert the Area to line segments
+        PathIterator pathIterator = territory.getPathIterator(null);
+        double[] coords = new double[6];
+        double perimeter = 0;
+
+        while (!pathIterator.isDone()) {
+            int type = pathIterator.currentSegment(coords);
+            if (type == PathIterator.SEG_LINETO) {
+                double x1 = coords[0];
+                double y1 = coords[1];
+                double x2 = coords[2];
+                double y2 = coords[3];
+                perimeter += Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+            }
+            pathIterator.next();
+        }
+
+        // Generate a random number within the range [0, perimeter]
+        double randomValue = rand.nextDouble() * perimeter;
+
+        // Find the corresponding segment
+        double remainingValue = randomValue;
+        pathIterator = territory.getPathIterator(null);
+        while (!pathIterator.isDone()) {
+            int type = pathIterator.currentSegment(coords);
+            if (type == PathIterator.SEG_LINETO) {
+                double x1 = coords[0];
+                double y1 = coords[1];
+                double x2 = coords[2];
+                double y2 = coords[3];
+                double segmentLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                if (remainingValue <= segmentLength) {
+                    double fraction = remainingValue / segmentLength;
+                    double randomX = x1 + fraction * (x2 - x1);
+                    double randomY = y1 + fraction * (y2 - y1);
+                    x = (int) Math.round(randomX);
+                    y = (int) Math.round(randomY);
+                    break;
+                }
+                remainingValue -= segmentLength;
+            }
+            pathIterator.next();
+        }
+
+        x = Math.round((float) x / gp.tileSize)*gp.tileSize;
+        y = Math.round((float) y / gp.tileSize)*gp.tileSize;
+
+        return new Point(x, y);
+    }
+
+    public void setupOtherFactions(){
+        for(int i = 0; i < gp.factions.length; i++){
+            if(gp.factions[i] != this){
+                otherFactions[nearestEmpty()] = gp.factions[i];
+            }
+        }
+    }
+
+    public void build(){
+        //TODO
+        switch (nextBuilding){
+
+        }
+    }
+
+    private int nearestEmpty(){
+        for(int i = 0; i < otherFactions.length; i++){
+            if(otherFactions[i] == null){
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public boolean canAfford(int[] costs){
+        for(int i = 0; i < gp.factions[0].resources.length; i++){
+            if(this.resources[i] < costs[i]){
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
