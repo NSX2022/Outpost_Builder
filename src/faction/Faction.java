@@ -328,7 +328,7 @@ public class Faction {
                 if(otherFactions[i] == null){
                     continue;
                 }
-                if(otherFactions[i].worldTerritory.contains(placeAt)){
+                if(otherFactions[i].worldTerritory.contains(placeAt) || otherFactions[i].worldTerritory.intersects(new Rectangle(placeAt.x, placeAt.y, 48, 48))){
                     System.out.println("AI cant place on other territory");
                     return false;
                 }
