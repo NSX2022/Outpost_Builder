@@ -27,7 +27,7 @@ public class Faction {
     //IMPORTANT, REMEMBER ORDER
     //order and starting values:
     //Index 0 = gold0, 1 = stone8, 2 = lumber8, 3 = money0, 4 = smokeleaf0, 5 = iron8, 6 = silk0, 7 = gem0, 8 = wheat10
-    public int[] resources = new int[]{0,12,8,0,0,8,0,0,20};
+    public int[] resources = new int[]{0,12,9,0,0,9,0,0,20};
     public int gpPos = -1;
 
     //King's Court as the central building, when clicked opens a menu to view whole faction?
@@ -81,7 +81,7 @@ public class Faction {
 
     public void update() throws Exception {
         if(!isPlayer && !isDefeated) {
-            setupOtherFactions();
+
             //TODO: build up a nation and all of that stuff
 
             if(!gp.ui.gameFinished){

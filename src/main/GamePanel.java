@@ -557,16 +557,6 @@ public class GamePanel extends JPanel implements Runnable {
                 System.exit(1);
                 break;
             case 1:
-                player.playerFaction.resources[0] = 0;
-                player.playerFaction.resources[1] = 12;
-                player.playerFaction.resources[2] = 8;
-                player.playerFaction.resources[3] = 0;
-                player.playerFaction.resources[4] = 0;
-                player.playerFaction.resources[5] = 8;
-                player.playerFaction.resources[6] = 0;
-                player.playerFaction.resources[7] = 0;
-                player.playerFaction.resources[8] = 20;
-
                 player.playerFaction.isPlayer = true;
                 player.playerFaction.relation = Faction.playerRelation.FRIENDLY;
                 break;
@@ -640,11 +630,12 @@ public class GamePanel extends JPanel implements Runnable {
             factions[1].factionBuildings[0].worldX = waterBuffer * tileSize;
             factions[1].factionBuildings[0].worldY = waterBuffer * tileSize;
 
-            factions[0].factionBuildings[0].worldX = (maxWorldCol - 1 - waterBuffer) * tileSize;
-            factions[0].factionBuildings[0].worldY = (maxWorldRow - 1 - waterBuffer) * tileSize;
+            if(gameType != 3) {
+                factions[0].factionBuildings[0].worldX = (maxWorldCol - 1 - waterBuffer) * tileSize;
+                factions[0].factionBuildings[0].worldY = (maxWorldRow - 1 - waterBuffer) * tileSize;
+            }
 
             //System.out.println(Arrays.toString(factions[1].resources));
-            factions[1].resources = new int[]{0,12,8,0,0,8,0,0,20};
         }
         if(gameType != 3 && !(aiFactionsNum == 1)){
             //center coords
@@ -664,6 +655,13 @@ public class GamePanel extends JPanel implements Runnable {
             if(factions[i] != null) {
                 factions[i].updateBuildings();
                 factions[i].updateTerritory();
+
+            }
+        }
+
+        for(int i = 0; i < factions.length; i++) {
+            if(factions[i] != null) {
+                factions[i].setupOtherFactions();
             }
         }
 

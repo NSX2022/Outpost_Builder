@@ -22,7 +22,7 @@ public class KeyHandler implements KeyListener {
     public boolean canPlace = false;
     public ArrayList<String> buildings = new ArrayList<>();
 
-    public int numFactions = 1;
+    public int numFactions = 4;
 
     //In-game view
     public boolean drawFactionFlags = true;
