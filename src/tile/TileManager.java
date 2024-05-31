@@ -34,10 +34,10 @@ public class TileManager {
     }
 
     public void initializeTiles() {
-        tileTemplates[0] = new Tile("grass", setup("grass00"), false);
-        tileTemplates[1] = new Tile("mountain", setup("mountain00"), false);
-        tileTemplates[2] = new Tile("water0", setup("water00"), false);
-        tileTemplates[3] = new Tile("water1", new BufferedImage[]{setup("water01"), setup("water01A"), setup("water01B")}, false);
+        tileTemplates[0] = new Tile("grass", setup("grass00"), false, gp);
+        tileTemplates[1] = new Tile("mountain", setup("mountain00"), false, gp);
+        tileTemplates[2] = new Tile("water0", setup("water00"), false, gp);
+        tileTemplates[3] = new Tile("water1", new BufferedImage[]{setup("water01"), setup("water01A"), setup("water01B")}, false, gp);
     }
 
     public BufferedImage setup(String imageName) {
@@ -115,14 +115,14 @@ public class TileManager {
                 if (row < waterMargin || row >= gp.maxWorldRow - waterMargin ||
                         col < waterMargin || col >= gp.maxWorldCol - waterMargin) {
                     if (rand.nextInt(0, 100) > 92) {
-                        tile = new Tile(tileTemplates[3].images, tileTemplates[3].collision, tileTemplates[3].name, col, row);
+                        tile = new Tile(tileTemplates[3].images, tileTemplates[3].collision, tileTemplates[3].name, col, row, gp);
                         tile.tags.add("Water");
                     } else {
-                        tile = new Tile(tileTemplates[2].images, tileTemplates[2].collision, tileTemplates[2].name, col, row);
+                        tile = new Tile(tileTemplates[2].images, tileTemplates[2].collision, tileTemplates[2].name, col, row, gp);
                         tile.tags.add("Water");
                     }
                 } else {
-                    tile = new Tile(tileTemplates[0].images, tileTemplates[0].collision, tileTemplates[0].name, col, row);
+                    tile = new Tile(tileTemplates[0].images, tileTemplates[0].collision, tileTemplates[0].name, col, row, gp);
                     tile.tags.add("Fertile");
                 }
                 tile.worldX = col * gp.tileSize;
@@ -139,7 +139,7 @@ public class TileManager {
         for (int row = 0; row < gp.maxWorldRow; row++) {
             for (int col = 0; col < gp.maxWorldCol; col++) {
                 //set tile properties
-                Tile tile = new Tile(tileTemplates[0].images, tileTemplates[0].collision, tileTemplates[0].name, col, row);
+                Tile tile = new Tile(tileTemplates[0].images, tileTemplates[0].collision, tileTemplates[0].name, col, row, gp);
                 tile.worldX = col * gp.tileSize;
                 tile.worldY = row * gp.tileSize;
 
@@ -149,11 +149,11 @@ public class TileManager {
     }
 
     public void addLandVariation() {
-        //TODO: Spread sand, snow, et al in the land section of the map as biomes
+        //TODO: Spread sand, snow, etc. in the land section of the map as biomes
     }
 
     public void addResourceEntities() {
-        //TODO: Add trees, rocks, et al
+        //TODO: Add trees, rocks, etc.
     }
     //^Use Perlin Noise for these?
 
@@ -181,14 +181,24 @@ public class TileManager {
         }
     }
     
-    public Tile getTile(int worldX, int worldY) {
+    public Tile getTile(int worldX, int worldY) throws Exception {
         int col = worldX / gp.tileSize;
         int row = worldY / gp.tileSize;
         if (col >= 0 && col < gp.maxWorldCol && row >= 0 && row < gp.maxWorldRow) {
             return mapTiles[col][row];
         }else{
-            System.out.println("Attempted to access Tile outside of the map: r"+row+"/c"+col);
+            /*Exception e = new Exception("Attempted to access Tile outside of the map: r"+row+"/c"+col);
+            e.printStackTrace();
+
+             */
         }
-        return mapTiles[0][0];
+        return null;
+    }
+    public Boolean onMap(int x, int y){
+
+        if(x >= 0 && x < gp.maxWorldCol && y >= 0 && y < gp.maxWorldRow){
+            return true;
+        }
+        return false;
     }
 }

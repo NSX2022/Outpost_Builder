@@ -27,7 +27,9 @@ public class Main {
         gamePanel.setupGame();
         gamePanel.startGameThread();
     }
+
     public static void setTitle(String title) {
         window.setTitle(title);
     }
+
 }

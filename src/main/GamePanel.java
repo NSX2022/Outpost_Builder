@@ -59,8 +59,6 @@ public class GamePanel extends JPanel implements Runnable {
     //system
     public Random rand = new Random();
     public Long seed = rand.nextLong(100000000, 999999999);
-    public AssetSetter aSetter = new AssetSetter(this);
-    public TileManager tileM = new TileManager(this);
     public KeyHandler keyH = new KeyHandler(this);
     //TODO: Fix to use 2D array
     //public CollisionChecker cChecker = new CollisionChecker(this);
@@ -78,6 +76,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     //entity and obj
     public Player player = new Player(this, keyH);
+    public AssetSetter aSetter = new AssetSetter(this);
+    public TileManager tileM = new TileManager(this);
     public SuperObject[] obj = new SuperObject[objDisplayLimit];
     public Entity[] ent = new Entity[entDisplayLimit];
     public ArrayList<LightSource> lights = new ArrayList<>();
@@ -200,28 +200,28 @@ public class GamePanel extends JPanel implements Runnable {
             delta += (currentTime - lastTime) / drawInterval;
             timer += (currentTime - lastTime);
             lastTime = currentTime;
-            if(delta >= 1){ //delta >= 1
+            if (delta >= 1) { //delta >= 1
                 update();
                 drawToTempScreen();
                 drawToScreen();
                 delta = 0;
                 drawCount++;
             }
-            if(timer >= 1000000000) {
+            if (timer >= 1000000000) {
                 //System.out.println("FPS: " + drawCount);
                 latestFPS = drawCount;
                 drawCount = 0;
                 timer = 0;
                 getScreenRatio();
-                if(FPS >= 60) {
-                    if(gameState == playState){
+                if (FPS >= 60) {
+                    if (gameState == playState) {
                         seconds++;
                     }
                     totalSeconds++;
                 }
-                if(gameState == playState){
-                    if(seconds % 2 == 0){
-                        if(gameType != 3) {
+                if (gameState == playState) {
+                    if (seconds % 2 == 0) {
+                        if (gameType != 3) {
                             setTitle("Outpost Builder - " + factions[0].power);
                         }
                         int playerWorldX = player.worldX;
@@ -239,7 +239,7 @@ public class GamePanel extends JPanel implements Runnable {
                                     //check if on screen
                                     if (screenX + tileSize > 0 && screenX < screenWidth &&
                                             screenY + tileSize > 0 && screenY < screenHeight) {
-                                        if(rand.nextBoolean() || staticAnims) {
+                                        if (rand.nextBoolean() || staticAnims) {
                                             tile.nextFrame();
                                         }
                                     }
@@ -248,14 +248,14 @@ public class GamePanel extends JPanel implements Runnable {
                         }
 
                         for (Entity entity : ent) {
-                            if(entity != null){
+                            if (entity != null) {
                                 int worldX = entity.worldX;
                                 int worldY = entity.worldY;
 
-                                if(     worldX + tileSize > player.worldX - player.screenX &&
+                                if (worldX + tileSize > player.worldX - player.screenX &&
                                         worldX - tileSize < player.worldX + player.screenX &&
                                         worldY + tileSize > player.worldY - player.screenY &&
-                                        worldY  - tileSize < player.worldY + player.screenY) {
+                                        worldY - tileSize < player.worldY + player.screenY) {
                                     if (staticAnims) {
                                         entity.nextFrame();
                                     } else {
@@ -266,20 +266,32 @@ public class GamePanel extends JPanel implements Runnable {
                                 }
                             }
                         }
+
+                        for (Faction fact : factions) {
+                            if(fact != null){
+                                if (seconds > 1 && !fact.isPlayer) {
+                                    try {
+                                        fact.update();
+                                    } catch (Exception e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+                            }
+                        }
                     }
-                    if(seconds % 30 == 0) {
+                    if (seconds % 30 == 0) {
                         updateFlags();
                         //TODO: FIX LIGHTS
                         //updateLights();
                         //System.out.println("Faction flags updated");
-                        if(keyH.checkDrawTime) {
+                        if (keyH.checkDrawTime) {
                             ui.addMessage("DEBUG:Faction Flags Updated");
                         }
                     }
-                    if(seconds >= 60) {
-                        for(int i = 0; i < factions.length; i++) {
-                            if(factions[i] != null) {
-                                for(int k = 0; k < factions[i].factionBuildings.length; k++) {
+                    if (seconds >= 60) {
+                        for (int i = 0; i < factions.length; i++) {
+                            if (factions[i] != null) {
+                                for (int k = 0; k < factions[i].factionBuildings.length; k++) {
                                     if (factions[i].factionBuildings[k] instanceof Building && factions[i].factionBuildings[k].reIndex > -1) {
                                         ((Building) factions[i].factionBuildings[k]).genResources();
                                     }
@@ -295,9 +307,9 @@ public class GamePanel extends JPanel implements Runnable {
             ui.preview.territoryCheck.x = ui.preview.worldX - player.worldX + player.screenX;
             ui.preview.territoryCheck.y = ui.preview.worldY - player.worldY + player.screenY;
 
-            for(int i = 0; i < ent.length; i++) {
+            for (int i = 0; i < ent.length; i++) {
                 //check to see if the click point touches the draw area of an entity (Building, Citizen)
-                if(ent[i] != null && !Objects.equals(ent[i].name, "camera") && gameState == playState) {
+                if (ent[i] != null && !Objects.equals(ent[i].name, "camera") && gameState == playState) {
                     int screenX = ent[i].worldX - player.worldX + player.screenX;
                     int screenY = ent[i].worldY - player.worldY + player.screenY;
 
@@ -307,7 +319,7 @@ public class GamePanel extends JPanel implements Runnable {
                     ent[i].landClaim.x = screenX;
                     ent[i].landClaim.y = screenY;
 
-                    if(ent[i] instanceof ENT_Tree) {
+                    if (ent[i] instanceof ENT_Tree) {
                         ((ENT_Tree) ent[i]).detectionArea.x = screenX - ((ENT_Tree) ent[i]).detectionArea.width / 4;
                         ((ENT_Tree) ent[i]).detectionArea.y = screenY - ((ENT_Tree) ent[i]).detectionArea.height / 4;
                     }
@@ -317,22 +329,22 @@ public class GamePanel extends JPanel implements Runnable {
                             ent[i].clickArea.y * screenRatioY, ent[i].clickArea.width * screenRatioX,
                             ent[i].clickArea.height * screenRatioY);
 
-                    if(clickPoint != null && scaledClickArea.contains(clickPoint)) {
+                    if (clickPoint != null && scaledClickArea.contains(clickPoint)) {
                         //System.out.println(ent[i].name + " was clicked! ");
-                        for(int k = 0; k < ent.length; k++) {
-                            if(ent[k] != null) {
+                        for (int k = 0; k < ent.length; k++) {
+                            if (ent[k] != null) {
                                 ent[k].menuOn = false;
                             }
                         }
-                        if(!menuOn) {
-                            if(ent[i] != null) {
+                        if (!menuOn) {
+                            if (ent[i] != null) {
                                 ent[i].menuOn = true;
                             }
                         }
 
                         clickPoint = null;
                     }
-                    if(ent[i].menuOn) {
+                    if (ent[i].menuOn) {
                         entMenuNum = i;
                         menuOn = true;
                     }
@@ -346,13 +358,31 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                      */
 
-                    if(clickPoint != null) {
-                        for(int j = 0; j < ent.length; j++) {
-                            if(ent[i] != null) {
+                    if (clickPoint != null) {
+                        for (int j = 0; j < ent.length; j++) {
+                            if (ent[i] != null) {
                                 ent[i].menuOn = false;
                             }
                         }
                         menuOn = false;
+                    }
+                }
+            }
+
+            for (int col = 0; col < maxWorldCol; col++) {
+                for (int row = 0; row < maxWorldRow; row++) {
+                    Tile tile = tileM.mapTiles[col][row];
+                    if (tile != null) {
+
+                        tile.detectionArea.x = tile.worldX;
+                        tile.detectionArea.y = tile.worldY;
+
+                        if(tile.worldX < 0 || tile.worldY < 0) {
+                            System.out.println("NEGATIVE TILE COORDS:" + tile.worldX + ":" + tile.worldY);
+                        }
+
+                        tile.buildPoint.x = tile.worldX + tileSize/2;
+                        tile.buildPoint.y = tile.worldY + tileSize/2;
                     }
                 }
             }
@@ -550,6 +580,7 @@ public class GamePanel extends JPanel implements Runnable {
                 break;
             case 3:
                 //Simulation Mode
+                player.playerFaction.isPlayer = true;
                 break;
         }
         //System.out.println(gameType);
@@ -716,7 +747,6 @@ public class GamePanel extends JPanel implements Runnable {
         }
         eManager.lighting.updateDarkness(lights);
     }
-
 
     private BufferedImage scaleImage(BufferedImage image, int tileSize) {
         int newWidth = tileSize;

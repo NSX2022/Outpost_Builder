@@ -3,10 +3,12 @@ package faction;
 import entity.*;
 import main.GamePanel;
 import object.*;
+import tile.Tile;
 
 import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.PathIterator;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -53,7 +55,7 @@ public class Faction {
     private int ironIncome = 0;
     private int lumberIncome = 0;
     private Faction[] otherFactions = new Faction[99];
-    public Point placeAt;
+    public Point placeAt = new Point(16, 16);
 
     public enum playerRelation {
         FRIENDLY,
@@ -76,7 +78,7 @@ public class Faction {
     }
 
 
-    public void update() {
+    public void update() throws Exception {
         if(!isPlayer && !isDefeated) {
             setupOtherFactions();
             //TODO: build up a nation and all of that stuff
@@ -113,10 +115,9 @@ public class Faction {
                     case captureResourcesState:
                         break;
                 }
-                placeAt = getBuildPoint();
-                while(!aiCanPlace()){
+                do {
                     placeAt = getBuildPoint();
-                }
+                } while (!aiCanPlace());
                 build();
             }
         }
@@ -132,6 +133,9 @@ public class Faction {
     public boolean hasMostPower(){
 
         for(int i = 0; i < otherFactions.length; i++){
+            if(otherFactions[i] == null){
+                continue;
+            }
             if(this.power < otherFactions[i].power){
                 return false;
             }
@@ -211,7 +215,7 @@ public class Faction {
     }
 
     //TODO
-    public boolean aiCanPlace(){
+    public boolean aiCanPlace() throws Exception {
         int[] cost = new int[99];
 
         switch(nextBuilding){
@@ -243,12 +247,24 @@ public class Faction {
         }
 
         if(canAfford(cost)){
+            if(placeAt == null){
+                System.out.println("placeAt is null");
+                return false;
+            }
+            if((gp.tileM.getTile(placeAt.x, placeAt.y) == null)){
+                System.out.println("Faction.java line 256");
+                System.out.println("Tile at placeAt is null" + placeAt.x +":"+placeAt.y);
+                return false;
+            }
             if(territory.contains(placeAt)){
                 if(gp.tileM.getTile(placeAt.x, placeAt.y).tags.contains("Water")){
                     return false;
                 }
             }
             for(int i = 0; i < otherFactions.length; i++){
+                if(otherFactions[i] == null){
+                    continue;
+                }
                 if(otherFactions[i].territory.contains(placeAt)){
                     return false;
                 }
@@ -257,6 +273,9 @@ public class Faction {
                 return false;
             }
             for(int i = 0; i < factionBuildings.length; i++){
+                if(factionBuildings[i] == null){
+                    continue;
+                }
                 if(factionBuildings[i].worldX == placeAt.x && factionBuildings[i].worldY == placeAt.y){
                     return false;
                 }
@@ -265,7 +284,12 @@ public class Faction {
         }else{
             return false;
         }
-        return true;
+
+        if(!gp.tileM.onMap(placeAt.x, placeAt.y)){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     public Point getBuildPoint() {
@@ -273,49 +297,49 @@ public class Faction {
         int y = -1;
         Random rand = gp.rand;
 
-        // Convert the Area to line segments
-        PathIterator pathIterator = territory.getPathIterator(null);
-        double[] coords = new double[6];
-        double perimeter = 0;
+        ArrayList<Tile> contained = new ArrayList<>();
+        ArrayList<Tile> inter = new ArrayList<>();
 
-        while (!pathIterator.isDone()) {
-            int type = pathIterator.currentSegment(coords);
-            if (type == PathIterator.SEG_LINETO) {
-                double x1 = coords[0];
-                double y1 = coords[1];
-                double x2 = coords[2];
-                double y2 = coords[3];
-                perimeter += Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-            }
-            pathIterator.next();
-        }
+        //TODO: Get tiles with new system
 
-        // Generate a random number within the range [0, perimeter]
-        double randomValue = rand.nextDouble() * perimeter;
-
-        // Find the corresponding segment
-        double remainingValue = randomValue;
-        pathIterator = territory.getPathIterator(null);
-        while (!pathIterator.isDone()) {
-            int type = pathIterator.currentSegment(coords);
-            if (type == PathIterator.SEG_LINETO) {
-                double x1 = coords[0];
-                double y1 = coords[1];
-                double x2 = coords[2];
-                double y2 = coords[3];
-                double segmentLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-                if (remainingValue <= segmentLength) {
-                    double fraction = remainingValue / segmentLength;
-                    double randomX = x1 + fraction * (x2 - x1);
-                    double randomY = y1 + fraction * (y2 - y1);
-                    x = (int) Math.round(randomX);
-                    y = (int) Math.round(randomY);
-                    break;
+        for (int col = 0; col < gp.maxWorldCol; col++) {
+            for (int row = 0; row < gp.maxWorldRow; row++) {
+                Tile tile = gp.tileM.mapTiles[col][row];
+                if (tile != null) {
+                    switch (tile.inFactionTerritory(this)){
+                        case 0:
+                            System.out.println("Tile in territory type 0");
+                            break;
+                        case 1:
+                            contained.add(tile);
+                            break;
+                        case 2:
+                            inter.add(tile);
+                            break;
+                    }
                 }
-                remainingValue -= segmentLength;
             }
-            pathIterator.next();
         }
+
+        System.out.println(contained.size());
+        System.out.println(inter.size());
+
+        Tile chosen = null;
+
+        if(currentState == economyState){
+            if(rand.nextBoolean()){
+                chosen = contained.get(rand.nextInt(contained.size()));
+            }else{
+                System.out.println("line 332 GamePanel");
+                chosen = inter.get(rand.nextInt(inter.size()));
+
+            }
+        } else if (currentState == expandState) {
+            chosen = inter.get(rand.nextInt(inter.size()));
+        }
+
+        x = chosen.buildPoint.x;
+        y = chosen.buildPoint.y;
 
         x = Math.round((float) x / gp.tileSize)*gp.tileSize;
         y = Math.round((float) y / gp.tileSize)*gp.tileSize;
