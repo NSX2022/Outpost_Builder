@@ -92,10 +92,10 @@ public class TileManager {
     public void genMap() {
         Random rand = gp.rand;
 
-        gp.maxWorldCol = rand.nextInt(20, 32);
-        gp.maxWorldRow = rand.nextInt(20, 32);
+        gp.maxWorldCol = rand.nextInt(32, 48);
+        gp.maxWorldRow = rand.nextInt(32, 48);
 
-        gp.waterBuffer = 8;
+        gp.waterBuffer = 10;
 
         mapTiles = new Tile[gp.maxWorldCol][gp.maxWorldRow];
         landTiles = new Tile[gp.maxWorldCol][gp.maxWorldRow];

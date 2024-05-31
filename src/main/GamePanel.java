@@ -22,6 +22,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
@@ -56,7 +57,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int objDisplayLimit = 512; //96
     public int entDisplayLimit = 512; //96
 
-    public boolean printDebugs = true;
+    public boolean printDebugs = false;
 
     //system
     public Random rand = new Random();
@@ -641,6 +642,9 @@ public class GamePanel extends JPanel implements Runnable {
 
             factions[0].factionBuildings[0].worldX = (maxWorldCol - 1 - waterBuffer) * tileSize;
             factions[0].factionBuildings[0].worldY = (maxWorldRow - 1 - waterBuffer) * tileSize;
+
+            //System.out.println(Arrays.toString(factions[1].resources));
+            factions[1].resources = new int[]{0,12,8,0,0,8,0,0,20};
         }
         if(gameType != 3 && !(aiFactionsNum == 1)){
             //center coords

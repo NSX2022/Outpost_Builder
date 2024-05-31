@@ -117,11 +117,15 @@ public class Faction {
                         break;
                 }
 
-                if(aiCanPlace()) {
-                    placeAt = getBuildPoint();
-                }
 
-                build();
+                for(int i = 0; i < 30; i++) {
+                    updateTerritory();
+                    updateBuildings();
+                    placeAt = getBuildPoint();
+                    if (aiCanPlace()) {
+                        build();
+                    }
+                }
             }
         }
     }
@@ -202,6 +206,9 @@ public class Faction {
         if(hasFort){
             power *= 1.2;
         }
+        if(hasLibrary){
+            power *= 1.2;
+        }
     }
 
     public void updateTerritory() {
@@ -259,20 +266,20 @@ public class Faction {
 
         if(canAfford(cost)){
             if(placeAt == null){
-                if(gp.printDebugs) {
-                    System.out.println("placeAt is null");
-                }
+
+                System.out.println("placeAt is null");
                 return false;
             }
             if((gp.tileM.getTile(placeAt.x, placeAt.y) == null)){
-                if(gp.printDebugs) {
-                    System.out.println("Faction.java line 256");
-                    System.out.println("Tile at placeAt is null" + placeAt.x + ":" + placeAt.y);
-                }
+
+                System.out.println("Faction.java line 256");
+                System.out.println("Tile at placeAt is null" + placeAt.x + ":" + placeAt.y);
+
                 return false;
             }
             if(worldTerritory.contains(placeAt)){
                 if(gp.tileM.getTile(placeAt.x, placeAt.y).tags.contains("Water")){
+                    System.out.println("AI cant place on water");
                     return false;
                 }
             }
@@ -281,10 +288,12 @@ public class Faction {
                     continue;
                 }
                 if(otherFactions[i].worldTerritory.contains(placeAt)){
+                    System.out.println("AI cant place on other territory");
                     return false;
                 }
             }
             if(!worldTerritory.contains(placeAt)){
+                System.out.println("AI cant place outside of territory");
                 return false;
             }
             for(int i = 0; i < factionBuildings.length; i++){
@@ -292,24 +301,22 @@ public class Faction {
                     continue;
                 }
                 if(factionBuildings[i].worldX == placeAt.x && factionBuildings[i].worldY == placeAt.y){
+                    System.out.println("AI cant place on a building");
                     return false;
                 }
             }
 
         }else{
+            System.out.println("AI cant afford");
             return false;
         }
 
-        if(!gp.tileM.onMap(placeAt.x, placeAt.y)){
-            return false;
-        }else{
-            return true;
-        }
+        return true;
     }
 
     public Point getBuildPoint() {
-        int x = -1;
-        int y = -1;
+        int x;
+        int y;
         Random rand = gp.rand;
 
         ArrayList<Tile> contained = new ArrayList<>();
@@ -331,16 +338,25 @@ public class Faction {
                              */
                             break;
                         case 1:
-                            if(gp.printDebugs) {
-                                System.out.println("Tile in territory type 1++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                            if(!tile.tags.contains("Water")){
+                                if(gp.printDebugs) {
+                                    System.out.println("Tile in territory type 1++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                                }
+                                contained.add(tile);
+                            }else{
+                                //ai selected water tile
                             }
-                            contained.add(tile);
+
                             break;
                         case 2:
-                            if(gp.printDebugs) {
-                                System.out.println("Tile in territory type 2++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                            if(!tile.tags.contains("Water")){
+                                if(gp.printDebugs) {
+                                    System.out.println("Tile in territory type 2++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                                }
+                                inter.add(tile);
+                            }else{
+                                //ai tried to place in water
                             }
-                            inter.add(tile);
                             break;
                     }
                 }
@@ -367,6 +383,8 @@ public class Faction {
         } else if (currentState == expandState) {
             chosen = inter.get(rand.nextInt(inter.size()));
         }
+
+        assert chosen != null;
 
         x = chosen.buildPoint.x;
         y = chosen.buildPoint.y;
