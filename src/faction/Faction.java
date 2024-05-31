@@ -81,7 +81,7 @@ public class Faction {
 
     public void update() throws Exception {
         if(!isPlayer && !isDefeated) {
-
+            Random rand = new Random();
             //TODO: build up a nation and all of that stuff
 
             if(!gp.ui.gameFinished){
@@ -89,15 +89,53 @@ public class Faction {
                     case economyState:
                         int[] incomes = new int[]{wheatIncome, lumberIncome, ironIncome, stoneIncome};
 
-                        if(getSmallest(incomes, incomes.length) == wheatIncome) {
-                            nextBuilding = "Farm";
-                        }else if(getSmallest(incomes, incomes.length) == lumberIncome){
-                            nextBuilding = "Lumberyard";
-                        }else if(getSmallest(incomes, incomes.length) == ironIncome){
-                            nextBuilding = "Mine";
-                        }else if(getSmallest(incomes, incomes.length) == stoneIncome){
-                            nextBuilding = "Quarry";
+                        switch(rand.nextInt(0,4)){
+                            case 0:
+                                if(getSmallest(incomes, incomes.length) == wheatIncome) {
+                                    nextBuilding = "Farm";
+                                }else if(getSmallest(incomes, incomes.length) == lumberIncome){
+                                    nextBuilding = "Lumberyard";
+                                }else if(getSmallest(incomes, incomes.length) == ironIncome){
+                                    nextBuilding = "Mine";
+                                }else if(getSmallest(incomes, incomes.length) == stoneIncome){
+                                    nextBuilding = "Quarry";
+                                }
+                                break;
+                            case 1:
+                                if(getSmallest(incomes, incomes.length) == lumberIncome) {
+                                    nextBuilding = "Lumberyard";
+                                }else if(getSmallest(incomes, incomes.length) == wheatIncome){
+                                    nextBuilding = "Farm";
+                                }else if(getSmallest(incomes, incomes.length) == stoneIncome){
+                                    nextBuilding = "Quarry";
+                                }else if(getSmallest(incomes, incomes.length) == ironIncome){
+                                    nextBuilding = "Mine";
+                                }
+                                break;
+                            case 2:
+                                if(getSmallest(incomes, incomes.length) == ironIncome) {
+                                    nextBuilding = "Mine";
+                                }else if(getSmallest(incomes, incomes.length) == stoneIncome){
+                                    nextBuilding = "Quarry";
+                                }else if(getSmallest(incomes, incomes.length) == wheatIncome){
+                                    nextBuilding = "Farm";
+                                }else if(getSmallest(incomes, incomes.length) == lumberIncome){
+                                    nextBuilding = "Lumberyard";
+                                }
+                                break;
+                            case 3:
+                                if(getSmallest(incomes, incomes.length) ==  stoneIncome) {
+                                    nextBuilding = "Quarry";
+                                }else if(getSmallest(incomes, incomes.length) == wheatIncome){
+                                    nextBuilding = "Farm";
+                                }else if(getSmallest(incomes, incomes.length) == lumberIncome){
+                                    nextBuilding = "Lumberyard";
+                                }else if(getSmallest(incomes, incomes.length) == ironIncome){
+                                    nextBuilding = "Mine";
+                                }
+                                break;
                         }
+
 
                         if(buildLibFort()) {
                             if (canAfford(gp.ui.libraryCost) && !hasLibrary) {
@@ -117,13 +155,16 @@ public class Faction {
                         break;
                 }
 
-
+                boolean stop = false;
                 for(int i = 0; i < 30; i++) {
-                    updateTerritory();
-                    updateBuildings();
-                    placeAt = getBuildPoint();
-                    if (aiCanPlace()) {
-                        build();
+                    if(!stop) {
+                        updateTerritory();
+                        updateBuildings();
+                        placeAt = getBuildPoint();
+                        if (aiCanPlace()) {
+                            build();
+                            stop = true;
+                        }
                     }
                 }
             }
@@ -396,6 +437,7 @@ public class Faction {
     }
 
     public void setupOtherFactions(){
+        //ONLY USE THIS ONCE
         for(int i = 0; i < gp.factions.length; i++){
             if(gp.factions[i] != this){
                 otherFactions[nearestEmpty()] = gp.factions[i];
