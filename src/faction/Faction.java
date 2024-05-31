@@ -116,9 +116,11 @@ public class Faction {
                     case captureResourcesState:
                         break;
                 }
-                do {
+
+                if(aiCanPlace()) {
                     placeAt = getBuildPoint();
-                } while (!aiCanPlace());
+                }
+
                 build();
             }
         }
@@ -322,19 +324,21 @@ public class Faction {
                 if (tile != null) {
                     switch (tile.inFactionTerritory(this)){
                         case 0:
-                            if(gp.printDebugs) {
+                            /*if(gp.printDebugs) {
                                 System.out.println("Tile in territory type 0");
                             }
+
+                             */
                             break;
                         case 1:
                             if(gp.printDebugs) {
-                                System.out.println("Tile in territory type 1");
+                                System.out.println("Tile in territory type 1++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                             }
                             contained.add(tile);
                             break;
                         case 2:
                             if(gp.printDebugs) {
-                                System.out.println("Tile in territory type 2");
+                                System.out.println("Tile in territory type 2++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                             }
                             inter.add(tile);
                             break;
@@ -400,6 +404,7 @@ public class Faction {
                         gp.keyH.subtractResources(this, gp.ui.farmCost);
                         gp.updateFlags();
                         gp.ui.incrementCost(nextBuilding);
+                        wheatIncome++;
                         break;
                     }
                 }
@@ -421,6 +426,7 @@ public class Faction {
                         gp.keyH.subtractResources(this, gp.ui.mineCost);
                         gp.updateFlags();
                         gp.ui.incrementCost(nextBuilding);
+                        ironIncome++;
                         break;
                     }
                 }
@@ -442,6 +448,7 @@ public class Faction {
                         gp.keyH.subtractResources(this, gp.ui.fortCost);
                         gp.updateFlags();
                         gp.ui.incrementCost(nextBuilding);
+                        hasFort = true;
                         break;
                     }
                 }
@@ -505,6 +512,7 @@ public class Faction {
                         gp.keyH.subtractResources(this, gp.ui.lumberyardCost);
                         gp.updateFlags();
                         gp.ui.incrementCost(nextBuilding);
+                        lumberIncome++;
                         break;
                     }
                 }
@@ -526,6 +534,7 @@ public class Faction {
                         gp.keyH.subtractResources(this, gp.ui.quarryCost);
                         gp.updateFlags();
                         gp.ui.incrementCost(nextBuilding);
+                        stoneIncome++;
                         break;
                     }
                 }
@@ -547,6 +556,7 @@ public class Faction {
                         gp.keyH.subtractResources(this, gp.ui.libraryCost);
                         gp.updateFlags();
                         gp.ui.incrementCost(nextBuilding);
+                        hasLibrary = true;
                         break;
                     }
                 }

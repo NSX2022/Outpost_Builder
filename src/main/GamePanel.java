@@ -55,7 +55,8 @@ public class GamePanel extends JPanel implements Runnable {
     public boolean staticAnims = false;
     public int objDisplayLimit = 512; //96
     public int entDisplayLimit = 512; //96
-    public boolean printDebugs = false;
+
+    public boolean printDebugs = true;
 
     //system
     public Random rand = new Random();
@@ -66,7 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Sound music = new Sound();
     public Sound se = new Sound();
     public UtilityTool uTool = new UtilityTool();
-    public EnvironmentManager eManager = new EnvironmentManager(this);
+    //public EnvironmentManager eManager = new EnvironmentManager(this);
     Thread gameThread;
     public int latestFPS;
     public Point clickPoint = new Point();
@@ -81,7 +82,7 @@ public class GamePanel extends JPanel implements Runnable {
     public TileManager tileM = new TileManager(this);
     public SuperObject[] obj = new SuperObject[objDisplayLimit];
     public Entity[] ent = new Entity[entDisplayLimit];
-    public ArrayList<LightSource> lights = new ArrayList<>();
+    //public ArrayList<LightSource> lights = new ArrayList<>();
 
     //UI
     public UI ui = new UI(this);
@@ -134,7 +135,7 @@ public class GamePanel extends JPanel implements Runnable {
             e.printStackTrace();
         }
 
-        eManager.setup();
+        //eManager.setup();
     }
     public void startGameThread() {
         gameThread = new Thread(this);
@@ -476,8 +477,8 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             //updateLights();
-            eManager.update();
-            eManager.draw(g2);
+            //eManager.update();
+            //eManager.draw(g2);
 
             ui.preview.draw(g2, this);
 
@@ -637,8 +638,11 @@ public class GamePanel extends JPanel implements Runnable {
         }else if(aiFactionsNum == 1){
             factions[1].factionBuildings[0].worldX = waterBuffer * tileSize;
             factions[1].factionBuildings[0].worldY = waterBuffer * tileSize;
+
+            factions[0].factionBuildings[0].worldX = (maxWorldCol - 1 - waterBuffer) * tileSize;
+            factions[0].factionBuildings[0].worldY = (maxWorldRow - 1 - waterBuffer) * tileSize;
         }
-        if(gameType != 3){
+        if(gameType != 3 && !(aiFactionsNum == 1)){
             //center coords
             int centerX = (maxWorldCol / 2) * tileSize;
             int centerY = (maxWorldRow / 2) * tileSize;
@@ -743,7 +747,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public void updateLights() {
+    /*public void updateLights() {
         lights.clear();
         for (Entity entity : ent) {
             if (entity == null) {
@@ -754,6 +758,8 @@ public class GamePanel extends JPanel implements Runnable {
         }
         eManager.lighting.updateDarkness(lights);
     }
+
+     */
 
     private BufferedImage scaleImage(BufferedImage image, int tileSize) {
         int newWidth = tileSize;
