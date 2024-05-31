@@ -18,6 +18,7 @@ public class TileManager {
 
     GamePanel gp;
     public Tile[][] mapTiles;
+    public Tile[][] landTiles;
     //use tileTemplates to store the template of each tile, based off of it's index (like old ver)
     public Tile[] tileTemplates = new Tile[99];
 
@@ -97,6 +98,7 @@ public class TileManager {
         gp.waterBuffer = 20;
 
         mapTiles = new Tile[gp.maxWorldCol][gp.maxWorldRow];
+        landTiles = new Tile[gp.maxWorldCol][gp.maxWorldRow];
 
         generateLandMap();
         addWaterMargin();
@@ -124,6 +126,7 @@ public class TileManager {
                 } else {
                     tile = new Tile(tileTemplates[0].images, tileTemplates[0].collision, tileTemplates[0].name, col, row, gp);
                     tile.tags.add("Fertile");
+                    landTiles[col][row] = tile;
                 }
                 tile.worldX = col * gp.tileSize;
                 tile.worldY = row * gp.tileSize;

@@ -20,8 +20,9 @@ public class KeyHandler implements KeyListener {
     //sfx 1 = wood building sound, 2 = stone sound
     public int sfxType;
     public boolean canPlace = false;
-    //TODO: Finish
     public ArrayList<String> buildings = new ArrayList<>();
+
+    public int numFactions = 1;
 
     //In-game view
     public boolean drawFactionFlags = true;
@@ -86,7 +87,7 @@ public class KeyHandler implements KeyListener {
                             gameTypeHolder = 1;
                             gp.gameStart = true;
                             gp.gameType = gp.keyH.gameTypeHolder;
-                            gp.genFactions(4);
+                            gp.genFactions(numFactions);
                             gp.gameState = gp.playState;
                             gp.stopMusic();
                             gp.playMusic(1);
@@ -97,7 +98,7 @@ public class KeyHandler implements KeyListener {
                             System.out.println(gp.gameType);
                             gp.gameStart = true;
                             gp.gameType = gp.keyH.gameTypeHolder;
-                            gp.genFactions(4);
+                            gp.genFactions(numFactions);
                             gp.gameState = gp.playState;
                             gp.stopMusic();
                             gp.playMusic(1);
@@ -106,7 +107,7 @@ public class KeyHandler implements KeyListener {
                             gameTypeHolder = 3;
                             gp.gameStart = true;
                             gp.gameType = gp.keyH.gameTypeHolder;
-                            gp.genFactions(4);
+                            gp.genFactions(numFactions);
                             gp.gameState = gp.playState;
                             gp.stopMusic();
                             gp.playMusic(1);

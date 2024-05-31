@@ -35,6 +35,7 @@ public class Entity {
     public int clickAreaDefaultX, clickAreaDefaultY;
     //default landClaim (territory, hut, fortress have larger)
     public Rectangle landClaim = new Rectangle(-192, -192, 192, 192);
+    public Rectangle worldClaim = new Rectangle(-192, -192, 192, 192);
 
     public boolean collisionOn = false;
     public BufferedImage[] images = new BufferedImage[99];

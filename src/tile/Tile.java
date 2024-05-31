@@ -112,12 +112,15 @@ public class Tile {
     public int inFactionTerritory(Faction faction) {
         //TODO: Return 1 for CONTAINED, return 2 for INTERSECTS, 0 for not present
         //System.out.println(faction.name + "'s territory");
-        System.out.println(this.detectionArea.toString());
-        System.out.println(this);
-        System.out.println("TERRITORY BOUNDS:" + faction.territory.getBounds());
-        if(faction.territory.contains(detectionArea)){
+        if(gp.printDebugs) {
+            System.out.println(this.detectionArea.toString());
+            System.out.println(this);
+            System.out.println("TERRITORY BOUNDS:" + faction.worldTerritory.getBounds());
+            System.out.println(faction.placeAt);
+        }
+        if(faction.worldTerritory.contains(detectionArea)){
             return 1;
-        }else if(faction.territory.intersects(detectionArea)){
+        }else if(faction.worldTerritory.intersects(detectionArea)){
             return 2;
         }
         return 0;

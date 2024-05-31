@@ -20,6 +20,7 @@ public class Faction {
     public Boolean isDefeated = false;
     public Boolean isPlayer = false;
     public Area territory = new Area();
+    public Area worldTerritory = new Area();
 
 
     //Resources
@@ -203,6 +204,7 @@ public class Faction {
 
     public void updateTerritory() {
         territory.reset();
+        worldTerritory.reset();
         for(int i = 0; i < factionBuildings.length; i++) {
             if(factionBuildings[i] != null && factionBuildings[i] instanceof Building) {
                 //math for centering
@@ -210,6 +212,13 @@ public class Faction {
                         factionBuildings[i].landClaim.y - 72,
                         factionBuildings[i].landClaim.width, factionBuildings[i].landClaim.height);
                 territory.add(new Area(adjRect));
+
+                //TODO
+                //add worldCoords
+                Rectangle worldRect = new Rectangle(factionBuildings[i].worldClaim.x - 72,
+                        factionBuildings[i].worldClaim.y - 72, factionBuildings[i].worldClaim.width,
+                        factionBuildings[i].worldClaim.height);
+                worldTerritory.add(new Area(worldRect));
             }
         }
     }
@@ -248,15 +257,19 @@ public class Faction {
 
         if(canAfford(cost)){
             if(placeAt == null){
-                System.out.println("placeAt is null");
+                if(gp.printDebugs) {
+                    System.out.println("placeAt is null");
+                }
                 return false;
             }
             if((gp.tileM.getTile(placeAt.x, placeAt.y) == null)){
-                System.out.println("Faction.java line 256");
-                System.out.println("Tile at placeAt is null" + placeAt.x +":"+placeAt.y);
+                if(gp.printDebugs) {
+                    System.out.println("Faction.java line 256");
+                    System.out.println("Tile at placeAt is null" + placeAt.x + ":" + placeAt.y);
+                }
                 return false;
             }
-            if(territory.contains(placeAt)){
+            if(worldTerritory.contains(placeAt)){
                 if(gp.tileM.getTile(placeAt.x, placeAt.y).tags.contains("Water")){
                     return false;
                 }
@@ -265,11 +278,11 @@ public class Faction {
                 if(otherFactions[i] == null){
                     continue;
                 }
-                if(otherFactions[i].territory.contains(placeAt)){
+                if(otherFactions[i].worldTerritory.contains(placeAt)){
                     return false;
                 }
             }
-            if(!territory.contains(placeAt)){
+            if(!worldTerritory.contains(placeAt)){
                 return false;
             }
             for(int i = 0; i < factionBuildings.length; i++){
@@ -301,19 +314,28 @@ public class Faction {
         ArrayList<Tile> inter = new ArrayList<>();
 
         //TODO: Get tiles with new system
+        Rectangle bounds = worldTerritory.getBounds();
 
-        for (int col = 0; col < gp.maxWorldCol; col++) {
-            for (int row = 0; row < gp.maxWorldRow; row++) {
-                Tile tile = gp.tileM.mapTiles[col][row];
+        for (int col = gp.waterBuffer; col < gp.maxWorldCol - gp.waterBuffer; col++) {
+            for (int row = gp.waterBuffer; row < gp.maxWorldRow - gp.waterBuffer; row++) {
+                Tile tile = gp.tileM.landTiles[col][row];
                 if (tile != null) {
                     switch (tile.inFactionTerritory(this)){
                         case 0:
-                            System.out.println("Tile in territory type 0");
+                            if(gp.printDebugs) {
+                                System.out.println("Tile in territory type 0");
+                            }
                             break;
                         case 1:
+                            if(gp.printDebugs) {
+                                System.out.println("Tile in territory type 1");
+                            }
                             contained.add(tile);
                             break;
                         case 2:
+                            if(gp.printDebugs) {
+                                System.out.println("Tile in territory type 2");
+                            }
                             inter.add(tile);
                             break;
                     }
@@ -321,8 +343,10 @@ public class Faction {
             }
         }
 
-        System.out.println(contained.size());
-        System.out.println(inter.size());
+        if(gp.printDebugs) {
+            System.out.println(contained.size());
+            System.out.println(inter.size());
+        }
 
         Tile chosen = null;
 
@@ -330,7 +354,9 @@ public class Faction {
             if(rand.nextBoolean()){
                 chosen = contained.get(rand.nextInt(contained.size()));
             }else{
-                System.out.println("line 332 GamePanel");
+                if(gp.printDebugs) {
+                    System.out.println("line 332 GamePanel");
+                }
                 chosen = inter.get(rand.nextInt(inter.size()));
 
             }

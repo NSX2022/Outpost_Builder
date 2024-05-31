@@ -55,6 +55,7 @@ public class GamePanel extends JPanel implements Runnable {
     public boolean staticAnims = false;
     public int objDisplayLimit = 512; //96
     public int entDisplayLimit = 512; //96
+    public boolean printDebugs = false;
 
     //system
     public Random rand = new Random();
@@ -269,7 +270,7 @@ public class GamePanel extends JPanel implements Runnable {
 
                         for (Faction fact : factions) {
                             if(fact != null){
-                                if (seconds > 1 && !fact.isPlayer) {
+                                if (seconds > 1 && !fact.isPlayer && seconds % 30 == 0) {
                                     try {
                                         fact.update();
                                     } catch (Exception e) {
@@ -318,6 +319,9 @@ public class GamePanel extends JPanel implements Runnable {
 
                     ent[i].landClaim.x = screenX;
                     ent[i].landClaim.y = screenY;
+
+                    ent[i].worldClaim.x = ent[i].worldX;
+                    ent[i].worldClaim.y = ent[i].worldY;
 
                     if (ent[i] instanceof ENT_Tree) {
                         ((ENT_Tree) ent[i]).detectionArea.x = screenX - ((ENT_Tree) ent[i]).detectionArea.width / 4;
@@ -377,7 +381,7 @@ public class GamePanel extends JPanel implements Runnable {
                         tile.detectionArea.x = tile.worldX;
                         tile.detectionArea.y = tile.worldY;
 
-                        if(tile.worldX < 0 || tile.worldY < 0) {
+                        if(tile.worldX < 0 || tile.worldY < 0 && printDebugs) {
                             System.out.println("NEGATIVE TILE COORDS:" + tile.worldX + ":" + tile.worldY);
                         }
 
@@ -630,6 +634,9 @@ public class GamePanel extends JPanel implements Runnable {
 
             factions[4].factionBuildings[0].worldX = (maxWorldCol - 1 - waterBuffer) * tileSize;
             factions[4].factionBuildings[0].worldY = (maxWorldRow - 1 - waterBuffer) * tileSize;
+        }else if(aiFactionsNum == 1){
+            factions[1].factionBuildings[0].worldX = waterBuffer * tileSize;
+            factions[1].factionBuildings[0].worldY = waterBuffer * tileSize;
         }
         if(gameType != 3){
             //center coords
