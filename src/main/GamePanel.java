@@ -674,7 +674,6 @@ public class GamePanel extends JPanel implements Runnable {
         }else{
             setTitle("Outpost Builder - Simulation");
         }
-
     }
 
     //Test function, do not use

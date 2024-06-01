@@ -341,6 +341,7 @@ public class UI {
 
         int messageX = gp.tileSize * 2;
         int messageY = gp.tileSize * 4;
+
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 16f + baseFontSize));
 
         for(int i = 0; i < message.size(); i++) {
@@ -350,7 +351,10 @@ public class UI {
                 g2.setColor(Color.white);
                 g2.drawString(message.get(i), messageX, messageY);
 
+                //TODO: ArrayIndexOutOfBounds sometimes caused by this!
                 int counter = messageCounter.get(i) + 1;
+
+
                 messageCounter.set(i, counter);
                 messageY += 25;
 
