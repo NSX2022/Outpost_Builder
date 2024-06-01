@@ -54,8 +54,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     //Settings
     public boolean staticAnims = false;
-    public int objDisplayLimit = 512; //96
-    public int entDisplayLimit = 512; //96
+    public int objDisplayLimit = 4096; //96
+    public int entDisplayLimit = 4096; //96
 
     public boolean printDebugs = false;
 

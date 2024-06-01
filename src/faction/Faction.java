@@ -75,7 +75,7 @@ public class Faction {
     public Faction(GamePanel gp) {
         this.gp = gp;
         relation = playerRelation.NEUTRAL;
-        factionBuildings = new Entity[gp.objDisplayLimit];
+        factionBuildings = new Entity[gp.objDisplayLimit/4];
     }
 
 
@@ -263,8 +263,6 @@ public class Faction {
                         factionBuildings[i].landClaim.width, factionBuildings[i].landClaim.height);
                 territory.add(new Area(adjRect));
 
-                //TODO
-                //add worldCoords
                 Rectangle worldRect = new Rectangle(factionBuildings[i].worldClaim.x - 72,
                         factionBuildings[i].worldClaim.y - 72, factionBuildings[i].worldClaim.width,
                         factionBuildings[i].worldClaim.height);
@@ -307,20 +305,25 @@ public class Faction {
 
         if(canAfford(cost)){
             if(placeAt == null){
-
-                System.out.println("placeAt is null");
+                if(gp.printDebugs) {
+                    System.out.println("placeAt is null");
+                }
                 return false;
             }
             if((gp.tileM.getTile(placeAt.x, placeAt.y) == null)){
 
-                System.out.println("Faction.java line 256");
-                System.out.println("Tile at placeAt is null" + placeAt.x + ":" + placeAt.y);
+                if(gp.printDebugs) {
+                    System.out.println("Faction.java line 256");
+                    System.out.println("Tile at placeAt is null" + placeAt.x + ":" + placeAt.y);
+                }
 
                 return false;
             }
             if(worldTerritory.contains(placeAt)){
                 if(gp.tileM.getTile(placeAt.x, placeAt.y).tags.contains("Water")){
-                    System.out.println("AI cant place on water");
+                    if(gp.printDebugs) {
+                        System.out.println("AI cant place on water");
+                    }
                     return false;
                 }
             }
@@ -329,12 +332,16 @@ public class Faction {
                     continue;
                 }
                 if(otherFactions[i].worldTerritory.contains(placeAt) || otherFactions[i].worldTerritory.intersects(new Rectangle(placeAt.x, placeAt.y, 48, 48))){
-                    System.out.println("AI cant place on other territory");
+                    if(gp.printDebugs) {
+                        System.out.println("AI cant place on other territory");
+                    }
                     return false;
                 }
             }
             if(!worldTerritory.contains(placeAt)){
-                System.out.println("AI cant place outside of territory");
+                if(gp.printDebugs) {
+                    System.out.println("AI cant place outside of territory");
+                }
                 return false;
             }
             for(int i = 0; i < factionBuildings.length; i++){
@@ -342,13 +349,17 @@ public class Faction {
                     continue;
                 }
                 if(factionBuildings[i].worldX == placeAt.x && factionBuildings[i].worldY == placeAt.y){
-                    System.out.println("AI cant place on a building");
+                    if(gp.printDebugs) {
+                        System.out.println("AI cant place on a building");
+                    }
                     return false;
                 }
             }
 
         }else{
-            System.out.println("AI cant afford");
+            if(gp.printDebugs) {
+                System.out.println("AI cant afford");
+            }
             return false;
         }
 
