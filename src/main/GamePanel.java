@@ -2,9 +2,6 @@ package main;
 
 
 import entity.*;
-import environment.EnvironmentManager;
-import environment.LightSource;
-import environment.Lighting;
 import faction.Faction;
 import object.SuperObject;
 import tile.Tile;
@@ -93,6 +90,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
+    public final int winState = 3;
     public int gameType = -1;
     //0 = default
     //1 = Normal
@@ -103,7 +101,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Boolean gameStart = false;
 
     //fps
-    int FPS = 60; //60
+    final int FPS = 60; //60
 
     //title logo
     public BufferedImage titleLogo;
@@ -112,6 +110,10 @@ public class GamePanel extends JPanel implements Runnable {
     public int maxFactions = 10;
     public Faction[] factions = new Faction[maxFactions];
     public boolean showTerritory = true;
+
+    //Gameplay
+    public int year = 0;
+    public int maxYear = 40;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension((int)screenWidth, (int)screenHeight));
@@ -301,6 +303,7 @@ public class GamePanel extends JPanel implements Runnable {
                                 }
                             }
                         }
+                        year++;
                         seconds = 0;
                     }
                 }
@@ -405,7 +408,10 @@ public class GamePanel extends JPanel implements Runnable {
         if (gameState == pauseState) {
 
         }
-
+        if(year >= maxYear){
+            ui.gameFinished = true;
+            gameState = winState;
+        }
     }
 
     public void drawToTempScreen() {
