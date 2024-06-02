@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="OutpostBuilder:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/OutpostBuilder_jar</output-path>
+    <root id="archive" name="OutpostBuilder.jar">
+      <element id="module-output" name="OutpostBuilder" />
+    </root>
+  </artifact>
+</component>

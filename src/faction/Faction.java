@@ -374,11 +374,8 @@ public class Faction {
         ArrayList<Tile> contained = new ArrayList<>();
         ArrayList<Tile> inter = new ArrayList<>();
 
-        //TODO: Get tiles with new system
-        Rectangle bounds = worldTerritory.getBounds();
-
-        for (int col = gp.waterBuffer; col < gp.maxWorldCol - gp.waterBuffer; col++) {
-            for (int row = gp.waterBuffer; row < gp.maxWorldRow - gp.waterBuffer; row++) {
+        for (int col = gp.waterBuffer - 1; col < gp.maxWorldCol - gp.waterBuffer; col++) {
+            for (int row = gp.waterBuffer - 1; row < gp.maxWorldRow - gp.waterBuffer; row++) {
                 Tile tile = gp.tileM.landTiles[col][row];
                 if (tile != null) {
                     switch (tile.inFactionTerritory(this)){
