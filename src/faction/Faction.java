@@ -271,7 +271,6 @@ public class Faction {
         }
     }
 
-    //TODO
     public boolean aiCanPlace() throws Exception {
         int[] cost = new int[99];
 
