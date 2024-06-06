@@ -53,14 +53,15 @@ public class Entity {
 
     GamePanel gp;
 
-    public LightSource lightSource = new LightSource(0,0,0,null);
+    //public LightSource lightSource = new LightSource(0,0,0,null);
 
     public Entity(GamePanel gp) {
         this.gp = gp;
-        lightSource.circleSize = 360;
+        /*lightSource.circleSize = 360;
         lightSource.worldX = worldX;
         lightSource.worldY = worldY;
         lightSource.gp = gp;
+         */
     }
 
     public BufferedImage setup(String imagePath, int divider) {

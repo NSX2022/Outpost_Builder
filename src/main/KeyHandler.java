@@ -174,7 +174,7 @@ public class KeyHandler implements KeyListener {
         }
 
         //TODO: Delete later
-        if(code == KeyEvent.VK_M) {
+        if(code == KeyEvent.VK_M && checkDrawTime) {
             gp.ui.addMessage("Debug Message :)");
         }
 
