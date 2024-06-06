@@ -274,7 +274,7 @@ public class GamePanel extends JPanel implements Runnable {
 
                         for (Faction fact : factions) {
                             if(fact != null){
-                                if (seconds > 1 && !fact.isPlayer && seconds % 30 == 0) {
+                                if (seconds > 1 && !fact.isPlayer && seconds % 5 == 0) {
                                     try {
                                         fact.update();
                                     } catch (Exception e) {

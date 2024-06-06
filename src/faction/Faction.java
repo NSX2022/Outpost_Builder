@@ -315,7 +315,6 @@ public class Faction {
                     System.out.println("Faction.java line 256");
                     System.out.println("Tile at placeAt is null" + placeAt.x + ":" + placeAt.y);
                 }
-
                 return false;
             }
             if(worldTerritory.contains(placeAt)){
